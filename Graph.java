@@ -5,15 +5,15 @@ import java.util.ArrayList;
 public class Graph<T> extends DataStructures<T>{
     protected class Node{
         T data;
-        ArrayList<Edge> weights;
+        ArrayList<Link> adj;
         Node(T d){data = d;}
-        void addLink(Edge cost){weights.add(cost);}
+        void addLink(Link edge){adj.add(edge);}
     }
-    protected class Edge{
+    protected class Link{
         Node neighbour;
         int weight;
-        Edge(Node near, int cost){
-            neighbour = near;
+        Edge(Node vertex, int cost){
+            neighbour = vertex;
             weight = cost;
         }
     }
