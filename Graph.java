@@ -1,4 +1,4 @@
-package CSC2001F;
+package QuizGen;
 
 import java.util.List;
 import java.util.LinkedList;
