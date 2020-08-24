@@ -97,4 +97,22 @@ public class HashTable {
         return this.numberOfSearchKeys;
     }
 
+    /**
+     * isPrime code by Derek Banas,Java Hash Tables 2, March 22,2013
+     * @param number number being tested
+     * @return true if number is prime or false if it is not prime
+     */
+    private boolean isPrime(int number) {
+
+        //Eliminate the need to check versus even numbers
+        if(number % 2 == 0) { return false; }
+
+        //Check against all odd numbers
+        for(int i = 3; i*i <= number; i += 2) {
+            if(number % i == 0) { return false; }
+        }
+
+        return true;
+    }
+
 }
