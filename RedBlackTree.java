@@ -37,5 +37,25 @@ public class RedBlackTree{
         int input = scan.nextInt();
         RedBlackTree rbt = new RedBlackTree(input);
     }
-    //////////////////////////////////////////
+    
+    RedBlackNode findNode(RedBlackNode findNode){
+        if (root == nil) {
+            return null;
+        }
+
+        if(findNode.key == root.key){
+            return root;
+        }
+        else if(findNode.key < root.key){
+            if(root.left != nil){
+                return findNode(findNode);
+            }
+        }
+        else {
+            if(root.right != nil){
+                return findNode(findNode);
+            }
+        }
+        return null;
+    }
 }
