@@ -21,4 +21,80 @@ public class HashTable {
         setResolutionScheme(resolutionScheme);
     }
 
+    /**
+     * return number of search probes
+     * @return numberOfSearchProbes
+     */
+    int getNumberOfSearchProbes() {
+        return this.numberOfSearchProbes;
+    }
+    /**
+     * set the number of search probes to input number
+     * @param probes probe count
+     */
+    private void setNumberOfSearchProbes(int probes) {
+        this.numberOfSearchProbes = probes;
+    }
+    /**
+     * get the number of insert probes
+     * @return numberOfInsertProbes
+     */
+    int getNumberOfInsertProbes() {
+        return numberOfInsertProbes;
+    }
+    /**
+     * set number of insert probes to input number
+     * @param probes new probes count
+     */
+    private void setNumberOfInsertProbes(int probes) {
+        this.numberOfInsertProbes = probes;
+    }
+
+    /**
+     * get the size of the table
+     * @return current table's size
+     */
+    int getTableSize() {
+        return this.tableSize;
+    }
+
+    /**
+     * Set the size of the hash table
+     * @param tableSize new table size
+     */
+    private void setTableSize(int tableSize, int resolutionScheme) {
+        while(!(isPrime(tableSize))) {
+            tableSize++;
+        }
+        this.tableSize = tableSize;
+        createTable(tableSize,resolutionScheme);
+    }
+
+    /**
+     * Set type of table; linear, chaining or quadratic
+     * @param resolutionScheme
+     */
+    private void setResolutionScheme(int resolutionScheme){this.resolutionScheme = resolutionScheme;}
+
+
+    /**
+     * Calculate the load factor of the current hash table
+     * @param filledSpaces number of data entries
+     * @return the load factor as a double
+     */
+    double getLoadFactor(int filledSpaces) {
+
+        double loadFactor;
+        loadFactor = (double)filledSpaces/this.tableSize;
+        return loadFactor;
+    }
+
+    /**
+     * get the number of keys that were searched
+     * @return number of keys
+     */
+    int getNumberOfSearchKeys() {
+        return this.numberOfSearchKeys;
+    }
+
 }
