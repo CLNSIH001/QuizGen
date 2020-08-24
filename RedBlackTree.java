@@ -58,4 +58,61 @@ public class RedBlackTree{
         }
         return null;
     }
+
+    private void rotateLeft(RedBlackNode node){
+        if(node.parent != nil){
+            if(node == node.parent.left){
+                node.parent.left = node.right;
+            }
+            else{
+                node.parent.right = node.right;
+            }
+            node.right.parent = node.parent;
+            node.parent = node.right;
+            if(node.right.left != nil){
+                node.right.left.parent = node;
+            }
+            node.right = node.right.left;
+            node.parent.left = node;
+        }
+        else{
+            //Rotate root
+            RedBlackNode right = root.right;
+            root.right = right.left;
+            right.left.parent = root;
+            root.parent = right;
+            right.left = root;
+            right.parent = nil;
+            root = right;
+        }
+    }
+
+    private void rotateRight(RedBlackNode node){
+        if(node.parent != nil){
+            if (node == node.parent.left) {
+                node.parent.left = node.left;
+            }
+            else{
+                node.parent.right = node.left;
+            }
+
+            node.left.parent = node.parent;
+            node.parent = node.left;
+            if(node.left.right != nil){
+                node.left.right.parent = node;
+            }
+            node.left = node.left.right;
+            node.parent.right = node;
+        }
+        else{
+            //Rotate root
+            RedBlackNode left = root.left;
+            root.left = root.left.right;
+            left.right.parent = root;
+            root.parent = left;
+            left.right = root;
+            left.parent = nil;
+            root =  left;
+        }
+    }
 }
