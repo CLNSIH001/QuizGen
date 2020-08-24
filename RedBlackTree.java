@@ -198,4 +198,60 @@ public class RedBlackTree{
         }
         root.color = BLACK;
     }
+
+    //Deletion Code .
+
+    //Deletes whole tree
+    public void deleteTree(){
+        root = nil;
+    }
+
+    //This operation doesn't care about the new RedBlackNode's connections
+    //with previous node's left and right. The caller has to take care
+    //of that.
+    private void transplant(RedBlackNode target, RedBlackNode with){
+        if(target.parent == nil){
+            root = with;
+        }else if(target == target.parent.left){
+            target.parent.left = with;
+        }else
+            target.parent.right = with;
+        with.parent = target.parent;
+    }
+
+    void delete(RedBlackNode z){
+        if((z = findNode(z))==null){
+            return;
+        }
+        RedBlackNode x;
+        RedBlackNode y = z; // temporary reference y
+        int yOriginalColor = y.color;
+
+        if(z.left == nil){
+            x = z.right;
+            transplant(z, z.right);
+        }else if(z.right == nil){
+            x = z.left;
+            transplant(z, z.left);
+        }else{
+            y = treeMinimum(z.right);
+            yOriginalColor = y.color;
+            x = y.right;
+            if(y.parent == z)
+                x.parent = y;
+            else{
+                transplant(y, y.right);
+                y.right = z.right;
+                y.right.parent = y;
+            }
+            transplant(z, y);
+            y.left = z.left;
+            y.left.parent = y;
+            y.color = z.color;
+        }
+        if(yOriginalColor==BLACK){
+            deleteFixup(x);
+        }
+
+    }
 }
