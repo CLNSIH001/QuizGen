@@ -10,6 +10,22 @@ public class RedBlackTree{
     private final RedBlackNode nil = new RedBlackNode(Integer.MIN_VALUE);
     public RedBlackNode root = nil;
 
+    /**
+     * Red Black Node class
+     */
+    public class RedBlackNode implements Serializable {
+        int key = -1;
+        int color = 1;
+        RedBlackNode left = nil;
+        RedBlackNode right = nil;
+        RedBlackNode parent = nil;
+
+        RedBlackNode(int key){
+            this.key = key;
+        }
+
+    }
+
     public RedBlackTree(int item) {
 
     }
