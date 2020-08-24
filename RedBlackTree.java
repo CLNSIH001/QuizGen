@@ -254,4 +254,70 @@ public class RedBlackTree{
         }
 
     }
+
+    private void deleteFixup(RedBlackNode x){
+        while(x!=root && x.color == BLACK){
+            if(x == x.parent.left){
+                RedBlackNode w = x.parent.right;
+                if(w.color == RED){
+                    w.color = BLACK;
+                    x.parent.color = RED;
+                    rotateLeft(x.parent);
+                    w = x.parent.right;
+                }
+                if(w.left.color == BLACK && w.right.color == BLACK){
+                    w.color = RED;
+                    x = x.parent;
+                    continue;
+                }
+                else if(w.right.color == BLACK){
+                    w.left.color = BLACK;
+                    w.color = RED;
+                    rotateRight(w);
+                    w = x.parent.right;
+                }
+                if(w.right.color == RED){
+                    w.color = x.parent.color;
+                    x.parent.color = BLACK;
+                    w.right.color = BLACK;
+                    rotateLeft(x.parent);
+                    x = root;
+                }
+            }else{
+                RedBlackNode w = x.parent.left;
+                if(w.color == RED){
+                    w.color = BLACK;
+                    x.parent.color = RED;
+                    rotateRight(x.parent);
+                    w = x.parent.left;
+                }
+                if(w.right.color == BLACK && w.left.color == BLACK){
+                    w.color = RED;
+                    x = x.parent;
+                    continue;
+                }
+                else if(w.left.color == BLACK){
+                    w.right.color = BLACK;
+                    w.color = RED;
+                    rotateLeft(w);
+                    w = x.parent.left;
+                }
+                if(w.left.color == RED){
+                    w.color = x.parent.color;
+                    x.parent.color = BLACK;
+                    w.left.color = BLACK;
+                    rotateRight(x.parent);
+                    x = root;
+                }
+            }
+        }
+        x.color = BLACK;
+    }
+
+    private RedBlackNode treeMinimum(RedBlackNode subTreeRoot){
+        while(subTreeRoot.left!=nil){
+            subTreeRoot = subTreeRoot.left;
+        }
+        return subTreeRoot;
+    }
 }
