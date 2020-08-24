@@ -115,4 +115,87 @@ public class RedBlackTree{
             root =  left;
         }
     }
+
+    void insert(RedBlackNode node){
+        RedBlackNode temp = root;
+
+        if(root==nil){
+            root = node;
+            node.color = BLACK;
+            node.parent = nil;
+        }
+        else{
+            node.color = RED;
+            while(true){
+                if(node.key < temp.key){
+                    if(temp.left==nil){
+                        temp.left = node;
+                        node.parent = temp;
+                        break;
+                    }
+                    else{
+                        temp = temp.left;
+                    }
+                }
+                else {
+                    if(temp.right == nil){
+                        temp.right = node;
+                        node.parent = temp;
+                        break;
+                    }
+                    else{
+                        temp = temp.right;
+                    }
+                }
+            }
+            fixTree(node);
+        }
+    }
+
+    private void fixTree(RedBlackNode node){
+        while(node.parent.color == RED){
+            RedBlackNode uncle;
+            if(node.parent == node.parent.parent.left){
+                uncle = node.parent.parent.right;
+
+                if(uncle != nil && uncle.color == RED){
+                    node.parent.color = BLACK;
+                    uncle.color = BLACK;
+                    node.parent.parent.color = RED;
+                    node = node.parent.parent;
+                    continue;
+                }
+                if(node == node.parent.right){
+                    //Double rotation needed
+                    node = node.parent;
+                    rotateLeft(node);
+                }
+
+                node.parent.color = BLACK;
+                node.parent.parent.color = RED;
+                //Single rotation needed if else if not executed
+                rotateRight(node.parent.parent);
+            }
+            else{
+                uncle = node.parent.parent.left;
+                if(uncle != nil && uncle.color == RED){
+                    node.parent.color = BLACK;
+                    uncle.color = BLACK;
+                    node.parent.parent.color = RED;
+                    node = node.parent.parent;
+                    continue;
+                }
+                if (node == node.parent.left){
+                    //Double rotation
+                    node = node.parent;
+                    rotateRight(node);
+                }
+                node.parent.color = BLACK;
+                node.parent.parent.color = RED;
+                //Single rotation needed if else if not executed
+                rotateLeft(node.parent.parent);
+            }
+        }
+        root.color = BLACK;
+    }
 }
