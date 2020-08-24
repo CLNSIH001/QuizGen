@@ -320,4 +320,18 @@ public class RedBlackTree{
         }
         return subTreeRoot;
     }
+
+    ////////////////////////////////////////
+    public void printTree(RedBlackNode node){
+        if (node == nil){
+            return;
+        }
+        printTree(node.left);
+        if(node.parent.key == Integer.MIN_VALUE)
+            System.out.print(((node.color==RED)?"Color: Red ":"Color: Black ")+"Key: "+node.key+" ROOT\n");
+        else
+            System.out.print(((node.color==RED)?"Color: Red ":"Color: Black ")+"Key: "+node.key+" Parent: "+node.parent.key+"\n");
+        printTree(node.right);
+    }
+    ////////////////////////////////////////
 }
