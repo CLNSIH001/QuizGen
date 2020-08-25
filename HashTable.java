@@ -135,4 +135,17 @@ public class HashTable {
         }
     }
 
+    /**
+     * function to create the key from a String
+     * @param item number to be converted
+     * @return the key
+     */
+    private int hashFunction(int item) {
+        int key = 2* + Math.abs(item);
+
+        key = key%(tableSize);
+
+        return key;
+    }
+
 }
