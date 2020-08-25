@@ -7,7 +7,6 @@ public class HashTable {
     private int numberOfInsertProbes = 0;
     private int numberOfSearchProbes;
     private int key;
-    private int numberOfSearchKeys;
     private int[] table;
     private LinkedList[] chainingTable;
 
@@ -90,14 +89,6 @@ public class HashTable {
     }
 
     /**
-     * get the number of keys that were searched
-     * @return number of keys
-     */
-    int getNumberOfSearchKeys() {
-        return this.numberOfSearchKeys;
-    }
-
-    /**
      * isPrime code by Derek Banas,Java Hash Tables 2, March 22,2013
      * @param number number being tested
      * @return true if number is prime or false if it is not prime
@@ -113,6 +104,35 @@ public class HashTable {
         }
 
         return true;
+    }
+
+    /**
+     * Populate the table with nulls, It cannot be null so instead it is MIN_VALUE.
+     * But the MIN_VALUES will be treated as nulls
+     * @param table
+     * @return
+     */
+    private int[] fillTable(int[] table){
+        for(int i = 0; i < table.length; i++){
+            table[i] = Integer.MIN_VALUE;
+        }
+        return table;
+    }
+
+    /**
+     * creates the appropriate table, array of String or LinkedList,
+     * depending on the resolution scheme
+     * @param tableSize size of table to be created
+     * @param resolutionScheme chosen resolution scheme
+     */
+    private void createTable(int tableSize, int resolutionScheme) {
+        if (resolutionScheme == 1 || resolutionScheme == 2 ) {
+            table = new int[tableSize];
+            fillTable(table);
+        }
+        else {
+            chainingTable = new LinkedList[tableSize];
+        }
     }
 
 }
