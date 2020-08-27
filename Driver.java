@@ -201,7 +201,7 @@ public class Driver<T extends Comparable<? super T>>{
         }
         catch (IOException E){
             System.out.println("Error. Exiting now.");
-            File label = new File("QuizGen\\History", fileName + ".txt");
+            File label = new File("MCQuestions", fileName + ".txt");
             label.delete();
         }
     }
