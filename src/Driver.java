@@ -378,6 +378,41 @@ public class Driver<T extends Comparable<? super T>>{
         tree.listChoices(poolSize, bst, filename, type);//choice of data structure with varying questions
     }
 
+    private static void AVL(int format, int type, int poolSize){
+        Driver<Integer> tree = new Driver<>(0);
+        String filename = "AVL_";
+        switch(format){
+            case 1:
+                filename += "MCQ_";
+                break;
+            case 2:
+                filename += "TrueFalse";
+                break;
+            case 3:
+                filename += "FillIn";
+                break;
+        }
+        switch (type){
+            case 1:
+                filename += "Insertion";
+                break;
+            case 2:
+                filename += "Deletion";
+                break;
+            case 3:
+                filename += "root";
+                break;
+            case 4:
+                filename += "leaf";
+                break;
+            case 5:
+                filename += "height";
+                break;
+        }
+        AVLTree<Integer> avl = new AVLTree<>();
+        tree.listChoices(poolSize, avl, filename, type);//choice of data structure with varying questions
+    }
+
     private static void BinaryHeap(){
         Driver<Integer> tree = new Driver<>(0);
     }
