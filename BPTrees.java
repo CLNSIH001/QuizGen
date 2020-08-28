@@ -1,6 +1,4 @@
-package CSC2001F;
-
-//import java.util.ArrayList;
+package QuizGen;
 
 public class BPTrees{
     private int order;
