@@ -413,6 +413,41 @@ public class Driver<T extends Comparable<? super T>>{
         tree.listChoices(poolSize, avl, filename, type);//choice of data structure with varying questions
     }
 
+    private static void RBT(int format, int type, int poolSize){
+        Driver<Integer> tree = new Driver<>(0);
+        RedBlackTree rbt = new RedBlackTree();
+        String filename = "RedBlack_";
+        switch(format){
+            case 1:
+                filename += "MCQ_";
+                break;
+            case 2:
+                filename += "TrueFalse";
+                break;
+            case 3:
+                filename += "FillIn";
+                break;
+        }
+        switch (type){
+            case 1:
+                filename += "Insertion";
+                break;
+            case 2:
+                filename += "Deletion";
+                break;
+            case 3:
+                filename += "root";
+                break;
+            case 4:
+                filename += "leaf";
+                break;
+            case 5:
+                filename += "height";
+                break;
+        }
+        tree.listChoices(poolSize, rbt, filename, type);//choice of data structure with varying questions
+    }
+
     private static void BinaryHeap(){
         Driver<Integer> tree = new Driver<>(0);
     }
