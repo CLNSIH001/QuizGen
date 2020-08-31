@@ -20,10 +20,10 @@ public class Driver<T extends Comparable<? super T>>{
             "make","no","over","principle","quit","rest","sit","tumble","up","veer","wait","xenophobia","you","zit"};
     private ArrayList<T> allInserts;
     private ArrayList<T> travel;  //for traversals
-    T type;
-    BinarySearchTree<T> bst;
-    AVLTree<T> avl;
-    RedBlackTree<T> rbt;
+    private T type;
+    private BinarySearchTree<T> bst;
+    private AVLTree<T> avl;
+    private RedBlackTree<T> rbt;
     //BinaryHeap<T> heap;
 
     /**
@@ -37,10 +37,10 @@ public class Driver<T extends Comparable<? super T>>{
         //Data Structures
         bst = new BinarySearchTree<>();
         avl = new AVLTree<>();
-        rbt = new RedBlackTree();
+        rbt = new RedBlackTree<>();
     }
 
-    public void poolType(int format, int type, int poolSize, String filename){
+    private void poolType(int format, int type, int poolSize, String filename){
         String ds = filename;
         if (ds.substring(0, ds.indexOf("_")).equals("BST")){
             if (format == 1)
@@ -52,17 +52,17 @@ public class Driver<T extends Comparable<? super T>>{
         }
         else if (ds.substring(0, ds.indexOf("_")).equals("AVL")){
             if (format == 1)
-                MCQ(poolSize, avl, filename, type);
+                MCQ(poolSize, bst, filename, type);
             if (format == 2)
-                trueFalse(poolSize, avl, filename, type);
+                trueFalse(poolSize, bst, filename, type);
             /*if (format == 3)
                 fillIn(poolSize, bst, filename, type);*/
         }
-        else if (ds.substring(0, ds.indexOf("_")).equals("RedBlack")){
+        else if (ds.substring(0, ds.indexOf("_")).equals("RBT")){
             if (format == 1)
-                MCQ(poolSize, rbt, filename, type);
+                MCQ(poolSize, bst, filename, type);
             if (format == 2)
-                trueFalse(poolSize, rbt, filename, type);
+                trueFalse(poolSize, bst, filename, type);
             /*if (format == 3)
                 fillIn(poolSize, bst, filename, type);*/
         }
@@ -193,6 +193,7 @@ public class Driver<T extends Comparable<? super T>>{
         }
     }
 
+    @SuppressWarnings("unchecked")
     private int height(Object obj){
         if (obj instanceof BinarySearchTree) {
             bst = (BinarySearchTree<T>) obj;
@@ -219,6 +220,7 @@ public class Driver<T extends Comparable<? super T>>{
         return 0;
     }
 
+    @SuppressWarnings("unchecked")
     private int size(Object obj){
         if (obj instanceof BinarySearchTree) {
             bst = (BinarySearchTree<T>) obj;
@@ -482,7 +484,7 @@ public class Driver<T extends Comparable<? super T>>{
                 System.out.println(fileName + " has been created");
             else{
                 System.out.println(fileName + " already exists.");
-                fileName = changeFileName("MCQuestions", fileName);
+                fileName = changeFileName("TrueFalse", fileName);
                 label = new File("TrueFalse/", fileName + ".txt");
                 label.createNewFile();
                 System.out.println(fileName + " has been created instead.");
@@ -499,8 +501,8 @@ public class Driver<T extends Comparable<? super T>>{
             for (int i = 0; i < total; i++) {
                 file.println("Question " + (i+1) + " (2 points)");
                 int torf = (int) (Math.random() * 2);
-                int[] sh = {3, 4, 5, 6, 7, 8};
-                int randi = (int)(Math.random()*6);
+                int[] sh = {5, 6, 7, 8, 9};
+                int randi = (int)(Math.random()*5);
                 if (torf == 0)
                     printAllNodes(obj);
                 else printLevelOrder(obj);
@@ -568,7 +570,7 @@ public class Driver<T extends Comparable<? super T>>{
         catch (IOException E){
             System.out.println("Error. Exiting now.");
             File label = new File("TrueFalse/", fileName + ".txt");
-            label.delete();
+            System.out.println(label.delete());
         }
     }
 
@@ -666,66 +668,62 @@ public class Driver<T extends Comparable<? super T>>{
                         if (format==1){
                             switch (type) {
                                 case 1:
-                                    filename += "Insertion_";
+                                    filename += "Insertion";
                                     break;
                                 case 2:
-                                    filename += "Deletion_";
+                                    filename += "Deletion";
                                     break;
                             }
                         }
                         else if (format==2){
                             switch (type){
                                 case 1:
-                                    filename += "root_";
+                                    filename += "root";
                                     break;
                                 case 2:
-                                    filename += "leaf_";
+                                    filename += "leaf";
                                     break;
                                 case 3:
-                                    filename += "height_";
+                                    filename += "height";
                                     break;
                                 case 4:
-                                    filename += "size_";
+                                    filename += "size";
                             }
                         }
                         else{
                             switch (type){
                                 case 1:
-                                    filename += "Insertion_";
+                                    filename += "Insertion";
                                     break;
                                 case 2:
-                                    filename += "Deletion_";
+                                    filename += "Deletion";
                                     break;
                                 case 3:
-                                    filename += "root_";
+                                    filename += "root";
                                     break;
                                 case 4:
-                                    filename += "leaf_";
+                                    filename += "leaf";
                                     break;
                                 case 5:
-                                    filename += "height_";
+                                    filename += "height";
                                     break;
                             }
                         }
 
                         switch (dataStored){
                             case 1:
-                                filename += "Numbers_PoolSize_"+poolSize;
                                 Driver<Integer> intTree = new Driver<Integer>(0);
                                 intTree.poolType(format, type, poolSize, filename);
                                 break;
                             case 2:
-                                filename += "Words_PoolSize_"+poolSize;
                                 Driver<String> strTree = new Driver<String>("");
                                 strTree.poolType(format, type, poolSize, filename);
                                 break;
                             case 3:
-                                filename += "Decimals_PoolSize_"+poolSize;
                                 Driver<Float> fltTree = new Driver<Float>((float)0.0);
                                 fltTree.poolType(format, type, poolSize, filename);
                                 break;
                             case 4:
-                                filename += "Letters_PoolSize_"+poolSize;
                                 Driver<Character> chrTree = new Driver<Character>(' ');
                                 chrTree.poolType(format, type, poolSize, filename);
                                 break;
@@ -764,6 +762,45 @@ public class Driver<T extends Comparable<? super T>>{
         System.out.println("\n!!!BYE!!!\n");
     }
 
+    /**
+     * Author: Avhusaho
+     * @param format: MCQuestions, true/false or fill in numeric questions
+     * @param type: insertion, deletion, root question or question about the root
+     * @param poolSize: number of questions in a pool to be created (i.e. pool size)
+     */
+    private static void BST(int format, int type, int poolSize, String filename){
+        Driver<Integer> tree = new Driver<>(0);
+        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        if(format == 1)
+            tree.MCQ(poolSize, bst, filename, type);
+    }
+
+    /**
+     * Avhusaho
+     * @param format: MCQuestions, true/false or fill in numeric questions
+     * @param type: insertion, deletion, root question or question about the root
+     * @param poolSize: number of questions in a pool to be created (i.e. pool size)
+     */
+    private static void AVL(int format, int type, int poolSize, String filename){
+        Driver<Integer> tree = new Driver<>(0);
+        AVLTree<Integer> avl = new AVLTree<>();
+        if(format == 1)
+            tree.MCQ(poolSize, avl, filename, type);
+    }
+
+    /**
+     * Avhusaho
+     * @param format: MCQuestions, true/false or fill in numeric questions
+     * @param type: insertion, deletion, root question or question about the root
+     * @param poolSize: number of questions in a pool to be created (i.e. pool size)
+     */
+    private static void RBT(int format, int type, int poolSize, String filename){
+        Driver<Integer> tree = new Driver<>(0);
+        RedBlackTree rbt = new RedBlackTree();
+        if(format == 1)
+            tree.MCQ(poolSize, rbt, filename, type);
+    }
+
     private static void BinaryHeap(int format, int type, int poolSize, int minOrMax, String filename){
         Driver<Integer> tree = new Driver<>(0);
 
@@ -780,10 +817,6 @@ public class Driver<T extends Comparable<? super T>>{
             tree.MCQ(poolSize, heap, filename, type);
     }
 
-    private static void HashTable(){
-        //Driver<Integer> tree = new Driver<>(0);
-    }
-
     /**
      * Creates a new file name if a duplicate is detected
      * @param filename: duplicate filename
@@ -793,13 +826,15 @@ public class Driver<T extends Comparable<? super T>>{
         File folder = new File(dir);
         File[] files = folder.listFiles();
         String old; int num=0;
-        for (File file: files){
-            old = file.getName();
-            if(old.contains(filename) && old.contains("(")){
-                int temp = Integer.parseInt(old.substring(old.indexOf("(")+1, old.indexOf(")")));
-                if (num<temp)
-                    num = temp;
-            }
+        if(files != null){
+            for (File file: files){
+                old = file.getName();
+                if(old.contains(filename) && old.contains("(")){
+                    int temp = Integer.parseInt(old.substring(old.indexOf("(")+1, old.indexOf(")")));
+                    if (num<temp)
+                        num = temp;
+                }
+            }   
         }
         filename += " (" + (++num) + ")";
         return filename;
