@@ -9,7 +9,8 @@ import java.util.Queue;
  */
 
 /**
- * Class for Red-Black Tree
+ * Generic Red-Black Tree
+ * Avhusaho Ramalala
  */
 public class RedBlackTree<T extends Comparable<? super T>>{
     private final int RED = 0;
@@ -31,6 +32,10 @@ public class RedBlackTree<T extends Comparable<? super T>>{
             this.key = key;
             left = right = parent = null;
         }
+        
+        /*
+        Getters for the left and right nodes
+         */
 
         RedBlackNode<T> getLeft() {
             return left;
@@ -42,6 +47,10 @@ public class RedBlackTree<T extends Comparable<? super T>>{
 
     }
 
+     /**
+     * Add node to ArrayList
+     * @param node: node to be added
+     */
     private void visit(RedBlackNode<T> node)
     {
       /*if (node != root)
@@ -50,60 +59,78 @@ public class RedBlackTree<T extends Comparable<? super T>>{
         path.add(node.key);
     }
 
-    ArrayList<T> preOrder()
-    {
+    /**
+     * @return ArrayList of node keys in preOrder
+     */
+    ArrayList<T> preOrder(){
         path.clear();
         preOrder (root);
         return path;
     }
-    private void preOrder(RedBlackNode<T> node)
-    {
-        if (node != null)
-        {
+    /**
+     * Get the preOrder formation of nodes recursively
+     * @param node: root node
+     */
+    private void preOrder(RedBlackNode<T> node){
+        if (node != null){
             visit (node);
             preOrder (node.getLeft ());
             preOrder (node.getRight ());
         }
     }
 
-    ArrayList<T> postOrder()
-    {
+    /**
+     * @return ArrayList of node keys in postOrder
+     */
+    ArrayList<T> postOrder(){
         path.clear();
         postOrder (root);
         return path;
     }
-    private void postOrder(RedBlackNode<T> node)
-    {
-        if (node != null)
-        {
+    /**
+     * Get the postOrder formation of nodes recursively
+     * @param node: root node
+     */
+    private void postOrder(RedBlackNode<T> node){
+        if (node != null){
             postOrder (node.getLeft ());
             postOrder (node.getRight ());
             visit (node);
         }
     }
 
-    ArrayList<T> inOrder ()
-    {
+    /**
+     * @return ArrayList of node keys in inOrder
+     */
+    ArrayList<T> inOrder (){
         path.clear();
         inOrder (root);
         return path;
     }
-    private void inOrder(RedBlackNode<T> node)
-    {
-        if (node != null)
-        {
+    /**
+     * Get the inOrder formation of nodes recursively
+     * @param node: root node
+     */
+    private void inOrder(RedBlackNode<T> node){
+        if (node != null){
             inOrder (node.getLeft ());
             visit (node);
             inOrder (node.getRight ());
         }
     }
 
+    /**
+     * @return ArrayList of node keys in levelOrder
+     */
     ArrayList<T> levelOrder(){
         path.clear();
         levelOrder (root);
         return path;
     }
-
+    /**
+     * Get the levelOrder formation of nodes recursively
+     * @param startNode: root node
+     */
     private ArrayList<T> levelOrder (RedBlackNode<T> startNode)
     {
         path.clear();
@@ -121,10 +148,19 @@ public class RedBlackTree<T extends Comparable<? super T>>{
         return path;
     }
 
+    /**
+     * @param item: search element
+     * @return RedBlack Node with matching key
+     */
     RedBlackNode<T> findNode(T item){
         return findNode(new RedBlackNode<>(item), root);
     }
-
+    /**
+     * Search for a node recursively using the key
+     * @param findNode: RedBlackNode to be searched
+     * @param node: root node
+     * @return matching RedBlackNode
+     */
     private RedBlackNode<T> findNode(RedBlackNode<T> findNode, RedBlackNode<T> node) {
         if (root == null) {
             return null;
@@ -144,32 +180,16 @@ public class RedBlackTree<T extends Comparable<? super T>>{
         return null;
     }
 
-    /*private RedBlackNode<T> findNode(RedBlackNode<T> findNode){
-        if (root == null) {
-            return null;
-        }
-        System.out.println(findNode.key.compareTo(root.key));
-
-        if(findNode.key == root.key){
-            return root;
-        }
-        else if(findNode.key.compareTo(root.key) < 0){
-            if(root.left != null){
-                return findNode(findNode);
-            }
-        }
-        else {
-            if(root.right != null){
-                return findNode(findNode);
-            }
-        }
-        return null;
-    }*/
-
+    /**
+     * @param item to be inserted
+     */
     void insert(T item){
         insert(new RedBlackNode<>(item));
     }
-
+     /**
+     * insert RedBlackNode into the right position
+     * @param node to be inserted
+     */
     private void insert(RedBlackNode<T> node){
         RedBlackNode<T> temp = root;
 
@@ -206,6 +226,10 @@ public class RedBlackTree<T extends Comparable<? super T>>{
         }
     }
 
+    /**
+     * Rebalance the tree
+     * @param node: recently inserted node
+     */
     private void fixTree(RedBlackNode<T> node){
         while(node.parent.color == RED){
             RedBlackNode<T> uncle;
@@ -255,6 +279,10 @@ public class RedBlackTree<T extends Comparable<? super T>>{
         root.color = BLACK;
     }
 
+    /**
+     * Rotate tree to the left
+     * @param node: grand parent of recently inserted node
+     */
     private void rotateLeft(RedBlackNode<T> node){
         if(node.parent != null){
             if(node == node.parent.left){
@@ -284,6 +312,10 @@ public class RedBlackTree<T extends Comparable<? super T>>{
         }
     }
 
+    /**
+     * Rotate tree to the right
+     * @param node: grand parent of recently inserted node
+     */
     private void rotateRight(RedBlackNode<T> node){
         if(node.parent != null){
             if (node == node.parent.left) {
@@ -321,9 +353,14 @@ public class RedBlackTree<T extends Comparable<? super T>>{
         root = null;
     }
 
-    //This operation doesn't care about the new RedBlackNode's connections
-    //with previous node's left and right. The caller has to take care
-    //of that.
+    /**
+     * Switch the two nodes
+     * This operation doesn't care about the new RedBlackNode's connections
+     * with previous node's left and right. The caller has to take care
+     * of that.
+     * @param target RedBlackNode
+     * @param with RedBlackNode
+     */
     private void transplant(RedBlackNode<T> target, RedBlackNode<T> with) {
         try {
             if (target.parent == null) {
@@ -338,10 +375,18 @@ public class RedBlackTree<T extends Comparable<? super T>>{
         }
     }
 
+    /**
+     * @param item to be deleted
+     */
     void delete(T item){
         delete(new RedBlackNode<>(item));
     }
 
+    /**
+     * first find node then remove it.
+     * after removing the node, check for any violations and fix the tree
+     * @param z RedBlackNode to be deleted
+     */
     private void delete(RedBlackNode<T> z){
         if((z = findNode(z, root))==null){
             return;
@@ -380,6 +425,10 @@ public class RedBlackTree<T extends Comparable<? super T>>{
 
     }
 
+    /**
+     * Check for property violations after a node has been removed and fix the tree
+     * @param x: node that took the place of the deleted node
+     */
     private void deleteFixup(RedBlackNode<T> x){
         while(x!=root && x.color == BLACK){
             if(x == x.parent.left){
@@ -439,6 +488,11 @@ public class RedBlackTree<T extends Comparable<? super T>>{
         x.color = BLACK;
     }
 
+    /**
+     * Get the root of the left sub tree
+     * @param subTreeRoot: left child node
+     * @return sub tree root is left child if left child is not null
+     */
     private RedBlackNode<T> treeMinimum(RedBlackNode<T> subTreeRoot){
         while(subTreeRoot.left != null){
             subTreeRoot = subTreeRoot.left;
@@ -446,7 +500,10 @@ public class RedBlackTree<T extends Comparable<? super T>>{
         return subTreeRoot;
     }
 
-    ////////////////////////////////////////
+    /**
+     * Print the tree by displaying the key, color and parent of each node
+     * @param node: root node
+     */
     void printTree(RedBlackNode<T> node){
         if (node == null){
             return;
@@ -458,20 +515,15 @@ public class RedBlackTree<T extends Comparable<? super T>>{
             System.out.print(((node.color==RED)?"Color: Red ":"Color: Black ")+"Key: "+node.key+" Parent: "+node.parent.key+"\n");
         printTree(node.right);
     }
-    ////////////////////////////////////////
-
-    /*private RedBlackTree(T item) {
-        root = null;
-        RedBlackNode<T> node = new RedBlackNode<>(item);
-        insert(node);
-        //findNode(node, root);
-        //delete(node);
-        //deleteTree();
-
-    }*/
-
+    
+    /**
+     * Constructor
+     */
     RedBlackTree(){root = null;}
 
+    /**
+     * @return Name of tree
+     */
     @Override
     public String toString() {
         return "Red Black Tree";
