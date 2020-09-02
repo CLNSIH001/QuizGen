@@ -21,11 +21,14 @@ vpath %.text $(TEXTDIR)
 .SUFFIXES: .java .class
 
 .java.class:
-	$(JAVAC) $(JFLAGS) $<
+	@$(JAVAC) $(JFLAGS) $<
 
 #default rule envoked by make
-QuizGen: $(classes)
-	java -cp bin QuizGen.Driver
+QuizGen: load $(classes)
+	@java -cp bin QuizGen.Driver
+
+load:
+	@echo loading...   Please wait just a minute
 
 #running all our different applications 
 
@@ -37,5 +40,6 @@ clean:
 	  @rm -r $(BINDIR)/QuizGen
 	  @rm -Rf doc
 
-cleanMCQs:
+cleanPools:
 	rm MCQuestions/*.txt
+	rm TrueFalse/*.txt
