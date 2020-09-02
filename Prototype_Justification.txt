@@ -1,0 +1,18 @@
+Statement of Prototype Choice:
+
+~Vertical Prototype:
+	The current program contains detailed individual data structures each complete with their own methods for
+	insertion and deletion. Driver implements a few of the tasks the team aims to accomplish by the deadline.
+	Data structures such as the Graph and B+ Trees have not yet been implemented. There are a few data structures
+	that have been fully implemented such as the Binary Search Tree and the AVL Tree.
+~Evolutionary Prototype:
+	Though the Driver has not implemented the insertion and deletion for all data structure, the few that are
+	implemented with great detail. The functioning parts of the driver are done with a great degree of quality.
+	The driver is generic allowing different data types to be stored. It also produces the formatting required
+	by Vula for the question pools based on the user input.
+	The team intends to add onto the current driver to create a graphical user interface and implement the
+	functions of this project using the Driver
+
+The methods have been tested and inheritance has been used as each tree data structure (aside from the b+ tree)
+extend the Binary Tree.
+	
