@@ -1,4 +1,4 @@
-package QuizGen;
+import DataStructures.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.io.File;
@@ -24,7 +24,7 @@ public class Driver<T extends Comparable<? super T>>{
     BinarySearchTree<T> bst;
     AVLTree<T> avl;
     RedBlackTree<T> rbt;
-    //BinaryHeap<T> heap;
+    BinaryHeap<T> bheap;
 
     /**
      * Constructor
@@ -76,27 +76,21 @@ public class Driver<T extends Comparable<? super T>>{
      */
     @SuppressWarnings("unchecked")
     private void printAllNodes(Object object){
-        if (object instanceof BinarySearchTree) {
-            BinarySearchTree<T> bst = (BinarySearchTree<T>) object;
+        if (object instanceof BinarySearchTree)
             travel = bst.inOrder();
-        }
-        else if(object instanceof AVLTree){
-            avl = (AVLTree<T>) object;
+
+        else if(object instanceof AVLTree)
             travel = avl.inOrder();
-        }
-        else if(object instanceof RedBlackTree){
-            rbt = (RedBlackTree<T>) object;
+
+        else if(object instanceof RedBlackTree)
             travel = rbt.inOrder();
-        }
-		else if(object instanceof BinaryHeap){
-            if(object instanceof MinHeap){
-                MinHeap<T> minHeap = (MinHeap<T>) object;
-                travel = minHeap.inOrder();
-            }
-            else if(object instanceof MaxHeap){
-                MaxHeap<T> maxHeap = (MaxHeap<T>) object;
-                travel = maxHeap.inOrder();
-            }
+
+        else if(object instanceof BinaryHeap){
+            if(object instanceof MinHeap)
+                bheap = (MinHeap<T>) object;
+            else if(object instanceof MaxHeap)
+                bheap = (MaxHeap<T>) object;
+            travel = bheap.inOrder();
         }
     }
 
@@ -107,27 +101,21 @@ public class Driver<T extends Comparable<? super T>>{
      */
     @SuppressWarnings("unchecked")
     private void printPreOrder(Object object){
-        if (object instanceof BinarySearchTree) {
-            BinarySearchTree<T> bst = (BinarySearchTree<T>) object;
+        if (object instanceof BinarySearchTree)
             travel = bst.preOrder();
-        }
-        else if(object instanceof AVLTree){
-            avl = (AVLTree<T>) object;
+
+        else if(object instanceof AVLTree)
             travel = avl.preOrder();
-        }
-        else if(object instanceof RedBlackTree){
-            rbt = (RedBlackTree<T>) object;
+
+        else if(object instanceof RedBlackTree)
             travel = rbt.preOrder();
-        }
-		else if(object instanceof BinaryHeap){
-            if(object instanceof MinHeap){
-                MinHeap<T> minHeap = (MinHeap<T>) object;
-                travel = minHeap.preOrder();
-            }
-            else if(object instanceof MaxHeap){
-                MaxHeap<T> maxHeap = (MaxHeap<T>) object;
-                travel = maxHeap.preOrder();
-            }
+
+        else if(object instanceof BinaryHeap){
+            if(object instanceof MinHeap)
+                bheap = (MinHeap<T>) object;
+            else if(object instanceof MaxHeap)
+                bheap = (MaxHeap<T>) object;
+            travel = bheap.preOrder();
         }
     }
 
@@ -138,27 +126,21 @@ public class Driver<T extends Comparable<? super T>>{
      */
     @SuppressWarnings("unchecked")
     private void printPostOrder(Object object){
-        if (object instanceof BinarySearchTree) {
-            BinarySearchTree<T> bst = (BinarySearchTree<T>) object;
+        if (object instanceof BinarySearchTree)
             travel = bst.postOrder();
-        }
-        else if(object instanceof AVLTree){
-            avl = (AVLTree<T>) object;
+
+        else if(object instanceof AVLTree)
             travel = avl.postOrder();
-        }
-        else if(object instanceof RedBlackTree){
-            rbt = (RedBlackTree<T>) object;
+
+        else if(object instanceof RedBlackTree)
             travel = rbt.postOrder();
-        }
-		else if(object instanceof BinaryHeap){
-            if(object instanceof MinHeap){
-                MinHeap<T> minHeap = (MinHeap<T>) object;
-                travel = minHeap.postOrder();
-            }
-            else if(object instanceof MaxHeap){
-                MaxHeap<T> maxHeap = (MaxHeap<T>) object;
-                travel = maxHeap.postOrder();
-            }
+
+        else if(object instanceof BinaryHeap){
+            if(object instanceof MinHeap)
+                bheap = (MinHeap<T>) object;
+            else if(object instanceof MaxHeap)
+                bheap = (MaxHeap<T>) object;
+            travel = bheap.postOrder();
         }
     }
 
@@ -169,27 +151,21 @@ public class Driver<T extends Comparable<? super T>>{
      */
     @SuppressWarnings("unchecked")
     private void printLevelOrder(Object object){
-        if (object instanceof BinarySearchTree) {
-            BinarySearchTree<T> bst = (BinarySearchTree<T>) object;
+        if (object instanceof BinarySearchTree)
             travel = bst.levelOrder();
-        }
-        else if(object instanceof AVLTree){
-            avl = (AVLTree<T>) object;
+
+        else if(object instanceof AVLTree)
             travel = avl.levelOrder();
-        }
-        else if(object instanceof RedBlackTree){
-            rbt = (RedBlackTree<T>) object;
+
+        else if(object instanceof RedBlackTree)
             travel = rbt.levelOrder();
-        }
-		else if(object instanceof BinaryHeap){
-            if(object instanceof MinHeap){
-                MinHeap<T> minHeap = (MinHeap<T>) object;
-                travel = minHeap.levelOrder();
-            }
-            else if(object instanceof MaxHeap){
-                MaxHeap<T> maxHeap = (MaxHeap<T>) object;
-                travel = maxHeap.levelOrder();
-            }
+
+        else if(object instanceof BinaryHeap){
+            if(object instanceof MinHeap)
+                bheap = (MinHeap<T>) object;
+            else if(object instanceof MaxHeap)
+                bheap = (MaxHeap<T>) object;
+            travel = bheap.levelOrder();
         }
     }
 
@@ -202,20 +178,17 @@ public class Driver<T extends Comparable<? super T>>{
             avl = (AVLTree<T>) obj;
             return avl.getHeight();
         }
-        /*else if(obj instanceof RedBlackTree){
+        else if(obj instanceof RedBlackTree){
             rbt = (RedBlackTree<T>) obj;
             return rbt.getHeight();
         }
         else if(obj instanceof BinaryHeap){
-            if(obj instanceof MinHeap){
-                MinHeap<T> minHeap = (MinHeap<T>) obj;
-                return minHeap.getHeight();
-            }
-            else if(obj instanceof MaxHeap){
-                MaxHeap<T> maxHeap = (MaxHeap<T>) obj;
-                return maxHeap.getHeight();
-            }
-        }*/
+            if(obj instanceof MinHeap)
+                bheap = (MinHeap<T>) obj;
+            else if(obj instanceof MaxHeap)
+                bheap = (MaxHeap<T>) obj;
+            return bheap.getHeight();
+        }
         return 0;
     }
 
@@ -228,20 +201,17 @@ public class Driver<T extends Comparable<? super T>>{
             avl = (AVLTree<T>) obj;
             return avl.getSize();
         }
-        /*else if(obj instanceof RedBlackTree){
+        else if(obj instanceof RedBlackTree){
             rbt = (RedBlackTree<T>) obj;
             return rbt.getSize();
         }
         else if(obj instanceof BinaryHeap){
-            if(obj instanceof MinHeap){
-                MinHeap<T> minHeap = (MinHeap<T>) obj;
-                return minHeap.getSize();
-            }
-            else if(obj instanceof MaxHeap){
-                MaxHeap<T> maxHeap = (MaxHeap<T>) obj;
-                return maxHeap.getSize();
-            }
-        }*/
+            if(obj instanceof MinHeap)
+                bheap = (MinHeap<T>) obj;
+            else if(obj instanceof MaxHeap)
+                bheap = (MaxHeap<T>) obj;
+            return bheap.getSize();
+        }
         return 0;
     }
 
@@ -255,42 +225,41 @@ public class Driver<T extends Comparable<? super T>>{
     @SuppressWarnings("unchecked")
     private Object insert(ArrayList<T> list, Object obj){
         if(obj instanceof BinarySearchTree){
-            ((BinarySearchTree) obj).root=null;
             for(T i: list){
-                ((BinarySearchTree) obj).insert(i);
+                bst.insert(i);
             }
         }
         else if (obj instanceof AVLTree){
-            ((AVLTree) obj).root=null;
             for(T i: list){
-                ((AVLTree) obj).insert(i);
+                avl.insert(i);
             }
         }
         else if (obj instanceof RedBlackTree){
-            ((RedBlackTree) obj).root = null;
             for(T i: list){
-                ((RedBlackTree) obj).insert(i);
+                rbt.insert(i);
             }
         }
 		else if ( obj instanceof BinaryHeap){
             if(obj instanceof MinHeap){
                 try{
                     ((MinHeap) obj).clear();
+                    bheap = (MinHeap) obj;
                 }catch(Exception e){
                     System.out.println(e);
                 }
                 for(T i: list){
-                    ((MinHeap) obj).insert(i);
+                    bheap.insert(i);
                 }
             }
             else if(obj instanceof MaxHeap){
                 try{
                     ((MaxHeap) obj).clear();
+                    bheap = (MaxHeap) obj;
                 }catch(Exception e){
                     System.out.println(e);
                 }
                 for(T i: list){
-                    ((MaxHeap) obj).insert(i);
+                    bheap.insert(i);
                 }
             }
         }
@@ -357,21 +326,23 @@ public class Driver<T extends Comparable<? super T>>{
         Each Object is checked to see what data structure it is into to called the appropriate method.
          */
         if(obj instanceof BinarySearchTree){
-            ((BinarySearchTree) obj).delete(item);
+            bst.delete(item);
         }
         else if (obj instanceof AVLTree){
-            ((AVLTree) obj).delete(item);
+            avl.delete(item);
         }
         else if (obj instanceof RedBlackTree){
-            ((RedBlackTree) obj).delete(item);
+            rbt.delete(item);
         }
 		else if (obj instanceof BinaryHeap){
             try{
                 if(obj instanceof MinHeap){
-                    ((MinHeap) obj).delete();
+                    bheap = (MinHeap) obj;
+                    bheap.delete();
                 }
                 else if(obj instanceof MaxHeap){
-                    ((MaxHeap) obj).delete();
+                    bheap = (MaxHeap) obj;
+                    bheap.delete();
                 }
             }catch(Exception e){
                 System.out.println("Error while deleting binary heap\n"+e);
@@ -412,7 +383,7 @@ public class Driver<T extends Comparable<? super T>>{
             PrintWriter file = new PrintWriter(new FileWriter("MCQuestions/" + fileName + ".txt", true));   //windows forward slash
             String[] traverse = {"preOrder", "postOrder", "inOrder", "levelOrder"};
             String[] option = {"A.  ", "B.  ", "C.  ", "D.  "};
-            allInserts.clear();
+            emptyTree(obj);
             insert((int)(Math.random()*3+6), obj);
             for (int i = 0; i < total; i++) {
                 file.println("Question " + (i+1) + " (2 points)");
@@ -460,7 +431,7 @@ public class Driver<T extends Comparable<? super T>>{
                         file.print(option[j] + travel.toString() + "\n");
                     }
                 }
-                allInserts.clear();// inserts a * before the correct answer
+                emptyTree(obj);
                 insert((int)(Math.random()*3+6), obj);
                 file.println("E.  None of the answers are correct.\n#randomize\n");
                 file.flush();
@@ -473,6 +444,26 @@ public class Driver<T extends Comparable<? super T>>{
             File label = new File("MCQuestions/", fileName + ".txt");
             label.delete();
         }
+    }
+
+    private void emptyTree(Object obj){
+        if (obj instanceof BinarySearchTree)
+            bst.clearTree();
+        else if(obj instanceof AVLTree)
+            avl.clearTree();
+        else if(obj instanceof RedBlackTree)
+            rbt.clearTree();
+        else if(obj instanceof BinaryHeap){
+            if (obj instanceof MaxHeap)
+                bheap = (MaxHeap<T>) obj;
+            else if (obj instanceof MinHeap)
+                bheap = (MinHeap<T>) obj;
+            bheap.clearTree();
+        }
+        allInserts.clear();
+        //Since they are all types of binary trees
+        BinaryTree<T> objectTree = (BinaryTree<T>) obj;
+        objectTree.clearTree(); //shorter code. simpler
     }
 
     private void trueFalse(int total, Object obj, String fileName, int type){
@@ -494,7 +485,7 @@ public class Driver<T extends Comparable<? super T>>{
         }
         try {
             PrintWriter file = new PrintWriter(new FileWriter("TrueFalse/" + fileName + ".txt", true));   //windows forward slash
-            allInserts.clear();
+            emptyTree(obj);
             insert((int)(Math.random()*3+6), obj);
             for (int i = 0; i < total; i++) {
                 file.println("Question " + (i+1) + " (2 points)");
@@ -558,7 +549,7 @@ public class Driver<T extends Comparable<? super T>>{
                         file.println("*False\n");
                     }
                 }
-                allInserts.clear();// inserts a * before the correct answer
+                emptyTree(obj);
                 insert((int)(Math.random()*3+6), obj);
                 file.flush();
             }

@@ -1,4 +1,4 @@
-package QuizGen;
+package DataStructures;
 
 public class AVLTree<dataType extends Comparable<? super dataType>> extends BinaryTree<dataType>
 {

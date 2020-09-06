@@ -8,9 +8,9 @@ TEXTDIR = text
 JAVAC = javac
 JFLAGS = -d $(BINDIR) -cp $(BINDIR)
 
-need := $(wildcard src/*Node.java)
-need += $(filter-out src/BinarySearchTree.java $(need), $(wildcard src/B*e.java))
-dataStr := $(filter-out src/Driver.java $(need), $(wildcard src/*.java))
+need := $(wildcard src/DataStructures/*Node.java)
+need += $(filter-out src/DataStructures/BinarySearchTree.java $(need), $(wildcard src/DataStructures/B*e.java))
+dataStr := $(filter-out $(need), $(wildcard src/DataStructures/*.java))
 classes := $(need:%.java=%.class) $(dataStr:%.java=%.class) src/Driver.class
 
 vpath %.java $(SRCDIR)
@@ -25,7 +25,7 @@ vpath %.text $(TEXTDIR)
 
 #default rule envoked by make
 QuizGen: load $(classes)
-	@java -cp bin QuizGen.Driver
+	@java -cp bin Driver
 
 load:
 	@echo loading...   Please wait just a minute
@@ -37,7 +37,7 @@ doc:
 	javadoc -d $(DOCDIR) -link http://docs.oracle.com/javase/8/docs/api/ $(SRCDIR)/*.java $(SRCDIR)
 
 clean:
-	  @rm -r $(BINDIR)/QuizGen
+	  @rm -r $(BINDIR)/DataStructures bin/Driver.class
 	  @rm -Rf doc
 
 cleanPools:

@@ -1,4 +1,4 @@
-package QuizGen;
+package DataStructures;
 
 public class BinarySearchTree<dataType extends Comparable<? super dataType>> extends BinaryTree<dataType>
 {

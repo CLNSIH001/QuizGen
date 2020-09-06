@@ -1,4 +1,4 @@
-package QuizGen;
+package DataStructures;
 
 import java.util.List;
 import java.util.LinkedList;
