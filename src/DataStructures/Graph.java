@@ -12,6 +12,7 @@ import java.util.Queue;
 public class Graph extends RuntimeException{
     private Map<String, Node> vertexMap = new HashMap<String, Node>();
     public static final double infinity = Double.MAX_VALUE;
+    private String type = "";
 
     protected void insert(String src, String dest, double l){
         Node s = getNode(src);
@@ -31,23 +32,48 @@ public class Graph extends RuntimeException{
             n.reset();
     }
 
-    public void printPath(String node){
+    public void emptyGraphMap(){
+        type = "";
+        clearAll();
+        vertexMap.clear();
+    }
+
+    public String printPath(String node){
+        String path = "";
         Node w = vertexMap.get(node);
         if(w == null)
             throw new NoSuchElementException();
         else if(w.val == infinity)
             System.out.println(node + "can't be reached");
         else{
-            System.out.println("Cost is: " + w.val);
-            printPath(w);
-            System.out.println();}
+            /*if (type.equals("unweighted")) System.out.println("Path Length is: " + w.val);
+            else if (type.equals("dijk")) System.out.println("Distance is: " + w.val +"km");
+            else if (type.equals("negative")) System.out.println("Profit/Loss is: R" + w.val);
+            else if (type.equals("acyclic")) System.out.println("Vertex Magnitude is: " + w.val);
+            else {
+                System.out.println("No algorithm was chosen");
+                return;
+            }*/
+            printPath(w, path);}
+        return path+"\n";
     }
-    private void printPath(Node dest){
+    private void printPath(Node dest, String p){
         if(dest.prev != null){
-            printPath(dest.prev);
-            System.out.print(" --> ");
+            printPath(dest.prev, p);
+            p += " --> ";
         }
-        System.out.print(dest.data);
+        p += dest.data;
+    }
+
+    public double getNodeValue(String node){
+        Node w = vertexMap.get(node);
+        if(w == null)
+            throw new NoSuchElementException();
+        else if(w.val == infinity)
+            System.out.println(node + "can't be reached");
+        else
+            return w.val;
+        return infinity;
     }
 
     public void bfs(String startName){
@@ -69,6 +95,7 @@ public class Graph extends RuntimeException{
                 }
             }
         }
+        type = "unweighted";
     }
     public void dijkstra(String Start){
         PriorityQueue<Path> pq = new PriorityQueue<Path>();
@@ -98,6 +125,7 @@ public class Graph extends RuntimeException{
                 }
             }
         }
+        type = "dijk";
     }
     public void bellmanFord(String startName){
         clearAll();
@@ -125,6 +153,7 @@ public class Graph extends RuntimeException{
                 }
             }
         }
+        type = "negative";
     }
     public void topological(String startName){
         Node start = vertexMap.get( startName );
@@ -161,37 +190,63 @@ public class Graph extends RuntimeException{
                 }
             }
         }
-        if( iterations != vertexMap.size( ) )
-            throw new RuntimeException( "Graph has negative cycles" );
+        if( iterations != vertexMap.size( ) ) {
+            System.out.println("iterations is " + iterations + " and vMap size is " + vertexMap.size());
+            throw new RuntimeException("Graph has negative cycles");
+        }
+        type = "acyclic";
     }
 
     //Content of main will be used in driver to implement the Graph data structure
-    /*public static void main(String[] args){
-        Graph g = new Graph();
-        g.insert("A", "B", -5);
-        g.insert("A", "D", 7);
-        g.insert("A", "E", 2);
-        g.insert("B", "C", 5);
-        g.insert("C", "A", 1);
-        g.insert("C", "D", -4);
-        g.insert("D", "E", 3);
-        g.insert("E", "C", 1);
-        g.insert("E", "B", 6);
-        g.bellmanFord("A");
-        g.printPath("E");
-        Graph dg = new Graph();
-        dg.insert("A", "B", 15);
-        dg.insert("A", "D", 80);
-        dg.insert("B", "E", 10);
-        dg.insert("C", "A", 11);
-        dg.insert("D", "B", 25);
-        dg.insert("D", "C", 24);
-        dg.insert("E", "D", 47);
-        dg.dijkstra("A");
-        dg.printPath("B");
-        dg.dijkstra("B");
-        dg.printPath("C");
-    }*/
+    public static void main(String[] args){
+        Graph digraph = new Graph();
+        digraph.insert("Jan", "Feb", -5.00);
+        digraph.insert("Jan", "Apr", 7.00);
+        digraph.insert("Jan", "May", 2.00);
+        digraph.insert("Feb", "Mar", 5.00);
+        digraph.insert("Mar", "Jan", 1.00);
+        digraph.insert("Mar", "Apr", -4.00);
+        digraph.insert("Apr", "May", 3.00);
+        digraph.insert("May", "Mar", 1.00);
+        digraph.insert("May", "Feb", 6.00);
+        digraph.bellmanFord("Jan");
+        //digraph.printPath("");     //node cost and path
+        digraph.emptyGraphMap();
+        digraph.insert("Algeria", "Belgium", 7.0);
+        digraph.insert("Algeria", "Chile", 3.0);
+        digraph.insert("Algeria", "Denmark", 4.0);
+        digraph.insert("Belgium", "Greece", 3.0);
+        digraph.insert("Chile", "France", 4.0);
+        digraph.insert("Denmark", "France", 2.0);
+        digraph.insert("Denmark", "Ethiopia", 7.0);
+        digraph.insert("France", "Greece", 5.0);
+        digraph.insert("Ethiopia", "Greece", 2.0);
+        digraph.dijkstra("Algeria");
+        //digraph.printPath("");    //node cost and path
+        digraph.emptyGraphMap();
+        digraph.insert("v0","v1", infinity);
+        digraph.insert("v0","v3", infinity);
+        digraph.insert("v1","v3", infinity);
+        digraph.insert("v1","v4", infinity);
+        digraph.insert("v2","v0", infinity);
+        digraph.insert("v2","v5", infinity);
+        digraph.insert("v3", "v2", infinity);
+        digraph.insert("v3", "v4", infinity);
+        digraph.insert("v3","v5", infinity);
+        digraph.insert("v3","v6", infinity);
+        digraph.insert("v4","v6", infinity);
+        digraph.insert("v6","v5", infinity);
+        digraph.bfs("v2");
+        digraph.printPath("v6");
+        digraph.emptyGraphMap();
+        digraph.insert("A", "B", 4);
+        digraph.insert("A", "C", 8);
+        digraph.insert("B", "C", 9);
+        digraph.insert("B", "D", 10);
+        digraph.insert("C", "D", 7);
+        digraph.topological("A");
+        digraph.printPath("D");
+    }
 }
 
 class Path implements Comparable<Path>{

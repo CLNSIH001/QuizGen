@@ -41,5 +41,6 @@ clean:
 	  @rm -Rf doc
 
 cleanPools:
-	rm MCQuestions/*.txt
-	rm TrueFalse/*.txt
+	rm MultipleChoice/*Tree/*.txt
+	rm TrueFalse/*Tree/*.txt
+	rm FillIn/*Tree/*.txt

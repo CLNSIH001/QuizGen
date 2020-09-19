@@ -8,6 +8,7 @@ public class BinaryTreeNode<dataType>
    BinaryTreeNode<dataType> right;
    int height;
    BinaryTreeNode<dataType> parent;
+   boolean isLeaf;
    
    public BinaryTreeNode ( dataType d, BinaryTreeNode<dataType> l, BinaryTreeNode<dataType> r )
    {
