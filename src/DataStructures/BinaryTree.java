@@ -1,4 +1,4 @@
-package QuizGen;
+package DataStructures;
 
 import java.util.ArrayList;
 
@@ -110,5 +110,7 @@ public class BinaryTree<dataType>
       }
       return path;
    }
+
+   public void clearTree(){root = null;}
    
 }

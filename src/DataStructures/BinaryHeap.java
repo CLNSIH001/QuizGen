@@ -1,19 +1,19 @@
-package QuizGen;
+package DataStructures;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Vector;
 
-abstract class BinaryHeap<T extends Comparable<? super T>>{
+public abstract class BinaryHeap<T extends Comparable<? super T>> extends BinaryTree<T>{
 
-    Vector<BinaryHeapNode<T>> heap; // vector to store heap elements
+    Vector<BinaryTreeNode<T>> heap; // vector to store heap elements
     private ArrayList<T> path = new ArrayList<>();
 
-    class BinaryHeapNode<T>{
+    /*class BinaryTreeNode<T>{
         T item;
 
-        BinaryHeapNode(T item){
+        BinaryTreeNode(T item){
             this.item = item;
         }
 
@@ -22,7 +22,7 @@ abstract class BinaryHeap<T extends Comparable<? super T>>{
             return item.toString();
         }
 
-    }
+    }*/
 
     /**
      * @param i item position
@@ -41,7 +41,9 @@ abstract class BinaryHeap<T extends Comparable<? super T>>{
      * @return left child of item at index
      */
     int leftChild(int index){
-        return (2 * index + 1);
+        int leftIndex = 2 * index + 1;
+        heap.get(index).left = heap.get(leftIndex);
+        return leftIndex;
     }
 
     /**
@@ -49,7 +51,9 @@ abstract class BinaryHeap<T extends Comparable<? super T>>{
      * @return right child of item at index
      */
     int rightChild(int index){
-        return (2 * index + 2);
+        int rightIndex = 2 * index + 1;
+        heap.get(index).right = heap.get(rightIndex);
+        return rightIndex;
     }
 
     /**
@@ -59,7 +63,7 @@ abstract class BinaryHeap<T extends Comparable<? super T>>{
      */
     void swap(int x, int y){
         // swap with child having greater value
-        BinaryHeapNode<T> temp = heap.get(x);
+        BinaryTreeNode<T> temp = heap.get(x);
         heap.setElementAt(heap.get(y), x);
         heap.setElementAt(temp, y);
     }
@@ -79,14 +83,14 @@ abstract class BinaryHeap<T extends Comparable<? super T>>{
 
     abstract void heapifyUp(int i);
 
-    void insert(T item){
-        insert(new BinaryHeapNode<>(item));
+    public void insert(T item){
+        insert(new BinaryTreeNode<>(item,null,null));
     }
     /**
      * insert specified key into the heap
      * @param key to be inserted
      */
-    private void insert(BinaryHeapNode<T> key){
+    private void insert(BinaryTreeNode<T> key){
         // insert the new element to the end of the vector
         heap.addElement(key);
 
@@ -101,14 +105,14 @@ abstract class BinaryHeap<T extends Comparable<? super T>>{
      * @return removed item
      * @throws Exception if null is found
      */
-    BinaryHeapNode<T> delete() throws Exception {
+    public BinaryTreeNode<T> delete() throws Exception {
         // if heap is empty, throw an exception
         if (size() == 0) {
             throw new Exception("Index is out of range (Heap underflow)");
         }
 
         // element with highest priority
-        BinaryHeapNode<T> root = heap.firstElement();	// or heap.get(0);
+        BinaryTreeNode<T> root = heap.firstElement();	// or heap.get(0);
 
         // replace the root of the heap with the last element of the vector
         heap.setElementAt(heap.lastElement(), 0);
@@ -127,7 +131,7 @@ abstract class BinaryHeap<T extends Comparable<? super T>>{
      * @return item
      * @throws Exception if null is found
      */
-    BinaryHeapNode<T> peek() throws Exception {
+    BinaryTreeNode<T> peek() throws Exception {
         // if heap has no elements, throw an exception
         if (size() == 0) {
             throw new Exception("Index out of range (Heap underflow)");
@@ -141,7 +145,7 @@ abstract class BinaryHeap<T extends Comparable<? super T>>{
      * function to remove all elements from priority queue
      * @throws Exception if found null
      */
-    void clear()throws Exception {
+    public void clear()throws Exception {
         System.out.print("Emptying queue: ");
         while (!heap.isEmpty()) {
             System.out.print(delete() + " ");
@@ -150,13 +154,13 @@ abstract class BinaryHeap<T extends Comparable<? super T>>{
     }
 
     Boolean contains(T item){
-        return contains(new BinaryHeapNode<>(item));
+        return contains(new BinaryTreeNode<>(item,null,null));
     }
     /**
      * @param i: item being searched
      * @return true if queue contains the specified element
      */
-    private Boolean contains(BinaryHeapNode<T> i) {
+    private Boolean contains(BinaryTreeNode<T> i) {
         return heap.contains(i);
     }
 
@@ -164,14 +168,14 @@ abstract class BinaryHeap<T extends Comparable<? super T>>{
      * Add node to ArrayList
      * @param node: node to be added
      */
-    private void visit(BinaryHeapNode<T> node) {
+    /*private void visit(BinaryTreeNode<T> node) {
         path.add(node.item);
-    }
+    }*/
 
     /**
      * @return ArrayList of node keys in preOrder
      */
-    ArrayList<T> preOrder() {
+    /*ArrayList<T> preOrder() {
         path.clear();
         try{
             preOrder (peek());
@@ -184,7 +188,7 @@ abstract class BinaryHeap<T extends Comparable<? super T>>{
      * Get the preOrder formation of nodes recursively
      * @param node: root node
      */
-    private void preOrder(BinaryHeapNode<T> node)
+    /*private void preOrder(BinaryTreeNode<T> node)
     {
         if (node != null)
         {
@@ -197,7 +201,7 @@ abstract class BinaryHeap<T extends Comparable<? super T>>{
     /**
      * @return ArrayList of node keys in postOrder
      */
-    ArrayList<T> postOrder()
+    /*ArrayList<T> postOrder()
     {
         path.clear();
         try{
@@ -211,7 +215,7 @@ abstract class BinaryHeap<T extends Comparable<? super T>>{
      * Get the postOrder formation of nodes recursively
      * @param node: root node
      */
-    private void postOrder(BinaryHeapNode<T> node)
+    /*private void postOrder(BinaryTreeNode<T> node)
     {
         if (node != null)
         {
@@ -224,7 +228,7 @@ abstract class BinaryHeap<T extends Comparable<? super T>>{
     /**
      * @return ArrayList of node keys in inOrder
      */
-    ArrayList<T> inOrder ()
+    /*ArrayList<T> inOrder ()
     {
         path.clear();
         try{
@@ -238,7 +242,7 @@ abstract class BinaryHeap<T extends Comparable<? super T>>{
      * Get the inOrder formation of nodes recursively
      * @param node: root node
      */
-    private void inOrder(BinaryHeapNode<T> node)
+    /*private void inOrder(BinaryTreeNode<T> node)
     {
         if (node != null)
         {
@@ -251,7 +255,7 @@ abstract class BinaryHeap<T extends Comparable<? super T>>{
     /**
      * @return ArrayList of node keys in levelOrder
      */
-    ArrayList<T> levelOrder(){
+    /*ArrayList<T> levelOrder(){
         path.clear();
         try{
             levelOrder (peek());
@@ -264,14 +268,14 @@ abstract class BinaryHeap<T extends Comparable<? super T>>{
      * Get the levelOrder formation of nodes recursively
      * @param startNode: root node
      */
-    private ArrayList<T> levelOrder (BinaryHeapNode<T> startNode)
+    /*private ArrayList<T> levelOrder (BinaryTreeNode<T> startNode)
     {
         path.clear();
-        Queue<BinaryHeapNode<T>> queue=new LinkedList<>();
+        Queue<BinaryTreeNode<T>> queue=new LinkedList<>();
         queue.add(startNode);
         while(!queue.isEmpty())
         {
-            BinaryHeapNode<T> tempNode=queue.poll();
+            BinaryTreeNode<T> tempNode=queue.poll();
             path.add(tempNode.item);
             if(heap.get(leftChild(heap.indexOf(tempNode)))!=null)
                 queue.add(heap.get(leftChild(heap.indexOf(tempNode))));
@@ -279,6 +283,6 @@ abstract class BinaryHeap<T extends Comparable<? super T>>{
                 queue.add(heap.get(rightChild(heap.indexOf(tempNode))));
         }
         return path;
-    }
+    }*/
 
 }
