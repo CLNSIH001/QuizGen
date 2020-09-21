@@ -12,9 +12,10 @@ import java.util.Queue;
 public class Graph extends RuntimeException{
     private Map<String, Node> vertexMap = new HashMap<String, Node>();
     public static final double infinity = Double.MAX_VALUE;
-    private String type = "";
+    public String type = "";
+    private String path;
 
-    protected void insert(String src, String dest, double l){
+    public void insert(String src, String dest, double l){
         Node s = getNode(src);
         Node d = getNode(dest);
         s.addLink(new Link(d, l));
@@ -39,41 +40,40 @@ public class Graph extends RuntimeException{
     }
 
     public String printPath(String node){
-        String path = "";
+        path = "";
         Node w = vertexMap.get(node);
         if(w == null)
             throw new NoSuchElementException();
         else if(w.val == infinity)
             System.out.println(node + "can't be reached");
         else{
-            /*if (type.equals("unweighted")) System.out.println("Path Length is: " + w.val);
-            else if (type.equals("dijk")) System.out.println("Distance is: " + w.val +"km");
-            else if (type.equals("negative")) System.out.println("Profit/Loss is: R" + w.val);
-            else if (type.equals("acyclic")) System.out.println("Vertex Magnitude is: " + w.val);
-            else {
-                System.out.println("No algorithm was chosen");
-                return;
-            }*/
-            printPath(w, path);}
+            /**/
+            printPath(w);}
         return path+"\n";
     }
-    private void printPath(Node dest, String p){
+    private void printPath(Node dest){
         if(dest.prev != null){
-            printPath(dest.prev, p);
-            p += " --> ";
+            printPath(dest.prev);
+            path += " --> ";
         }
-        p += dest.data;
+        path += dest.data;
     }
 
-    public double getNodeValue(String node){
+    public String getNodeValue(String node){
         Node w = vertexMap.get(node);
         if(w == null)
             throw new NoSuchElementException();
         else if(w.val == infinity)
             System.out.println(node + "can't be reached");
-        else
-            return w.val;
-        return infinity;
+        else {
+            if (type.equals("unweighted")) return "Path Length is: " + (int) w.val;
+            else if (type.equals("weighted")) return "Distance is: " + (w.val) +"km";
+            else if (type.equals("negative")) return "Profit/Loss is: R" + String.format("%.2f",w.val);
+            else if (type.equals("acyclic")) return "Vertex Magnitude is: " + (int) w.val;
+            else
+                return "No algorithm was chosen";
+        }
+        return "No algorithm was chosen";
     }
 
     public void bfs(String startName){
@@ -95,7 +95,6 @@ public class Graph extends RuntimeException{
                 }
             }
         }
-        type = "unweighted";
     }
     public void dijkstra(String Start){
         PriorityQueue<Path> pq = new PriorityQueue<Path>();
@@ -125,7 +124,6 @@ public class Graph extends RuntimeException{
                 }
             }
         }
-        type = "dijk";
     }
     public void bellmanFord(String startName){
         clearAll();
@@ -153,7 +151,6 @@ public class Graph extends RuntimeException{
                 }
             }
         }
-        type = "negative";
     }
     public void topological(String startName){
         Node start = vertexMap.get( startName );
@@ -190,63 +187,53 @@ public class Graph extends RuntimeException{
                 }
             }
         }
-        if( iterations != vertexMap.size( ) ) {
-            System.out.println("iterations is " + iterations + " and vMap size is " + vertexMap.size());
+        if( iterations != vertexMap.size( ) )
             throw new RuntimeException("Graph has negative cycles");
-        }
-        type = "acyclic";
+    }
+
+    public String startPoint(){
+        if (type.equals("unweighted")) return "v2";
+        else if (type.equals("weighted")) return "Algeria";
+        else if (type.equals("negative")) return "Jan";
+        else if (type.equals("acyclic")) return "A";
+        return "Error!";
+    }
+
+    public String endPoint(){
+        if (type.equals("unweighted")) return "v6";
+        else if (type.equals("weighted")) return "France";
+        else if (type.equals("negative")) return "Apr";
+        else if (type.equals("acyclic")) return "D";
+        return "Error!";
     }
 
     //Content of main will be used in driver to implement the Graph data structure
-    public static void main(String[] args){
+    /*public static void main(String[] args){
         Graph digraph = new Graph();
-        digraph.insert("Jan", "Feb", -5.00);
-        digraph.insert("Jan", "Apr", 7.00);
-        digraph.insert("Jan", "May", 2.00);
-        digraph.insert("Feb", "Mar", 5.00);
-        digraph.insert("Mar", "Jan", 1.00);
-        digraph.insert("Mar", "Apr", -4.00);
-        digraph.insert("Apr", "May", 3.00);
-        digraph.insert("May", "Mar", 1.00);
-        digraph.insert("May", "Feb", 6.00);
-        digraph.bellmanFord("Jan");
+
         //digraph.printPath("");     //node cost and path
-        digraph.emptyGraphMap();
-        digraph.insert("Algeria", "Belgium", 7.0);
-        digraph.insert("Algeria", "Chile", 3.0);
-        digraph.insert("Algeria", "Denmark", 4.0);
-        digraph.insert("Belgium", "Greece", 3.0);
-        digraph.insert("Chile", "France", 4.0);
-        digraph.insert("Denmark", "France", 2.0);
-        digraph.insert("Denmark", "Ethiopia", 7.0);
-        digraph.insert("France", "Greece", 5.0);
-        digraph.insert("Ethiopia", "Greece", 2.0);
-        digraph.dijkstra("Algeria");
+
         //digraph.printPath("");    //node cost and path
+
         digraph.emptyGraphMap();
-        digraph.insert("v0","v1", infinity);
-        digraph.insert("v0","v3", infinity);
-        digraph.insert("v1","v3", infinity);
-        digraph.insert("v1","v4", infinity);
-        digraph.insert("v2","v0", infinity);
-        digraph.insert("v2","v5", infinity);
-        digraph.insert("v3", "v2", infinity);
-        digraph.insert("v3", "v4", infinity);
-        digraph.insert("v3","v5", infinity);
-        digraph.insert("v3","v6", infinity);
-        digraph.insert("v4","v6", infinity);
-        digraph.insert("v6","v5", infinity);
+        digraph.insert("v0","v1", Graph.infinity);
+        digraph.insert("v0","v3", Graph.infinity);
+        digraph.insert("v1","v3", Graph.infinity);
+        digraph.insert("v1","v4", Graph.infinity);
+        digraph.insert("v2","v0", Graph.infinity);
+        digraph.insert("v2","v5", Graph.infinity);
+        digraph.insert("v3", "v2", Graph.infinity);
+        digraph.insert("v3", "v4", Graph.infinity);
+        digraph.insert("v3","v5", Graph.infinity);
+        digraph.insert("v3","v6", Graph.infinity);
+        digraph.insert("v4","v6", Graph.infinity);
+        digraph.insert("v6","v5", Graph.infinity);
         digraph.bfs("v2");
-        digraph.printPath("v6");
-        digraph.emptyGraphMap();
-        digraph.insert("A", "B", 4);
-        digraph.insert("A", "C", 8);
-        digraph.insert("B", "C", 9);
-        digraph.insert("B", "D", 10);
-        digraph.insert("C", "D", 7);
-        digraph.topological("A");
-        digraph.printPath("D");
-    }
+        digraph.type = "unweighted";
+        String path = digraph.printPath("v6");
+        String cost = digraph.getNodeValue("v6");
+        System.out.println(path + cost);
+    }*/
 }
 
 class Path implements Comparable<Path>{

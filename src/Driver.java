@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.io.PrintWriter;
 
@@ -20,12 +21,12 @@ public class Driver<T extends Comparable<? super T>>{
             "make","no","over","principle","quit","rest","sit","tumble","up","veer","wait","xenophobia","you","zit"};
     private ArrayList<T> allInserts;
     private ArrayList<T> travel;  //for traversals
-    T type;
-    BinarySearchTree<T> bst;
-    AVLTree<T> avl;
-    RedBlackTree<T> rbt;
-    BinaryHeap<T> bheap;
-    Graph digraph;
+    private T type;
+    private BinarySearchTree<T> bst;
+    private AVLTree<T> avl;
+    private RedBlackTree<T> rbt;
+    private BinaryHeap<T> bheap;
+    private Graph digraph;
 
     /**
      * Constructor
@@ -47,31 +48,37 @@ public class Driver<T extends Comparable<? super T>>{
             if (format == 1)
                 treeMCQ(poolSize, bst, filename, type);
             if (format == 2)
-                trueFalse(poolSize, bst, filename, type);
+                treeTrueFalse(poolSize, bst, filename, type);
             /*if (format == 3)
                 fillIn(poolSize, bst, filename, type);*/
         }
-        else if (filename.substring(0, filename.indexOf("/")).equals("AVL")){
+        else if (filename.substring(0, filename.indexOf("/")).equals("AVLTree")){
             if (format == 1)
                 treeMCQ(poolSize, avl, filename, type);
             if (format == 2)
-                trueFalse(poolSize, avl, filename, type);
+                treeTrueFalse(poolSize, avl, filename, type);
             /*if (format == 3)
                 fillIn(poolSize, avl, filename, type);*/
         }
-        else if (filename.substring(0, filename.indexOf("/")).equals("RedBlack")){
+        else if (filename.substring(0, filename.indexOf("/")).equals("RedBlackTree")){
             if (format == 1)
                 treeMCQ(poolSize, rbt, filename, type);
             if (format == 2)
-                trueFalse(poolSize, rbt, filename, type);
+                treeTrueFalse(poolSize, rbt, filename, type);
             /*if (format == 3)
                 fillIn(poolSize, rbt, filename, type);*/
         }
-        //else if (filename.substring(0, filename.indexOf("/")).equals("BinaryHeap")){}
+        else if (filename.substring(0, filename.indexOf("/")).equals("BinaryHeapTree")){
+            if (format == 1)
+                //treeMCQ(poolSize, bheap, filename, type);
+            if (format == 2)
+                //treeTrueFalse(poolSize, bheap, filename, type);
+            if (format == 3);
+        }
     }
 
     /**
-     * Author: Takaedza
+     * Author: Group 2
      * Get the inOrder reading of the nodes
      * @param object: Data structure
      */
@@ -96,7 +103,7 @@ public class Driver<T extends Comparable<? super T>>{
     }
 
     /**
-     * Author: Takaedza
+     * Author: Group 2
      * Get preOrder formation of the nodes
      * @param object: Data structure
      */
@@ -121,7 +128,7 @@ public class Driver<T extends Comparable<? super T>>{
     }
 
     /**
-     * Author: Takaedza
+     * Author: Group 2
      * get post order formation of nodes
      * @param object: Data structure
      */
@@ -146,7 +153,7 @@ public class Driver<T extends Comparable<? super T>>{
     }
 
     /**
-     * Author: Takaedza
+     * Author: Group 2
      * Get level ordering of nodes
      * @param object: Data structure
      */
@@ -237,7 +244,7 @@ public class Driver<T extends Comparable<? super T>>{
     }
 
     /**
-     * Author: Avhusaho
+     * Author: Group 2
      * insert all items in the array list into the passed in data structure.
      * @param list: Array List of items of any type.
      * @param obj: Passed in data structure.
@@ -288,7 +295,7 @@ public class Driver<T extends Comparable<? super T>>{
     }
 
     /**
-     * Author: Sihle
+     * Author: Group 2
      * This should be the insert for every data structure except graph and hashtables
      * @param b: number of items to be inserted
      * @param obj: data structure to which items will be implemented
@@ -337,7 +344,7 @@ public class Driver<T extends Comparable<? super T>>{
     }
 
     /**
-     * Author: Avhusaho
+     * Author: Group 2
      * @param item to be deleted.
      * @param obj: data structure from which item is supposed to ebe deleted
      */
@@ -376,7 +383,7 @@ public class Driver<T extends Comparable<? super T>>{
     }
 
      /**
-     * Author: Sihle
+     * Author: Group 2
      * Generate Multiple Choice Questions about insertion or deletion for the specified data structure
      * @param total: number of questions in a pool to be created (i.e. pool size)
      * @param obj: data structure
@@ -384,22 +391,7 @@ public class Driver<T extends Comparable<? super T>>{
      * @param type: insertion, deletion
      */
     private void treeMCQ(int total, Object obj, String fileName, int type){
-        try {
-            File label = new File("MultipleChoice/", fileName + ".txt");   //folder must already exits
-            if (label.createNewFile())
-                System.out.println(fileName + " has been created");
-            else{
-                System.out.println(fileName + " already exists.");
-                fileName = changeFileName("MultipleChoice", fileName);
-                label = new File("MultipleChoice/", fileName + ".txt");
-                label.createNewFile();
-                System.out.println(fileName + " has been created instead.");
-            }
-        }
-        catch(IOException e){
-            System.out.println("An error occurred. Exiting");
-            System.exit(0);
-        }
+        fileName = createNewMCQFile(fileName);
         try {
             PrintWriter file = new PrintWriter(new FileWriter("MultipleChoice/" + fileName + ".txt", true));   //windows forward slash
             String[] traverse = {"preOrder", "postOrder", "inOrder", "levelOrder"};
@@ -534,7 +526,7 @@ public class Driver<T extends Comparable<? super T>>{
             file.close();
         }
         catch (IOException E){
-            System.out.println("Error. Exiting now.");
+            System.out.println("Error. Try Again.");
             File label = new File("MultipleChoice/", fileName + ".txt");
             label.delete();
         }
@@ -557,23 +549,8 @@ public class Driver<T extends Comparable<? super T>>{
         allInserts.clear();
     }
 
-    private void trueFalse(int total, Object obj, String fileName, int type){
-        try {
-            File label = new File("TrueFalse/", fileName + ".txt");   //folder must already exits
-            if (label.createNewFile())
-                System.out.println(fileName + " has been created");
-            else{
-                System.out.println(fileName + " already exists.");
-                fileName = changeFileName("MultipleChoice", fileName);
-                label = new File("TrueFalse/", fileName + ".txt");
-                label.createNewFile();
-                System.out.println(fileName + " has been created instead.");
-            }
-        }
-        catch(IOException e){
-            System.out.println("An error occurred. Exiting");
-            System.exit(0);
-        }
+    private void treeTrueFalse(int total, Object obj, String fileName, int type){
+        fileName = createNewToFFile(fileName);
         try {
             PrintWriter file = new PrintWriter(new FileWriter("TrueFalse/" + fileName + ".txt", true));   //windows forward slash
             emptyTree(obj);
@@ -678,14 +655,193 @@ public class Driver<T extends Comparable<? super T>>{
             file.close();
         }
         catch (IOException E){
-            System.out.println("Error. Exiting now.");
+            System.out.println("Error. Try Again.");
             File label = new File("TrueFalse/", fileName + ".txt");
             label.delete();
         }
     }
 
+    private void graphPool(int format, int type, String name, int path_or_cost){
+        ArrayList<String> otherNodes;
+        if (type == 1){
+            digraph.emptyGraphMap();
+            digraph.insert("v0","v1", Graph.infinity);
+            digraph.insert("v0","v3", Graph.infinity);
+            digraph.insert("v1","v3", Graph.infinity);
+            digraph.insert("v1","v4", Graph.infinity);
+            digraph.insert("v2","v0", Graph.infinity);
+            digraph.insert("v2","v5", Graph.infinity);
+            digraph.insert("v3", "v2", Graph.infinity);
+            digraph.insert("v3", "v4", Graph.infinity);
+            digraph.insert("v3","v5", Graph.infinity);
+            digraph.insert("v3","v6", Graph.infinity);
+            digraph.insert("v4","v6", Graph.infinity);
+            digraph.insert("v6","v5", Graph.infinity);
+            otherNodes = new ArrayList<>(Arrays.asList("v0", "v1", "v3", "v4", "v5"));
+            digraph.type = "unweighted";
+            if (format == 1)
+                graphMCQ(path_or_cost, name, digraph, otherNodes);
+            //else if (format  == 2)
+            //else if (format == 3)
+        }
+        else if(type == 2){
+            digraph.emptyGraphMap();
+            digraph.insert("Algeria", "Belgium", 7.0);
+            digraph.insert("Algeria", "Chile", 3.0);
+            digraph.insert("Algeria", "Denmark", 4.0);
+            digraph.insert("Belgium", "Greece", 3.0);
+            digraph.insert("Chile", "France", 4.0);
+            digraph.insert("Denmark", "France", 2.0);
+            digraph.insert("Denmark", "Ethiopia", 7.0);
+            digraph.insert("France", "Greece", 5.0);
+            digraph.insert("Ethiopia", "Greece", 2.0);
+            otherNodes = new ArrayList<>(Arrays.asList("Belgium", "Chile", "Greece", "Denmark", "Ethiopia"));
+            digraph.type = "weighted";
+            if (format == 1)
+                graphMCQ(path_or_cost, name, digraph, otherNodes);
+            //else if (format  == 2)
+            //else if (format == 3)
+        }
+        else if(type == 3){
+            digraph.emptyGraphMap();
+            digraph.insert("Jan", "Feb", -5.00);
+            digraph.insert("Jan", "Apr", 7.00);
+            digraph.insert("Jan", "May", 2.00);
+            digraph.insert("Feb", "Mar", 5.00);
+            digraph.insert("Mar", "Jan", 1.00);
+            digraph.insert("Mar", "Apr", -4.00);
+            digraph.insert("Apr", "May", 3.00);
+            digraph.insert("May", "Mar", 1.00);
+            digraph.insert("May", "Feb", 6.00);
+            otherNodes = new ArrayList<>(Arrays.asList("Feb", "Mar", "May"));
+            digraph.type = "negative";
+            if (format == 1)
+                graphMCQ(path_or_cost, name, digraph, otherNodes);
+            //else if (format  == 2)
+            //else if (format == 3)
+        }
+        else if(type == 4){
+            digraph.emptyGraphMap();
+            digraph.insert("A", "B", 4);
+            digraph.insert("A", "C", 8);
+            digraph.insert("B", "C", 9);
+            digraph.insert("B", "D", 10);
+            digraph.insert("C", "D", 7);
+            otherNodes = new ArrayList<>(Arrays.asList("B", "C"));
+            digraph.type = "acyclic";
+            if (format == 1)
+                graphMCQ(path_or_cost, name, digraph, otherNodes);
+            //else if (format  == 2)
+            //else if (format == 3)
+        }
+        else if(type == 5){
+            //run the first four types using a temp file name.
+            //copy them into the file for this type question.
+        }
+        else{
+            System.out.println("Enter a valid Question Format from the Menu.");
+        }
+    }
+
+    private String createNewMCQFile(String textFile){
+        try {
+            File label = new File("MultipleChoice/", textFile + ".txt");   //folder must already exits
+            if (label.createNewFile())
+                System.out.println(textFile + " has been created");
+            else{
+                System.out.println(textFile + " already exists.");
+                String dataStruc = textFile.substring(0, textFile.indexOf("/"));
+                String dir = "MultipleChoice/"+ dataStruc;
+                textFile = dataStruc + "/" + changeFileName(dir, textFile.substring(textFile.indexOf("/")+1));
+                label = new File("MultipleChoice/", textFile + ".txt");
+                label.createNewFile();
+                System.out.println(textFile.substring(textFile.indexOf("/")+1) + " has been created instead.");
+            }
+            return textFile;
+        }
+        catch(IOException e){
+            System.out.println("An error occurred. Exiting");
+            System.exit(0);
+        }
+        return textFile;
+    }
+
+    private String createNewToFFile(String textFile){
+        try {
+            File label = new File("TrueFalse/", textFile + ".txt");   //folder must already exits
+            if (label.createNewFile())
+                System.out.println(textFile + " has been created");
+            else{
+                System.out.println(textFile + " already exists.");
+                String dataStruc = textFile.substring(0, textFile.indexOf("/"));
+                String dir = "TrueFalse/"+dataStruc;
+                textFile = dataStruc + "/" +changeFileName(dir, textFile);
+                label = new File("TrueFalse/", textFile + ".txt");
+                label.createNewFile();
+                System.out.println(textFile + " has been created instead.");
+            }
+            return textFile;
+        }
+        catch(IOException e){
+            System.out.println("An error occurred. Exiting");
+            System.exit(0);
+        }
+        return textFile;
+    }
+
+    private void graphMCQ(int poc, String fname, Graph dg, ArrayList<String> others) {
+        fname = createNewMCQFile(fname);
+        try {
+            PrintWriter file = new PrintWriter(new FileWriter("MultipleChoice/"+fname+".txt", true));   //windows forward slash
+            String[] option = {"A.  ", "B.  ", "C.  ", "D.  "};
+            int index = Math.min(others.size(), (int) (Math.random()*4));
+            if (poc == 1){
+                if (dg.type.equals("unweighted")) dg.bfs(dg.startPoint());
+                else if (dg.type.equals("weighted")) dg.dijkstra(dg.startPoint());
+                else if (dg.type.equals("negative")) dg.bellmanFord(dg.startPoint());
+                else if (dg.type.equals("acyclic")) dg.topological(dg.startPoint());
+                file.write("What is the cost of the path, from "+dg.startPoint()+" to "+dg.endPoint()+", in the displayed graph?\n");
+                int minIterations = Math.min(others.size()+1, option.length);
+                for (int i=0; i<minIterations; i++){
+                    int randInt = (int)(Math.random()*others.size());
+                    //System.out.println("RANDINT = "+randInt+" & ITERATOR IS "+i+" + ARRAY SIZE: "+others.size());
+                    if (i == index)
+                        file.println("*"+option[i]+dg.getNodeValue(dg.endPoint()));
+                    else
+                        file.println(option[i]+dg.getNodeValue(others.remove(randInt)));
+                }
+            }
+            else if (poc == 2){
+                file.write("What is the shortest path (using the most suitable algorithm) from "+dg.startPoint()+" to "+dg.endPoint()+" in the graph show?\n");
+                for (int i=0; i<others.size()+1; i++){
+                    //Wont work. need new strategy
+                    //consider negative edges or graphs with cycles
+                    /*if (i==0)
+                        dg.bfs(dg.startPoint());
+                    else if (i==1)
+                        dg.dijkstra(dg.startPoint());
+                    else if (i==2)
+                        dg.bellmanFord(dg.startPoint());
+                    else if (i==3)
+                        dg.topological(dg.startPoint());
+                    if (i == index)
+                        file.print("*");
+                    file.println(option[i]+ dg.printPath(dg.endPoint()));*/
+                }
+            }
+            file.println("#randomize\n");
+            file.flush();
+            file.close();
+        }
+        catch (IOException E){
+            System.out.println("Error. Try Again.");
+            File label = new File("MultipleChoice/", fname + ".txt");
+            label.delete();
+        }
+    }
+
     /**
-    Takaedza
+    Group 2
     Terminal UI
      **/
     public static void main (String [] args){
@@ -733,17 +889,6 @@ public class Driver<T extends Comparable<? super T>>{
                         int poolSize = in.nextInt();
 
                         String filename = "";
-                        /*switch(format){
-                            case 1:
-                                filename = "MultipleChoice/";
-                                break;
-                            case 2:
-                                filename = "TrueFalse/";
-                                break;
-                            case 3:
-                                filename = "FillIn/";
-                                break;
-                        }*/
 
                         switch (dataStructure) {
                             case 1:
@@ -807,38 +952,50 @@ public class Driver<T extends Comparable<? super T>>{
                                 break;
                         }
                     }
-                    /*else {
+                    else {
                         System.out.println("Which directed graph type (which algorithm) would you like?\n" +
                                 "1. Unweighted (Breadth First Search)\n" +
                                 "2. Weighted (Dijkstra)\n" +
                                 "3. Negative Weights (Bellman-Ford)\n" +
-                                "4. Acyclic (Topological Sort)" +
-                                "5. All of the above.\n");
+                                "4. Acyclic (Topological Sort)\n" +
+                                "5. All of the above\n");
                         int graphType = in.nextInt();
+                        System.out.println("Do you want questions on...\n" +
+                                "1. Path Cost\n" +
+                                "2. Path Sequence\n");
+                        int costOrPath = in.nextInt();
+                        String file = "Graph/";
                         switch (graphType){
-                            String file = "";
                             case 1:
-                                file = "UnweightedDigraph";
-                                graphQuestions(format, graphType, file);
+                                file += "UnweightedDigraph";
+                                intTree.graphPool(format, graphType, file, costOrPath);
                                 break;
                             case 2:
-                                file = "WeightedDigraph";
-                                graphQuestions(format, graphType, file);
+                                file += "WeightedDigraph";
+                                intTree.graphPool(format, graphType, file, costOrPath);
                                 break;
                             case 3:
-                                file = "NegativeDigraph";
-                                graphQuestions(format, graphType, file);
+                                file += "NegativeDigraph";
+                                intTree.graphPool(format, graphType, file, costOrPath);
                                 break;
                             case 4:
-                                file = "AcyclicDigraph";
-                                graphQuestions(format, graphType, file);
+                                file += "AcyclicDigraph";
+                                intTree.graphPool(format, graphType, file, costOrPath);
                                 break;
                             case 5:
-                                file = "EachDigraph";
-                                graphQuestions(format, graphType, file);
+                                file += "EachDigraph";
+                                intTree.graphPool(format, graphType, file, costOrPath);
                                 break;
                         }
-                    }*/
+                        /*switch (format){
+                            case 1:
+                                graphMCQ(graphType, file);
+                            case 2:
+                                graphTrueFalse(graphType, file);
+                            case 3:
+                                graphFillIn(graphType, file);
+                        }*/
+                    }
                     break;
                 case 2:
                     /*
