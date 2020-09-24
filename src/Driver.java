@@ -432,7 +432,7 @@ public class Driver<T extends Comparable<? super T>>{
 					/*
                     Generate delete MultipleChoice of the specified pool size for the given data structure
                      */
-                    int randomElement = (int)Math.random()*allInserts.size();
+                    int randomElement = (int)(Math.random()*allInserts.size());
                     file.write("If we delete " + allInserts.get(randomElement) + " from a "+obj.toString()+" containing " +allInserts +
                             ", then the new tree in " + traverse[index] + " traversal will be:\n");
                     delete(allInserts.get(randomElement), obj);
@@ -565,33 +565,32 @@ public class Driver<T extends Comparable<? super T>>{
                     printAllNodes(obj);
                 else printLevelOrder(obj);
                 if (type == 1) {
-                    int traversalArrPos = (int)Math.random()*2;
+                    int traversalArrPos = (int)(Math.random()*2);
                     if (TorF == 0) printPreOrder(obj);
                     else printPostOrder(obj);
-                    int randomElement = (int)Math.random()*allInserts.size();
                     file.write("If the following " + allInserts + " is inserted inside a "+obj.toString()+
                             " then the " + traversal[traversalArrPos] + " traversal will be "+travel+"\n");
                     if (TorF == traversalArrPos){
-                        file.print("*True");
-                        file.println("False");
+                        file.print("*True\n");
+                        file.println("False\n");
                     }
-                    else{file.print("True");
-                        file.println("*False");}
+                    else{file.print("True\n");
+                        file.println("*False\n");}
                 }
                 else if (type == 2) {
-                    int traversalArrPos = (int)Math.random()*2;
-                    int randomElement = (int)Math.random()*allInserts.size();
+                    int traversalArrPos = (int)(Math.random()*2);
+                    int randomElement = (int)(Math.random()*allInserts.size());
                     delete(allInserts.get(randomElement), obj);
                     if (TorF == 0) printPreOrder(obj);
                     else printPostOrder(obj);
                     file.write("If we delete " + allInserts.get(randomElement) + " from a "+obj.toString()+" containing " +allInserts +
                         ", then the new tree in " + traversal[traversalArrPos] + " traversal is: "+ travel +"\n");
                     if (TorF == traversalArrPos){
-                        file.print("*True");
-                        file.println("False");
+                        file.print("*True\n");
+                        file.println("False\n");
                     }
-                    else{file.print("True");
-                        file.println("*False");}
+                    else{file.print("True\n");
+                        file.println("*False\n");}
                 }
                 else if (type == 3) {
 					/*
