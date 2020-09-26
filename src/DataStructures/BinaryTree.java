@@ -1,4 +1,4 @@
-package QuizGen;
+package DataStructures;
 
 import java.util.ArrayList;
 
@@ -38,12 +38,27 @@ public class BinaryTree<dataType>
    
    public void visit ( BinaryTreeNode<dataType> node )
    {
-      /*if (node != root)
-         System.out.print (", "+node.data);
-      else System.out.print (node.data);*/
       path.add(node.data);
    }
-   
+
+   public ArrayList<dataType> getLeaves(){
+      ArrayList<dataType> leaves = new ArrayList<>();
+      setLeaves(root, leaves);
+      return leaves;
+   }
+   public void setLeaves(BinaryTreeNode<dataType> node, ArrayList<dataType> allLeaves){
+      if (node != null){
+         if (node.right == null && node.left == null) {
+            allLeaves.add(node.data);
+            node.isLeaf = true;
+            return;
+         }
+         setLeaves(node.left, allLeaves);
+         setLeaves(node.right, allLeaves);
+         node.isLeaf = false;
+      }
+   }
+
    public ArrayList<dataType> preOrder ()
    {
       path.clear();
@@ -110,5 +125,7 @@ public class BinaryTree<dataType>
       }
       return path;
    }
+
+   public void clearTree(){root = null;}
    
 }

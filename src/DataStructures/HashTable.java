@@ -1,4 +1,4 @@
-package QuizGen;
+package DataStructures;
 import java.util.LinkedList;
 
 public class HashTable {

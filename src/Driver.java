@@ -1,8 +1,9 @@
-package QuizGen;
+import DataStructures.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.io.PrintWriter;
 
@@ -20,11 +21,12 @@ public class Driver<T extends Comparable<? super T>>{
             "make","no","over","principle","quit","rest","sit","tumble","up","veer","wait","xenophobia","you","zit"};
     private ArrayList<T> allInserts;
     private ArrayList<T> travel;  //for traversals
-    T type;
-    BinarySearchTree<T> bst;
-    AVLTree<T> avl;
-    RedBlackTree<T> rbt;
-    //BinaryHeap<T> heap;
+    private T type;
+    private BinarySearchTree<T> bst;
+    private AVLTree<T> avl;
+    private RedBlackTree<T> rbt;
+    private BinaryHeap<T> bheap;
+    private Graph digraph;
 
     /**
      * Constructor
@@ -38,158 +40,140 @@ public class Driver<T extends Comparable<? super T>>{
         bst = new BinarySearchTree<>();
         avl = new AVLTree<>();
         rbt = new RedBlackTree();
+        digraph = new Graph();
     }
 
     public void poolType(int format, int type, int poolSize, String filename){
-        String ds = filename;
-        if (ds.substring(0, ds.indexOf("_")).equals("BST")){
+        if (filename.substring(0, filename.indexOf("/")).equals("BinarySearchTree")){
             if (format == 1)
-                MCQ(poolSize, bst, filename, type);
+                treeMCQ(poolSize, bst, filename, type);
             if (format == 2)
-                trueFalse(poolSize, bst, filename, type);
+                treeTrueFalse(poolSize, bst, filename, type);
             /*if (format == 3)
                 fillIn(poolSize, bst, filename, type);*/
         }
-        else if (ds.substring(0, ds.indexOf("_")).equals("AVL")){
+        else if (filename.substring(0, filename.indexOf("/")).equals("AVLTree")){
             if (format == 1)
-                MCQ(poolSize, avl, filename, type);
+                treeMCQ(poolSize, avl, filename, type);
             if (format == 2)
-                trueFalse(poolSize, avl, filename, type);
+                treeTrueFalse(poolSize, avl, filename, type);
             /*if (format == 3)
-                fillIn(poolSize, bst, filename, type);*/
+                fillIn(poolSize, avl, filename, type);*/
         }
-        else if (ds.substring(0, ds.indexOf("_")).equals("RedBlack")){
+        else if (filename.substring(0, filename.indexOf("/")).equals("RedBlackTree")){
             if (format == 1)
-                MCQ(poolSize, rbt, filename, type);
+                treeMCQ(poolSize, rbt, filename, type);
             if (format == 2)
-                trueFalse(poolSize, rbt, filename, type);
+                treeTrueFalse(poolSize, rbt, filename, type);
             /*if (format == 3)
-                fillIn(poolSize, bst, filename, type);*/
+                fillIn(poolSize, rbt, filename, type);*/
         }
-        //else if (ds.substring(0, ds.indexOf("_")).equals("BH")){}
+        else if (filename.substring(0, filename.indexOf("/")).equals("BinaryHeapTree")){
+            if (format == 1)
+                //treeMCQ(poolSize, bheap, filename, type);
+            if (format == 2)
+                //treeTrueFalse(poolSize, bheap, filename, type);
+            if (format == 3);
+        }
     }
 
     /**
-     * Author: Takaedza
+     * Author: Group 2
      * Get the inOrder reading of the nodes
      * @param object: Data structure
      */
     @SuppressWarnings("unchecked")
     private void printAllNodes(Object object){
-        if (object instanceof BinarySearchTree) {
-            BinarySearchTree<T> bst = (BinarySearchTree<T>) object;
+        if (object instanceof BinarySearchTree)
             travel = bst.inOrder();
-        }
-        else if(object instanceof AVLTree){
-            avl = (AVLTree<T>) object;
+
+        else if(object instanceof AVLTree)
             travel = avl.inOrder();
-        }
-        else if(object instanceof RedBlackTree){
-            rbt = (RedBlackTree<T>) object;
+
+        else if(object instanceof RedBlackTree)
             travel = rbt.inOrder();
-        }
-		else if(object instanceof BinaryHeap){
-            if(object instanceof MinHeap){
-                MinHeap<T> minHeap = (MinHeap<T>) object;
-                travel = minHeap.inOrder();
-            }
-            else if(object instanceof MaxHeap){
-                MaxHeap<T> maxHeap = (MaxHeap<T>) object;
-                travel = maxHeap.inOrder();
-            }
+
+        else if(object instanceof BinaryHeap){
+            if(object instanceof MinHeap)
+                bheap = (MinHeap<T>) object;
+            else if(object instanceof MaxHeap)
+                bheap = (MaxHeap<T>) object;
+            travel = bheap.inOrder();
         }
     }
 
     /**
-     * Author: Takaedza
+     * Author: Group 2
      * Get preOrder formation of the nodes
      * @param object: Data structure
      */
     @SuppressWarnings("unchecked")
     private void printPreOrder(Object object){
-        if (object instanceof BinarySearchTree) {
-            BinarySearchTree<T> bst = (BinarySearchTree<T>) object;
+        if (object instanceof BinarySearchTree)
             travel = bst.preOrder();
-        }
-        else if(object instanceof AVLTree){
-            avl = (AVLTree<T>) object;
+
+        else if(object instanceof AVLTree)
             travel = avl.preOrder();
-        }
-        else if(object instanceof RedBlackTree){
-            rbt = (RedBlackTree<T>) object;
+
+        else if(object instanceof RedBlackTree)
             travel = rbt.preOrder();
-        }
-		else if(object instanceof BinaryHeap){
-            if(object instanceof MinHeap){
-                MinHeap<T> minHeap = (MinHeap<T>) object;
-                travel = minHeap.preOrder();
-            }
-            else if(object instanceof MaxHeap){
-                MaxHeap<T> maxHeap = (MaxHeap<T>) object;
-                travel = maxHeap.preOrder();
-            }
+
+        else if(object instanceof BinaryHeap){
+            if(object instanceof MinHeap)
+                bheap = (MinHeap<T>) object;
+            else if(object instanceof MaxHeap)
+                bheap = (MaxHeap<T>) object;
+            travel = bheap.preOrder();
         }
     }
 
     /**
-     * Author: Takaedza
+     * Author: Group 2
      * get post order formation of nodes
      * @param object: Data structure
      */
     @SuppressWarnings("unchecked")
     private void printPostOrder(Object object){
-        if (object instanceof BinarySearchTree) {
-            BinarySearchTree<T> bst = (BinarySearchTree<T>) object;
+        if (object instanceof BinarySearchTree)
             travel = bst.postOrder();
-        }
-        else if(object instanceof AVLTree){
-            avl = (AVLTree<T>) object;
+
+        else if(object instanceof AVLTree)
             travel = avl.postOrder();
-        }
-        else if(object instanceof RedBlackTree){
-            rbt = (RedBlackTree<T>) object;
+
+        else if(object instanceof RedBlackTree)
             travel = rbt.postOrder();
-        }
-		else if(object instanceof BinaryHeap){
-            if(object instanceof MinHeap){
-                MinHeap<T> minHeap = (MinHeap<T>) object;
-                travel = minHeap.postOrder();
-            }
-            else if(object instanceof MaxHeap){
-                MaxHeap<T> maxHeap = (MaxHeap<T>) object;
-                travel = maxHeap.postOrder();
-            }
+
+        else if(object instanceof BinaryHeap){
+            if(object instanceof MinHeap)
+                bheap = (MinHeap<T>) object;
+            else if(object instanceof MaxHeap)
+                bheap = (MaxHeap<T>) object;
+            travel = bheap.postOrder();
         }
     }
 
     /**
-     * Author: Takaedza
+     * Author: Group 2
      * Get level ordering of nodes
      * @param object: Data structure
      */
     @SuppressWarnings("unchecked")
     private void printLevelOrder(Object object){
-        if (object instanceof BinarySearchTree) {
-            BinarySearchTree<T> bst = (BinarySearchTree<T>) object;
+        if (object instanceof BinarySearchTree)
             travel = bst.levelOrder();
-        }
-        else if(object instanceof AVLTree){
-            avl = (AVLTree<T>) object;
+
+        else if(object instanceof AVLTree)
             travel = avl.levelOrder();
-        }
-        else if(object instanceof RedBlackTree){
-            rbt = (RedBlackTree<T>) object;
+
+        else if(object instanceof RedBlackTree)
             travel = rbt.levelOrder();
-        }
-		else if(object instanceof BinaryHeap){
-            if(object instanceof MinHeap){
-                MinHeap<T> minHeap = (MinHeap<T>) object;
-                travel = minHeap.levelOrder();
-            }
-            else if(object instanceof MaxHeap){
-                MaxHeap<T> maxHeap = (MaxHeap<T>) object;
-                travel = maxHeap.levelOrder();
-            }
+
+        else if(object instanceof BinaryHeap){
+            if(object instanceof MinHeap)
+                bheap = (MinHeap<T>) object;
+            else if(object instanceof MaxHeap)
+                bheap = (MaxHeap<T>) object;
+            travel = bheap.levelOrder();
         }
     }
 
@@ -202,20 +186,17 @@ public class Driver<T extends Comparable<? super T>>{
             avl = (AVLTree<T>) obj;
             return avl.getHeight();
         }
-        /*else if(obj instanceof RedBlackTree){
+        else if(obj instanceof RedBlackTree){
             rbt = (RedBlackTree<T>) obj;
             return rbt.getHeight();
         }
         else if(obj instanceof BinaryHeap){
-            if(obj instanceof MinHeap){
-                MinHeap<T> minHeap = (MinHeap<T>) obj;
-                return minHeap.getHeight();
-            }
-            else if(obj instanceof MaxHeap){
-                MaxHeap<T> maxHeap = (MaxHeap<T>) obj;
-                return maxHeap.getHeight();
-            }
-        }*/
+            if(obj instanceof MinHeap)
+                bheap = (MinHeap<T>) obj;
+            else if(obj instanceof MaxHeap)
+                bheap = (MaxHeap<T>) obj;
+            return bheap.getHeight();
+        }
         return 0;
     }
 
@@ -228,25 +209,42 @@ public class Driver<T extends Comparable<? super T>>{
             avl = (AVLTree<T>) obj;
             return avl.getSize();
         }
-        /*else if(obj instanceof RedBlackTree){
+        else if(obj instanceof RedBlackTree){
             rbt = (RedBlackTree<T>) obj;
             return rbt.getSize();
         }
         else if(obj instanceof BinaryHeap){
-            if(obj instanceof MinHeap){
-                MinHeap<T> minHeap = (MinHeap<T>) obj;
-                return minHeap.getSize();
-            }
-            else if(obj instanceof MaxHeap){
-                MaxHeap<T> maxHeap = (MaxHeap<T>) obj;
-                return maxHeap.getSize();
-            }
-        }*/
+            if(obj instanceof MinHeap)
+                bheap = (MinHeap<T>) obj;
+            else if(obj instanceof MaxHeap)
+                bheap = (MaxHeap<T>) obj;
+            return bheap.getSize();
+        }
         return 0;
     }
 
+    private ArrayList<T> treeLeaves(Object obj){
+        if (obj instanceof BinarySearchTree)
+            return bst.getLeaves();
+
+        else if(obj instanceof AVLTree)
+            return avl.getLeaves();
+
+        else if(obj instanceof RedBlackTree)
+            return rbt.getLeaves();
+
+        else if(obj instanceof BinaryHeap){
+            if(obj instanceof MinHeap)
+                bheap = (MinHeap<T>) obj;
+            else if(obj instanceof MaxHeap)
+                bheap = (MaxHeap<T>) obj;
+            return bheap.getLeaves();
+        }
+        return null;
+    }
+
     /**
-     * Author: Avhusaho
+     * Author: Group 2
      * insert all items in the array list into the passed in data structure.
      * @param list: Array List of items of any type.
      * @param obj: Passed in data structure.
@@ -255,42 +253,41 @@ public class Driver<T extends Comparable<? super T>>{
     @SuppressWarnings("unchecked")
     private Object insert(ArrayList<T> list, Object obj){
         if(obj instanceof BinarySearchTree){
-            ((BinarySearchTree) obj).root=null;
             for(T i: list){
-                ((BinarySearchTree) obj).insert(i);
+                bst.insert(i);
             }
         }
         else if (obj instanceof AVLTree){
-            ((AVLTree) obj).root=null;
             for(T i: list){
-                ((AVLTree) obj).insert(i);
+                avl.insert(i);
             }
         }
         else if (obj instanceof RedBlackTree){
-            ((RedBlackTree) obj).root = null;
             for(T i: list){
-                ((RedBlackTree) obj).insert(i);
+                rbt.insert(i);
             }
         }
 		else if ( obj instanceof BinaryHeap){
             if(obj instanceof MinHeap){
                 try{
                     ((MinHeap) obj).clear();
+                    bheap = (MinHeap) obj;
                 }catch(Exception e){
                     System.out.println(e);
                 }
                 for(T i: list){
-                    ((MinHeap) obj).insert(i);
+                    bheap.insert(i);
                 }
             }
             else if(obj instanceof MaxHeap){
                 try{
                     ((MaxHeap) obj).clear();
+                    bheap = (MaxHeap) obj;
                 }catch(Exception e){
                     System.out.println(e);
                 }
                 for(T i: list){
-                    ((MaxHeap) obj).insert(i);
+                    bheap.insert(i);
                 }
             }
         }
@@ -298,7 +295,7 @@ public class Driver<T extends Comparable<? super T>>{
     }
 
     /**
-     * Author: Sihle
+     * Author: Group 2
      * This should be the insert for every data structure except graph and hashtables
      * @param b: number of items to be inserted
      * @param obj: data structure to which items will be implemented
@@ -347,7 +344,7 @@ public class Driver<T extends Comparable<? super T>>{
     }
 
     /**
-     * Author: Avhusaho
+     * Author: Group 2
      * @param item to be deleted.
      * @param obj: data structure from which item is supposed to ebe deleted
      */
@@ -357,21 +354,23 @@ public class Driver<T extends Comparable<? super T>>{
         Each Object is checked to see what data structure it is into to called the appropriate method.
          */
         if(obj instanceof BinarySearchTree){
-            ((BinarySearchTree) obj).delete(item);
+            bst.delete(item);
         }
         else if (obj instanceof AVLTree){
-            ((AVLTree) obj).delete(item);
+            avl.delete(item);
         }
         else if (obj instanceof RedBlackTree){
-            ((RedBlackTree) obj).delete(item);
+            rbt.delete(item);
         }
 		else if (obj instanceof BinaryHeap){
             try{
                 if(obj instanceof MinHeap){
-                    ((MinHeap) obj).delete();
+                    bheap = (MinHeap) obj;
+                    bheap.delete();
                 }
                 else if(obj instanceof MaxHeap){
-                    ((MaxHeap) obj).delete();
+                    bheap = (MaxHeap) obj;
+                    bheap.delete();
                 }
             }catch(Exception e){
                 System.out.println("Error while deleting binary heap\n"+e);
@@ -384,42 +383,30 @@ public class Driver<T extends Comparable<? super T>>{
     }
 
      /**
-     * Author: Sihle
+     * Author: Group 2
      * Generate Multiple Choice Questions about insertion or deletion for the specified data structure
      * @param total: number of questions in a pool to be created (i.e. pool size)
      * @param obj: data structure
      * @param fileName: output text file name
      * @param type: insertion, deletion
      */
-    private void MCQ(int total, Object obj, String fileName, int type){
+    private void treeMCQ(int total, Object obj, String fileName, int type){
+        fileName = createNewMCQFile(fileName);
         try {
-            File label = new File("MCQuestions/", fileName + ".txt");   //folder must already exits
-            if (label.createNewFile())
-                System.out.println(fileName + " has been created");
-            else{
-                System.out.println(fileName + " already exists.");
-                fileName = changeFileName("MCQuestions", fileName);
-                label = new File("MCQuestions/", fileName + ".txt");
-                label.createNewFile();
-                System.out.println(fileName + " has been created instead.");
-            }
-        }
-        catch(IOException e){
-            System.out.println("An error occurred. Exiting");
-            System.exit(0);
-        }
-        try {
-            PrintWriter file = new PrintWriter(new FileWriter("MCQuestions/" + fileName + ".txt", true));   //windows forward slash
+            PrintWriter file = new PrintWriter(new FileWriter("MultipleChoice/" + fileName + ".txt", true));   //windows forward slash
             String[] traverse = {"preOrder", "postOrder", "inOrder", "levelOrder"};
             String[] option = {"A.  ", "B.  ", "C.  ", "D.  "};
-            allInserts.clear();
+            emptyTree(obj);
             insert((int)(Math.random()*3+6), obj);
             for (int i = 0; i < total; i++) {
+                int[] heightsize = {height(obj)-1, size(obj)-1, height(obj), size(obj), size(obj)+1, height(obj)+1};
                 file.println("Question " + (i+1) + " (2 points)");
                 int index = (int) (Math.random() * 4);
+
+                //insertion
                 if (type == 1) {
 					/*
-                    Generate insert MCQuestions of the specified pool size for the given data structure
+                    Generate insert MultipleChoice of the specified pool size for the given data structure
                      */
                     file.write("If the following " + allInserts + " is inserted inside a "+obj.toString()+
                             " then in which order will the nodes be visited during " + traverse[index] + " traversal?\n");
@@ -439,13 +426,16 @@ public class Driver<T extends Comparable<? super T>>{
                         file.print(option[j] + travel.toString() + "\n");
                     }
                 }
+
+                //deletion
                 else if(type == 2){
 					/*
-                    Generate delete MCQuestions of the specified pool size for the given data structure
+                    Generate delete MultipleChoice of the specified pool size for the given data structure
                      */
-                    file.write("If we delete " + allInserts.get(index) + " from a "+obj.toString()+", " +allInserts +
-                            " then new tree in " + traverse[index] + " traversal is:\n");
-                    delete(allInserts.get(index), obj);        //not generic yet
+                    int randomElement = (int)(Math.random()*allInserts.size());
+                    file.write("If we delete " + allInserts.get(randomElement) + " from a "+obj.toString()+" containing " +allInserts +
+                            ", then the new tree in " + traverse[index] + " traversal will be:\n");
+                    delete(allInserts.get(randomElement), obj);
                     for (int j = 0; j < option.length; ++j) {
                         if (j == 0)
                             printPreOrder(obj);
@@ -460,7 +450,74 @@ public class Driver<T extends Comparable<? super T>>{
                         file.print(option[j] + travel.toString() + "\n");
                     }
                 }
-                allInserts.clear();// inserts a * before the correct answer
+
+                //root
+                else if (type == 3){
+                    file.write("If the following " + allInserts + " is inserted into a "+obj.toString()+
+                            " then the root is:\n");
+                    printLevelOrder(obj); T answer = travel.get(0); allInserts.remove(answer);
+                    for (int j = 0; j < option.length; ++j) {
+                        if (j == index)
+                            file.print("*"+option[j] + answer + "\n");
+                        else{
+                            int rand = (int) (Math.random() * allInserts.size());
+                            T wrong = allInserts.remove(rand);
+                            file.print(option[j] + wrong + "\n");
+                        }
+                    }
+                }
+
+                //leaf
+                else if (type == 4){
+                    file.write("The following " + allInserts + " is inserted into a "+obj.toString()+
+                            ". Which of the following is a leaf  is:\n");
+                    ArrayList<T> leafNodes = treeLeaves(obj);
+                    for (T leaf : leafNodes)
+                        allInserts.remove(leaf);
+                    T randAns = leafNodes.remove((int)(Math.random()*leafNodes.size()));
+                    for (int j = 0; j < option.length; ++j) {
+                        if (j == index)
+                            file.print("*"+option[j] + randAns + "\n");
+                        else{
+                            int rand = (int) (Math.random() * allInserts.size());
+                            T wrong = allInserts.remove(rand);
+                            file.print(option[j] + wrong + "\n");
+                        }
+                    }
+                }
+
+                //height
+                else if (type == 5){
+                    file.write("If the following " + allInserts + " is inserted into a "+obj.toString()+
+                            " then the height of the tree is:\n");
+                    for (int j = 0; j < option.length; ++j) {
+                        if (j == index)
+                            file.print("*"+option[j] + heightsize[2] + "\n");
+                        else{
+                            int rand = (int) (Math.random() * allInserts.size());
+                            while (rand == 2)
+                                rand = (int) (Math.random() * allInserts.size());
+                            file.print(option[j] + heightsize[rand] + "\n");
+                        }
+                    }
+                }
+
+                //size
+                else if (type == 6){
+                    file.write("If the following " + allInserts + " is inserted into a "+obj.toString()+
+                            " then the size of the tree is:\n");
+                    for (int j = 0; j < option.length; ++j) {
+                        if (j == index)
+                            file.print("*"+option[j] + heightsize[3] + "\n");
+                        else{
+                            int rand = (int) (Math.random() * allInserts.size());
+                            while (rand == 2)
+                                rand = (int) (Math.random() * allInserts.size());
+                            file.print(option[j] + heightsize[rand] + "\n");
+                        }
+                    }
+                }
+                emptyTree(obj);
                 insert((int)(Math.random()*3+6), obj);
                 file.println("E.  None of the answers are correct.\n#randomize\n");
                 file.flush();
@@ -469,48 +526,79 @@ public class Driver<T extends Comparable<? super T>>{
             file.close();
         }
         catch (IOException E){
-            System.out.println("Error. Exiting now.");
-            File label = new File("MCQuestions/", fileName + ".txt");
+            System.out.println("Error. Try Again.");
+            File label = new File("MultipleChoice/", fileName + ".txt");
             label.delete();
         }
     }
 
-    private void trueFalse(int total, Object obj, String fileName, int type){
-        try {
-            File label = new File("TrueFalse/", fileName + ".txt");   //folder must already exits
-            if (label.createNewFile())
-                System.out.println(fileName + " has been created");
-            else{
-                System.out.println(fileName + " already exists.");
-                fileName = changeFileName("MCQuestions", fileName);
-                label = new File("TrueFalse/", fileName + ".txt");
-                label.createNewFile();
-                System.out.println(fileName + " has been created instead.");
-            }
+    private void emptyTree(Object obj){
+        if (obj instanceof BinarySearchTree)
+            bst.clearTree();
+        else if(obj instanceof AVLTree)
+            avl.clearTree();
+        else if(obj instanceof RedBlackTree)
+            rbt.clearTree();
+        else if(obj instanceof BinaryHeap){
+            if (obj instanceof MaxHeap)
+                bheap = (MaxHeap<T>) obj;
+            else if (obj instanceof MinHeap)
+                bheap = (MinHeap<T>) obj;
+            bheap.clearTree();
         }
-        catch(IOException e){
-            System.out.println("An error occurred. Exiting");
-            System.exit(0);
-        }
+        allInserts.clear();
+    }
+
+    private void treeTrueFalse(int total, Object obj, String fileName, int type){
+        fileName = createNewToFFile(fileName);
         try {
             PrintWriter file = new PrintWriter(new FileWriter("TrueFalse/" + fileName + ".txt", true));   //windows forward slash
-            allInserts.clear();
+            emptyTree(obj);
+            String[] traversal = {"pre-order", "post-order"};
             insert((int)(Math.random()*3+6), obj);
             for (int i = 0; i < total; i++) {
                 file.println("Question " + (i+1) + " (2 points)");
-                int torf = (int) (Math.random() * 2);
-                int[] sh = {3, 4, 5, 6, 7, 8};
+                int TorF = (int) (Math.random() * 2);
+                int[] sh = {height(obj)-1, size(obj)-1, height(obj), size(obj), size(obj)+1, height(obj)+1};
                 int randi = (int)(Math.random()*6);
-                if (torf == 0)
+                if (TorF == 0)
                     printAllNodes(obj);
                 else printLevelOrder(obj);
                 if (type == 1) {
+                    int traversalArrPos = (int)(Math.random()*2);
+                    if (TorF == 0) printPreOrder(obj);
+                    else printPostOrder(obj);
+                    file.write("If the following " + allInserts + " is inserted inside a "+obj.toString()+
+                            " then the " + traversal[traversalArrPos] + " traversal will be "+travel+"\n");
+                    if (TorF == traversalArrPos){
+                        file.print("*True\n");
+                        file.println("False\n");
+                    }
+                    else{file.print("True\n");
+                        file.println("*False\n");}
+                }
+                else if (type == 2) {
+                    int traversalArrPos = (int)(Math.random()*2);
+                    int randomElement = (int)(Math.random()*allInserts.size());
+                    delete(allInserts.get(randomElement), obj);
+                    if (TorF == 0) printPreOrder(obj);
+                    else printPostOrder(obj);
+                    file.write("If we delete " + allInserts.get(randomElement) + " from a "+obj.toString()+" containing " +allInserts +
+                        ", then the new tree in " + traversal[traversalArrPos] + " traversal is: "+ travel +"\n");
+                    if (TorF == traversalArrPos){
+                        file.print("*True\n");
+                        file.println("False\n");
+                    }
+                    else{file.print("True\n");
+                        file.println("*False\n");}
+                }
+                else if (type == 3) {
 					/*
                     Generate insert TrueFalse of the specified pool size for the given data structure
                      */
                     file.write("If the following " + allInserts + " is inserted into a "+obj.toString()+
                             " then the root is " + travel.get(0) + ".\n");
-                    if (torf==1){
+                    if (TorF==0){
                         file.print("True\n");
                         file.println("*False\n");
                     }
@@ -519,13 +607,13 @@ public class Driver<T extends Comparable<? super T>>{
                         file.println("False\n");
                     }
                 }
-                else if(type == 2){
+                else if(type == 4){
 					/*
-                    Generate delete MCQuestions of the specified pool size for the given data structure
+                    Generate delete MultipleChoice of the specified pool size for the given data structure
                      */
                     file.write("If the following " + allInserts + " is inserted into a "+obj.toString()+
                             " then " + travel.get(0) + " is a leaf.\n");
-                    if (torf==0){
+                    if (TorF==1){
                         file.print("True\n");
                         file.println("*False\n");
                     }
@@ -534,10 +622,10 @@ public class Driver<T extends Comparable<? super T>>{
                         file.println("False\n");
                     }
                 }
-                else if (type==3){
+                else if (type==5){
                     file.write("If the following " + allInserts + " is inserted into a "+obj.toString()+
                             " then the height of the tree is " + sh[randi] + ".\n");
-                    if (randi == height(obj)){
+                    if (sh[randi] == height(obj)){
                         file.print("*True\n");
                         file.println("False\n");
                     }
@@ -546,10 +634,10 @@ public class Driver<T extends Comparable<? super T>>{
                         file.println("*False\n");
                     }
                 }
-                else if (type==4){
+                else if (type==6){
                     file.write("If the following " + allInserts + " is inserted into a "+obj.toString()+
                             " then the height of the tree is " + sh[randi] + ".\n");
-                    if (randi == size(obj)){
+                    if (sh[randi] == size(obj)){
                         file.print("*True\n");
                         file.println("False\n");
                     }
@@ -558,7 +646,7 @@ public class Driver<T extends Comparable<? super T>>{
                         file.println("*False\n");
                     }
                 }
-                allInserts.clear();// inserts a * before the correct answer
+                emptyTree(obj);
                 insert((int)(Math.random()*3+6), obj);
                 file.flush();
             }
@@ -566,18 +654,201 @@ public class Driver<T extends Comparable<? super T>>{
             file.close();
         }
         catch (IOException E){
-            System.out.println("Error. Exiting now.");
+            System.out.println("Error. Try Again.");
             File label = new File("TrueFalse/", fileName + ".txt");
             label.delete();
         }
     }
 
+    private void graphPool(int format, int type, String name, int path_or_cost){
+        ArrayList<String> otherNodes;
+        if (type == 1){
+            digraph.emptyGraphMap();
+            digraph.insert("v0","v1", Graph.infinity);
+            digraph.insert("v0","v3", Graph.infinity);
+            digraph.insert("v1","v3", Graph.infinity);
+            digraph.insert("v1","v4", Graph.infinity);
+            digraph.insert("v2","v0", Graph.infinity);
+            digraph.insert("v2","v5", Graph.infinity);
+            digraph.insert("v3", "v2", Graph.infinity);
+            digraph.insert("v3", "v4", Graph.infinity);
+            digraph.insert("v3","v5", Graph.infinity);
+            digraph.insert("v3","v6", Graph.infinity);
+            digraph.insert("v4","v6", Graph.infinity);
+            digraph.insert("v6","v5", Graph.infinity);
+            otherNodes = new ArrayList<>(Arrays.asList("v0", "v1", "v3", "v4", "v5"));
+            digraph.type = "unweighted";
+            if (format == 1)
+                graphMCQ(path_or_cost, name, digraph, otherNodes);
+            //else if (format  == 2)
+            //else if (format == 3)
+        }
+        else if(type == 2){
+            digraph.emptyGraphMap();
+            digraph.insert("Algeria", "Belgium", 7.0);
+            digraph.insert("Algeria", "Chile", 3.0);
+            digraph.insert("Algeria", "Denmark", 4.0);
+            digraph.insert("Belgium", "Greece", 3.0);
+            digraph.insert("Chile", "France", 4.0);
+            digraph.insert("Denmark", "France", 2.0);
+            digraph.insert("Denmark", "Ethiopia", 7.0);
+            digraph.insert("France", "Greece", 5.0);
+            digraph.insert("Ethiopia", "Greece", 2.0);
+            otherNodes = new ArrayList<>(Arrays.asList("Belgium", "Chile", "Greece", "Denmark", "Ethiopia"));
+            digraph.type = "weighted";
+            if (format == 1)
+                graphMCQ(path_or_cost, name, digraph, otherNodes);
+            //else if (format  == 2)
+            //else if (format == 3)
+        }
+        else if(type == 3){
+            digraph.emptyGraphMap();
+            digraph.insert("Jan", "Feb", -5.00);
+            digraph.insert("Jan", "Apr", 7.00);
+            digraph.insert("Jan", "May", 2.00);
+            digraph.insert("Feb", "Mar", 5.00);
+            digraph.insert("Mar", "Jan", 1.00);
+            digraph.insert("Mar", "Apr", -4.00);
+            digraph.insert("Apr", "May", 3.00);
+            digraph.insert("May", "Mar", 1.00);
+            digraph.insert("May", "Feb", 6.00);
+            otherNodes = new ArrayList<>(Arrays.asList("Feb", "Mar", "May"));
+            digraph.type = "negative";
+            if (format == 1)
+                graphMCQ(path_or_cost, name, digraph, otherNodes);
+            //else if (format  == 2)
+            //else if (format == 3)
+        }
+        else if(type == 4){
+            digraph.emptyGraphMap();
+            digraph.insert("A", "B", 4);
+            digraph.insert("A", "C", 8);
+            digraph.insert("B", "C", 9);
+            digraph.insert("B", "D", 10);
+            digraph.insert("C", "D", 7);
+            otherNodes = new ArrayList<>(Arrays.asList("B", "C"));
+            digraph.type = "acyclic";
+            if (format == 1)
+                graphMCQ(path_or_cost, name, digraph, otherNodes);
+            //else if (format  == 2)
+            //else if (format == 3)
+        }
+        else if(type == 5){
+            //run the first four types using a temp file name.
+            //copy them into the file for this type question.
+        }
+        else{
+            System.out.println("Enter a valid Question Format from the Menu.");
+        }
+    }
+
+    private String createNewMCQFile(String textFile){
+        try {
+            File label = new File("MultipleChoice/", textFile + ".txt");   //folder must already exits
+            if (label.createNewFile())
+                System.out.println(textFile + " has been created");
+            else{
+                System.out.println(textFile + " already exists.");
+                String dataStruc = textFile.substring(0, textFile.indexOf("/"));
+                String dir = "MultipleChoice/"+ dataStruc;
+                textFile = dataStruc + "/" + changeFileName(dir, textFile.substring(textFile.indexOf("/")+1));
+                label = new File("MultipleChoice/", textFile + ".txt");
+                label.createNewFile();
+                System.out.println(textFile.substring(textFile.indexOf("/")+1) + " has been created instead.");
+            }
+            return textFile;
+        }
+        catch(IOException e){
+            System.out.println("An error occurred. Exiting");
+            System.exit(0);
+        }
+        return textFile;
+    }
+
+    private String createNewToFFile(String textFile){
+        try {
+            File label = new File("TrueFalse/", textFile + ".txt");   //folder must already exits
+            if (label.createNewFile())
+                System.out.println(textFile + " has been created");
+            else{
+                System.out.println(textFile + " already exists.");
+                String dataStruc = textFile.substring(0, textFile.indexOf("/"));
+                String dir = "TrueFalse/"+dataStruc;
+                textFile = dataStruc + "/" +changeFileName(dir, textFile);
+                label = new File("TrueFalse/", textFile + ".txt");
+                label.createNewFile();
+                System.out.println(textFile + " has been created instead.");
+            }
+            return textFile;
+        }
+        catch(IOException e){
+            System.out.println("An error occurred. Exiting");
+            System.exit(0);
+        }
+        return textFile;
+    }
+
+    private void graphMCQ(int poc, String fname, Graph dg, ArrayList<String> others) {
+        fname = createNewMCQFile(fname);
+        try {
+            PrintWriter file = new PrintWriter(new FileWriter("MultipleChoice/"+fname+".txt", true));   //windows forward slash
+            String[] option = {"A.  ", "B.  ", "C.  ", "D.  "};
+            int index = Math.min(others.size(), (int) (Math.random()*4));
+            if (poc == 1){
+                if (dg.type.equals("unweighted")) dg.bfs(dg.startPoint());
+                else if (dg.type.equals("weighted")) dg.dijkstra(dg.startPoint());
+                else if (dg.type.equals("negative")) dg.bellmanFord(dg.startPoint());
+                else if (dg.type.equals("acyclic")) dg.topological(dg.startPoint());
+                file.write("What is the cost of the path, from "+dg.startPoint()+" to "+dg.endPoint()+", in the displayed graph?\n");
+                int minIterations = Math.min(others.size()+1, option.length);
+                for (int i=0; i<minIterations; i++){
+                    int randInt = (int)(Math.random()*others.size());
+                    //System.out.println("RANDINT = "+randInt+" & ITERATOR IS "+i+" + ARRAY SIZE: "+others.size());
+                    if (i == index)
+                        file.println("*"+option[i]+dg.getNodeValue(dg.endPoint()));
+                    else
+                        file.println(option[i]+dg.getNodeValue(others.remove(randInt)));
+                }
+            }
+            else if (poc == 2){
+                file.write("What is the shortest path (using the most suitable algorithm) from "+dg.startPoint()+" to "+dg.endPoint()+" in the graph show?\n");
+                for (int i=0; i<others.size()+1; i++){
+                    //Wont work. need new strategy
+                    //consider negative edges or graphs with cycles
+                    /*if (i==0)
+                        dg.bfs(dg.startPoint());
+                    else if (i==1)
+                        dg.dijkstra(dg.startPoint());
+                    else if (i==2)
+                        dg.bellmanFord(dg.startPoint());
+                    else if (i==3)
+                        dg.topological(dg.startPoint());
+                    if (i == index)
+                        file.print("*");
+                    file.println(option[i]+ dg.printPath(dg.endPoint()));*/
+                }
+            }
+            file.println("#randomize\n");
+            file.flush();
+            file.close();
+        }
+        catch (IOException E){
+            System.out.println("Error. Try Again.");
+            File label = new File("MultipleChoice/", fname + ".txt");
+            label.delete();
+        }
+    }
+
     /**
-    Takaedza
+    Group 2
     Terminal UI
      **/
     public static void main (String [] args){
-	    Scanner in = new Scanner(System.in);
+        Driver<Integer> intTree = new Driver<Integer>(0);
+        Driver<String> strTree = new Driver<String>("");
+        Driver<Float> fltTree = new Driver<Float>((float) 0.0);
+        Driver<Character> chrTree = new Driver<Character>(' ');
+        Scanner in = new Scanner(System.in);
         int choice;
 
         do{
@@ -593,7 +864,8 @@ public class Driver<T extends Comparable<? super T>>{
                             "1. Binary Search Tree\n" +
                             "2. AVL Tree\n" +
                             "3. Red Black Tree\n" +
-                            "4. Binary Heap\n");
+                            "4. Binary Heap\n"+
+                            "5. Graph");
                     int dataStructure = in.nextInt();
 
                     System.out.println("\nChoose Question format. (Enter a number)\n" +
@@ -602,17 +874,7 @@ public class Driver<T extends Comparable<? super T>>{
                             "3. Fill In Numeric");
                     int format = in.nextInt();
 
-                    if (format == 1)
-                        System.out.println("Choose Question. (Enter a number)\n" +
-                                        "1. Insertion - Traversal\n" +
-                                        "2. Deletion - Traversal\n");
-                    else if (format == 2)
-                        System.out.println("Choose Question. (Enter a number)\n" +
-                                "1. Question about the root\n" +
-                                "2. Question about the leaf\n" +
-                                "3. Question about the tree height\n" +
-                                "4. Question about the tree size");
-                    else {
+                    if (dataStructure != 5) {
                         System.out.println("Choose Question. (Enter a number)\n" +
                                 "1. Insertion - Traversal\n" +
                                 "2. Deletion - Traversal\n" +
@@ -620,123 +882,126 @@ public class Driver<T extends Comparable<? super T>>{
                                 "4. Question about the leaf\n" +
                                 "5. Question about the tree height\n" +
                                 "6. Question about the tree size");
-                    }
-                    int type = in.nextInt();
+                        int type = in.nextInt();
 
-                    System.out.println("Select the type of data you wish to store:\n" +
-                            "1. Integer\n" +
-                            "2. String\n" +
-                            "3. Float\n" +
-                            "4. Char\n");
-                    int dataStored = in. nextInt();
+                        System.out.println("Enter number of questions (pool size).");
+                        int poolSize = in.nextInt();
 
-                    System.out.println("Enter number of questions (pool size).");
-                    int poolSize = in.nextInt();
+                        String filename = "";
 
-                    String filename = "";
-                    switch (dataStructure) {
-                        case 1:
-                            filename = "BST_";
-                            break;
-                        case 2:
-                            filename = "AVL_";
-                            break;
-                        case 3:
-                            filename = "RedBlack_";
-                            break;
-                        case 4:
-                            System.out.println("Enter a number:\n1. Binary Min Heap\n2. Binary Max Heap");
-                            int minOrMax = in.nextInt();
-                            BinaryHeap(format, type, poolSize, minOrMax, filename);
-                            break;
-                    }
-
-                        switch(format){
+                        switch (dataStructure) {
                             case 1:
-                                filename += "MCQ_";
+                                filename = "BinarySearchTree/";
                                 break;
                             case 2:
-                                filename += "TrueFalse_";
+                                filename = "AVLTree/";
                                 break;
                             case 3:
-                                filename += "FillIn_";
+                                filename = "RedBlackTree/";
+                                break;
+                            case 4:
+                                System.out.println("Enter a number:\n1. Binary Min Heap\n2. Binary Max Heap");
+                                int minOrMax = in.nextInt();
+                                BinaryHeap(format, type, poolSize, minOrMax, filename);
                                 break;
                         }
 
-                        if (format==1){
-                            switch (type) {
-                                case 1:
-                                    filename += "Insertion_";
-                                    break;
-                                case 2:
-                                    filename += "Deletion_";
-                                    break;
-                            }
-                        }
-                        else if (format==2){
-                            switch (type){
-                                case 1:
-                                    filename += "root_";
-                                    break;
-                                case 2:
-                                    filename += "leaf_";
-                                    break;
-                                case 3:
-                                    filename += "height_";
-                                    break;
-                                case 4:
-                                    filename += "size_";
-                            }
-                        }
-                        else{
-                            switch (type){
-                                case 1:
-                                    filename += "Insertion_";
-                                    break;
-                                case 2:
-                                    filename += "Deletion_";
-                                    break;
-                                case 3:
-                                    filename += "root_";
-                                    break;
-                                case 4:
-                                    filename += "leaf_";
-                                    break;
-                                case 5:
-                                    filename += "height_";
-                                    break;
-                            }
+                        switch (type){
+                            case 1:
+                                filename += "Insertion_";
+                                break;
+                            case 2:
+                                filename += "Deletion_";
+                                break;
+                            case 3:
+                                filename += "root_";
+                                break;
+                            case 4:
+                                filename += "leaf_";
+                                break;
+                            case 5:
+                                filename += "height_";
+                                break;
                         }
 
-                        switch (dataStored){
+
+                        System.out.println("Select the type of data you wish to store:\n" +
+                                "1. Integer\n" +
+                                "2. String\n" +
+                                "3. Float\n" +
+                                "4. Char\n");
+                        int dataStored = in.nextInt();
+                        switch (dataStored) {
                             case 1:
-                                filename += "Numbers_PoolSize_"+poolSize;
-                                Driver<Integer> intTree = new Driver<Integer>(0);
+                                filename += "Numbers_" + poolSize + "Qs";
                                 intTree.poolType(format, type, poolSize, filename);
                                 break;
                             case 2:
-                                filename += "Words_PoolSize_"+poolSize;
-                                Driver<String> strTree = new Driver<String>("");
+                                filename += "Words_" + poolSize + "Qs";
                                 strTree.poolType(format, type, poolSize, filename);
                                 break;
                             case 3:
-                                filename += "Decimals_PoolSize_"+poolSize;
-                                Driver<Float> fltTree = new Driver<Float>((float)0.0);
+                                filename += "Decimals_" + poolSize + "Qs";
+
                                 fltTree.poolType(format, type, poolSize, filename);
                                 break;
                             case 4:
-                                filename += "Letters_PoolSize_"+poolSize;
-                                Driver<Character> chrTree = new Driver<Character>(' ');
+                                filename += "Letters_" + poolSize + "Qs";
                                 chrTree.poolType(format, type, poolSize, filename);
                                 break;
                         }
+                    }
+                    else {
+                        System.out.println("Which directed graph type (which algorithm) would you like?\n" +
+                                "1. Unweighted (Breadth First Search)\n" +
+                                "2. Weighted (Dijkstra)\n" +
+                                "3. Negative Weights (Bellman-Ford)\n" +
+                                "4. Acyclic (Topological Sort)\n" +
+                                "5. All of the above\n");
+                        int graphType = in.nextInt();
+                        System.out.println("Do you want questions on...\n" +
+                                "1. Path Cost\n" +
+                                "2. Path Sequence\n");
+                        int costOrPath = in.nextInt();
+                        String file = "Graph/";
+                        switch (graphType){
+                            case 1:
+                                file += "UnweightedDigraph";
+                                intTree.graphPool(format, graphType, file, costOrPath);
+                                break;
+                            case 2:
+                                file += "WeightedDigraph";
+                                intTree.graphPool(format, graphType, file, costOrPath);
+                                break;
+                            case 3:
+                                file += "NegativeDigraph";
+                                intTree.graphPool(format, graphType, file, costOrPath);
+                                break;
+                            case 4:
+                                file += "AcyclicDigraph";
+                                intTree.graphPool(format, graphType, file, costOrPath);
+                                break;
+                            case 5:
+                                file += "EachDigraph";
+                                intTree.graphPool(format, graphType, file, costOrPath);
+                                break;
+                        }
+                        /*switch (format){
+                            case 1:
+                                graphMCQ(graphType, file);
+                            case 2:
+                                graphTrueFalse(graphType, file);
+                            case 3:
+                                graphFillIn(graphType, file);
+                        }*/
+                    }
                     break;
                 case 2:
                     /*
                     List previously generated files
                      */
                     System.out.print("\n");
-                    File folder = new File("MCQuestions");
+                    File folder = new File("MultipleChoice");
                     File[] files = folder.listFiles();
                     int i = 0;
                     if(files != null){
@@ -771,13 +1036,13 @@ public class Driver<T extends Comparable<? super T>>{
 
         if(minOrMax == 1){
             heap = new MinHeap<>();
-            filename = "MinHeap_"+filename;
+            filename = "BinaryHeapTree/MinHeap/"+filename;
         }else{
             heap = new MaxHeap<>();
-            filename = "MaxHeap_"+filename;
+            filename = "BinaryHeapTree/MaxHeap/"+filename;
         }
         if(format == 1)
-            tree.MCQ(poolSize, heap, filename, type);
+            tree.treeMCQ(poolSize, heap, filename, type);
     }
 
     private static void HashTable(){
