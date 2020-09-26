@@ -1,4 +1,4 @@
-package QuizGen;
+package DataStructures;
 
 public class BTQueue<dataType>
 {   

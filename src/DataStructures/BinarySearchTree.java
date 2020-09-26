@@ -2,7 +2,8 @@
 //hussain for the interface
 //https://www.softwaretestinghelp.com/binary-search-tree-in-cpp/
 //https://www.geeksforgeeks.org/binary-search-tree-set-1-search-and-insertion/
-package QuizGen;
+
+package DataStructures;
 
 public class BinarySearchTree<dataType extends Comparable<? super dataType>> extends BinaryTree<dataType>
 {
