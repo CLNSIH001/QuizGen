@@ -42,6 +42,4 @@ clean:
 	  @rm -Rf doc
 
 cleanPools:
-	rm MultipleChoice/*Tree/*.txt MultipleChoice/Graph/*.txt
-	rm TrueFalse/*Tree/*.txt
-	rm FillIn/*Tree/*.txt
+	rm */*Tree/*.txt */Graph/*.txt */BinaryHeap/*Heap/*.txt
