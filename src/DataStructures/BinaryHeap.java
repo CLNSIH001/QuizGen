@@ -7,13 +7,13 @@ import java.util.Vector;
 
 public abstract class BinaryHeap<T extends Comparable<? super T>> extends BinaryTree<T>{
 
-    Vector<BinaryHeapNode<T>> heap; // vector to store heap elements
+    Vector<BinaryTreeNode<T>> heap; // vector to store heap elements
     private ArrayList<T> path = new ArrayList<>();
 
-    class BinaryHeapNode<T>{
+    /*class BinaryTreeNode<T>{
         T item;
 
-        BinaryHeapNode(T item){
+        BinaryTreeNode(T item){
             this.item = item;
         }
 
@@ -22,7 +22,7 @@ public abstract class BinaryHeap<T extends Comparable<? super T>> extends Binary
             return item.toString();
         }
 
-    }
+    }*/
 
     /**
      * @param i item position
@@ -41,7 +41,9 @@ public abstract class BinaryHeap<T extends Comparable<? super T>> extends Binary
      * @return left child of item at index
      */
     int leftChild(int index){
-        return (2 * index + 1);
+        int leftIndex = 2 * index + 1;
+        heap.get(index).left = heap.get(leftIndex);
+        return leftIndex;
     }
 
     /**
@@ -49,7 +51,9 @@ public abstract class BinaryHeap<T extends Comparable<? super T>> extends Binary
      * @return right child of item at index
      */
     int rightChild(int index){
-        return (2 * index + 2);
+        int rightIndex = 2 * index + 1;
+        heap.get(index).right = heap.get(rightIndex);
+        return rightIndex;
     }
 
     /**
@@ -59,7 +63,7 @@ public abstract class BinaryHeap<T extends Comparable<? super T>> extends Binary
      */
     void swap(int x, int y){
         // swap with child having greater value
-        BinaryHeapNode<T> temp = heap.get(x);
+        BinaryTreeNode<T> temp = heap.get(x);
         heap.setElementAt(heap.get(y), x);
         heap.setElementAt(temp, y);
     }
@@ -69,18 +73,24 @@ public abstract class BinaryHeap<T extends Comparable<? super T>> extends Binary
      */
     int size() { return heap.size(); }
 
+    /**
+     * check if heap is empty or not
+     * @return true if empty else false
+     */
+    Boolean isEmpty() { return heap.isEmpty(); }
+
     abstract void heapifyDown(int i);
 
     abstract void heapifyUp(int i);
 
     public void insert(T item){
-        insert(new BinaryHeapNode<>(item));
+        insert(new BinaryTreeNode<>(item,null,null));
     }
     /**
      * insert specified key into the heap
      * @param key to be inserted
      */
-    private void insert(BinaryHeapNode<T> key){
+    private void insert(BinaryTreeNode<T> key){
         // insert the new element to the end of the vector
         heap.addElement(key);
 
@@ -95,14 +105,14 @@ public abstract class BinaryHeap<T extends Comparable<? super T>> extends Binary
      * @return removed item
      * @throws Exception if null is found
      */
-    public BinaryHeapNode<T> delete() throws Exception {
+    public BinaryTreeNode<T> delete() throws Exception {
         // if heap is empty, throw an exception
         if (size() == 0) {
             throw new Exception("Index is out of range (Heap underflow)");
         }
 
         // element with highest priority
-        BinaryHeapNode<T> root = heap.firstElement();	// or heap.get(0);
+        BinaryTreeNode<T> root = heap.firstElement();	// or heap.get(0);
 
         // replace the root of the heap with the last element of the vector
         heap.setElementAt(heap.lastElement(), 0);
@@ -121,7 +131,7 @@ public abstract class BinaryHeap<T extends Comparable<? super T>> extends Binary
      * @return item
      * @throws Exception if null is found
      */
-    private BinaryHeapNode<T> peek() throws Exception {
+    BinaryTreeNode<T> peek() throws Exception {
         // if heap has no elements, throw an exception
         if (size() == 0) {
             throw new Exception("Index out of range (Heap underflow)");
@@ -143,23 +153,34 @@ public abstract class BinaryHeap<T extends Comparable<? super T>> extends Binary
         System.out.println();
     }
 
+    Boolean contains(T item){
+        return contains(new BinaryTreeNode<>(item,null,null));
+    }
+    /**
+     * @param i: item being searched
+     * @return true if queue contains the specified element
+     */
+    private Boolean contains(BinaryTreeNode<T> i) {
+        return heap.contains(i);
+    }
+
     /**
      * Add node to ArrayList
      * @param node: node to be added
      */
-    private void visit(BinaryHeapNode<T> node) {
+    /*private void visit(BinaryTreeNode<T> node) {
         path.add(node.item);
-    }
+    }*/
 
     /**
      * @return ArrayList of node keys in preOrder
      */
-    public ArrayList<T> preOrder() {
+    /*ArrayList<T> preOrder() {
         path.clear();
         try{
             preOrder (peek());
         }catch(Exception e){
-            System.out.println("Pre Order error" + e);
+            System.out.println("Error in Binary Heap pre order\n"+e);
         }
         return path;
     }
@@ -167,33 +188,20 @@ public abstract class BinaryHeap<T extends Comparable<? super T>> extends Binary
      * Get the preOrder formation of nodes recursively
      * @param node: root node
      */
-    private void preOrder(BinaryHeapNode<T> node)
+    /*private void preOrder(BinaryTreeNode<T> node)
     {
-
         if (node != null)
         {
             visit (node);
-            BinaryHeapNode<T> lnode;
-            if(leftChild(heap.indexOf(node)) >= heap.size()){
-                lnode = null;
-            }else{
-                lnode = heap.get(leftChild(heap.indexOf(node)));
-            }
-            preOrder (lnode);
-
-            if(rightChild(heap.indexOf(node)) >= heap.size()){
-                lnode = null;
-            }else{
-                lnode = heap.get(rightChild(heap.indexOf(node)));
-            }
-            preOrder (lnode);
+            preOrder (heap.get(leftChild(heap.indexOf(node))));
+            preOrder (heap.get(rightChild(heap.indexOf(node))));
         }
     }
 
     /**
      * @return ArrayList of node keys in postOrder
      */
-    public ArrayList<T> postOrder()
+    /*ArrayList<T> postOrder()
     {
         path.clear();
         try{
@@ -207,24 +215,12 @@ public abstract class BinaryHeap<T extends Comparable<? super T>> extends Binary
      * Get the postOrder formation of nodes recursively
      * @param node: root node
      */
-    private void postOrder(BinaryHeapNode<T> node)
+    /*private void postOrder(BinaryTreeNode<T> node)
     {
         if (node != null)
         {
-            BinaryHeapNode<T> lnode;
-            if(leftChild(heap.indexOf(node)) >= heap.size()){
-                lnode = null;
-            }else{
-                lnode = heap.get(leftChild(heap.indexOf(node)));
-            }
-            postOrder (lnode);
-
-            if(rightChild(heap.indexOf(node)) >= heap.size()){
-                lnode = null;
-            }else{
-                lnode = heap.get(rightChild(heap.indexOf(node)));
-            }
-            postOrder (lnode);
+            postOrder (heap.get(leftChild(heap.indexOf(node))));
+            postOrder (heap.get(rightChild(heap.indexOf(node))));
             visit (node);
         }
     }
@@ -232,7 +228,7 @@ public abstract class BinaryHeap<T extends Comparable<? super T>> extends Binary
     /**
      * @return ArrayList of node keys in inOrder
      */
-    public ArrayList<T> inOrder ()
+    /*ArrayList<T> inOrder ()
     {
         path.clear();
         try{
@@ -246,33 +242,20 @@ public abstract class BinaryHeap<T extends Comparable<? super T>> extends Binary
      * Get the inOrder formation of nodes recursively
      * @param node: root node
      */
-    private void inOrder(BinaryHeapNode<T> node)
+    /*private void inOrder(BinaryTreeNode<T> node)
     {
         if (node != null)
         {
-            BinaryHeapNode<T> lnode;
-            if(leftChild(heap.indexOf(node)) >= heap.size()){
-                lnode = null;
-            }else{
-                lnode = heap.get(leftChild(heap.indexOf(node)));
-            }
-            inOrder (lnode);
-
+            inOrder (heap.get(leftChild(heap.indexOf(node))));
             visit (node);
-
-            if(rightChild(heap.indexOf(node)) >= heap.size()){
-                lnode = null;
-            }else{
-                lnode = heap.get(rightChild(heap.indexOf(node)));
-            }
-            inOrder (lnode);
+            inOrder (heap.get(rightChild(heap.indexOf(node))));
         }
     }
 
     /**
      * @return ArrayList of node keys in levelOrder
      */
-    public ArrayList<T> levelOrder(){
+    /*ArrayList<T> levelOrder(){
         path.clear();
         try{
             levelOrder (peek());
@@ -285,36 +268,21 @@ public abstract class BinaryHeap<T extends Comparable<? super T>> extends Binary
      * Get the levelOrder formation of nodes recursively
      * @param startNode: root node
      */
-    private ArrayList<T> levelOrder (BinaryHeapNode<T> startNode)
+    /*private ArrayList<T> levelOrder (BinaryTreeNode<T> startNode)
     {
         path.clear();
-        Queue<BinaryHeapNode<T>> queue=new LinkedList<>();
+        Queue<BinaryTreeNode<T>> queue=new LinkedList<>();
         queue.add(startNode);
         while(!queue.isEmpty())
         {
-            BinaryHeapNode<T> tempNode=queue.poll();
-
-            BinaryHeapNode<T> lnode;
-            if(leftChild(heap.indexOf(tempNode)) >= heap.size()){
-                lnode = null;
-            }else{
-                lnode = heap.get(leftChild(heap.indexOf(tempNode)));
-            }
-
-            BinaryHeapNode<T> rnode;
-            if(rightChild(heap.indexOf(tempNode)) >= heap.size()){
-                rnode = null;
-            }else{
-                rnode = heap.get(rightChild(heap.indexOf(tempNode)));
-            }
-
+            BinaryTreeNode<T> tempNode=queue.poll();
             path.add(tempNode.item);
-            if(lnode!=null)
-                queue.add(lnode);
-            if(rnode!=null)
-                queue.add(rnode);
+            if(heap.get(leftChild(heap.indexOf(tempNode)))!=null)
+                queue.add(heap.get(leftChild(heap.indexOf(tempNode))));
+            if(heap.get(rightChild(heap.indexOf(tempNode)))!=null)
+                queue.add(heap.get(rightChild(heap.indexOf(tempNode))));
         }
         return path;
-    }
+    }*/
 
 }
