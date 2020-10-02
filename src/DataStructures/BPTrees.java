@@ -49,6 +49,34 @@ public class BPTrees{
             if (this.isLeaf == false)
                 pointers[j].printNodes();
         }
+
+        public void Drop(int k){
+            int i=0;
+            for (; i<totKeys; i++){
+                if (keys[i] == k){
+                    keys[i] = 0;
+                    break;
+                }
+            }
+            for (; i+1<totKeys; i++)
+                keys[i] = keys[i+1];
+            totKeys--;
+        }
+
+        public boolean fullEnough(){
+            int minKeysLeaf = (order-1)/2;
+            int minPointersLeaf = order/2;
+            if (isLeaf && totKeys > minKeysLeaf) return true;
+            else if (!isLeaf && countPointers() > minPointersLeaf) return true;
+            else return false;
+        }
+
+        public int countPointers(){
+            int i = 0;
+            for (; i<order; i++)
+                if (pointers[i] == null) break;
+            return i;
+        }
     }
 ///////////////////////////////////////////////////////////
 
@@ -179,7 +207,12 @@ public class BPTrees{
     }
 
     public void delete(int data) {
-
+        bpNode N = find(data);
+        N.Drop(data);
+        bpNode parent = N.parent;
+        if (N.fullEnough()) return;
+        //else if (canTakeFromSibling) return;
+        //else if (hasLeftSibling)      use parent node to do this
     }
 
     public void printNodes(){
