@@ -30,30 +30,24 @@ public class BPTrees{
         }
 
         // A function to traverse all nodes in a subtree rooted with this node
-        public void traverse() {
-
-            // There are n keys and n+1 children, travers through n keys
-            // and first n children
-            int i = 0;
-            //System.out.println(name + " and number of keys is " + totKeys+":");
-            for (; i < totKeys; i++) {
-
-                // If this is not leaf, then before printing key[i],
-                // traverse the subtree rooted with child C[i].
-                if (this.isLeaf == false) {
-                    if (pointers[i]==null)
-                        continue;
-                    pointers[i].traverse();
-                }
-                else {
-                    System.out.print("|");
-                    System.out.print(keys[i] + "|");
-                }
+        public void printNodes(){
+            int j = 0;
+            if (this.isLeaf == true)
+                System.out.print("Leaf");
+            else
+                System.out.print("Non-Leaf");
+            System.out.println(" with total Keys:" + totKeys);
+            for (int i=0; i < totKeys; i++){
+                System.out.print("|");
+                System.out.print(keys[i] + "|");
             }
             System.out.println();
-            // Print the subtree rooted with last child
+            for (; j < totKeys; j++){
+                if (this.isLeaf == false)
+                    pointers[j].printNodes();
+            }
             if (this.isLeaf == false)
-                pointers[i].traverse();
+                pointers[j].printNodes();
         }
     }
 ///////////////////////////////////////////////////////////
@@ -99,10 +93,12 @@ public class BPTrees{
         if (l == root){
             root = new bpNode(order, false);
             root.pointers[0] = l;
-            root.keys[0] = r.keys[0];
             root.pointers[1] = r;
-            root.totKeys++;
             l.parent = root; r.parent = root;
+            while (!r.isLeaf)
+                r = r.pointers[0];
+            root.keys[0] = r.keys[0];
+            root.totKeys++;
         }
         else{
             if (l.parent.totKeys < order - 1) {
@@ -121,9 +117,9 @@ public class BPTrees{
             }
             else {
                 bpNode u = new bpNode(order, false);
+                u.pointers[0] = r;  //place holder for the new leaf node from the split in the insertion method
                 split(l.parent, u, r.keys[0]);
                 putInParent(l.parent, u);
-                u.pointers[u.totKeys] = r;
             }
         }
     }
@@ -131,7 +127,7 @@ public class BPTrees{
     private void split(bpNode l, bpNode r, int d){
         //Get the keys in the correct order and empty left node
         int[] tempK = new int[order];
-        bpNode[] tempP = new bpNode[order];
+        bpNode[] tempP = new bpNode[order+1];
         for (int i=0; i<l.totKeys; i++){
             tempK[i] = l.keys[i];
             tempP[i] = l.pointers[i];
@@ -141,23 +137,24 @@ public class BPTrees{
         l.pointers[order-1] = null;
         int pos = l.totKeys-1; l.totKeys = 0;
         for (; pos>=0; pos--){
-            if (tempK[pos]>d)
+            if (tempK[pos]>d) {
                 tempK[pos+1] = tempK[pos];
+                tempP[pos+2] = tempP[pos+1];
+            }
             else break;
         }
         tempK[pos+1] =  d;
+        tempP[pos+2] = r.pointers[0];
 
         //Now to do the actual splitting
         int num = order/2;
         if (l.isLeaf) {
             for (int j=0; j<num; j++){
                 l.keys[j] = tempK[j];
-                l.pointers[j] = tempP[j];
                 l.totKeys++;
             }
             for (int i = 0; num < order; num++) {
                 r.keys[i] = tempK[num];
-                r.pointers[i] = tempP[num];
                 ++r.totKeys;
                 ++i;
             }
@@ -170,13 +167,14 @@ public class BPTrees{
                 l.totKeys++;
             }
             l.pointers[num] = tempP[num];
-            ++num;
-            for (int i=0; num < order; num++) {
+            ++num; int i=0;
+            for (; num < order; num++) {
                 r.pointers[i] = tempP[num];
                 r.keys[0] = tempK[num];
                 ++r.totKeys;
                 ++i;
             }
+            r.pointers[i] = tempP[num];
         }
     }
 
@@ -184,25 +182,31 @@ public class BPTrees{
 
     }
 
-    public void traverse() {
+    public void printNodes(){
         if (root != null)
-            root.traverse();
+            root.printNodes();
         System.out.println();
     }
 
     public static void main(String[] args){
-        BPTrees bpt = new BPTrees(3);
-        bpt.insert(5);
-        bpt.insert(7);
-        bpt.insert(3);
-        bpt.insert(2);
-        bpt.insert(8);
-        bpt.traverse();
-        System.out.println("====================================");
-        bpt.insert(12);
+        BPTrees bpt = new BPTrees(4);
+        bpt.insert(20);
         bpt.insert(1);
-        bpt.traverse();
-
+        bpt.insert(4);
+        bpt.insert(16);
+        bpt.insert(25);
+        bpt.insert(9);
+        bpt.insert(13);
+        System.out.println();
+        bpt.insert(15);
+        bpt.insert(10);
+        bpt.insert(11);
+        bpt.printNodes();
+        System.out.println();
+        System.out.println("====================================================");
+        System.out.println();
+        bpt.insert(12);
+        bpt.printNodes();
     }
 }
 
