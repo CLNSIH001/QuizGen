@@ -912,16 +912,16 @@ public class Driver<T extends Comparable<? super T>>{
                                 filename = "RedBlackTree/";
                                 break;
                             case 4:
-                                filename = "BinaryHeapTree/";
+                                filename = "BinaryHeap/";
                                 System.out.println("Enter a number:\n1. Binary Min Heap\n2. Binary Max Heap");
                                 int minOrMax = in.nextInt();
                                 //BinaryHeap(format, type, poolSize, minOrMax, filename);
                                 if(minOrMax == 1){
                                     heapType = 0;
-                                    filename += "MinHeap_";
+                                    filename += "MinHeap/";
                                 }else{
                                     heapType = 1;
-                                    filename += "MaxHeap_";
+                                    filename += "MaxHeap/";
                                 }
                                 break;
                         }
