@@ -11,7 +11,8 @@ JFLAGS = -d $(BINDIR) -cp $(BINDIR)
 need := $(wildcard src/DataStructures/*Node.java)
 need += $(filter-out src/DataStructures/BinarySearchTree.java $(need), $(wildcard src/DataStructures/B*e.java))
 dataStr := $(filter-out $(need), $(wildcard src/DataStructures/*.java))
-classes := $(need:%.java=%.class) $(dataStr:%.java=%.class) src/Driver.class
+classes = $(need:%.java=%.class) $(dataStr:%.java=%.class) src/Driver.class
+classes := $(patsubst src/%, %, $(classes))
 
 vpath %.java $(SRCDIR)
 vpath %.class $(BINDIR)
@@ -41,6 +42,4 @@ clean:
 	  @rm -Rf doc
 
 cleanPools:
-	rm MultipleChoice/*Tree/*.txt MultipleChoice/Graph/*.txt
-	rm TrueFalse/*Tree/*.txt
-	rm FillIn/*Tree/*.txt
+	rm */*Tree/*.txt */Graph/*.txt */BinaryHeap/*Heap/*.txt
