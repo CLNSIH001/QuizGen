@@ -69,7 +69,7 @@ public class Driver<T extends Comparable<? super T>>{
             /*if (format == 3)
                 fillIn(poolSize, rbt, filename, type);*/
         }
-        else if (filename.substring(0, filename.indexOf("/")).equals("BinaryHeapTree")){
+        else if (filename.substring(0, filename.indexOf("/")).equals("BinaryHeap")){
             switch(heapType){
                 case 0:
                     bheap = new MinHeap<>();
