@@ -71,4 +71,12 @@ public class MaxHeap<T extends Comparable<? super T>> extends BinaryHeap<T>{
             heapifyUp(parent(i));
         }
     }
+
+    /**
+     * @return Name of tree
+     */
+    @Override
+    public String toString() {
+        return "Max Heap";
+    }
 }

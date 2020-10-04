@@ -291,16 +291,10 @@ public class BPTrees{
         bpt.insert(25);
         bpt.insert(9);
         bpt.insert(13);
-        System.out.println();
         bpt.insert(15);
         bpt.insert(10);
         bpt.insert(11);
-        bpt.printNodes();
-        System.out.println();
-        System.out.println("====================================================");
-        System.out.println();
         bpt.insert(12);
         bpt.printNodes();
     }
 }
-
