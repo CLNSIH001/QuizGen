@@ -1,7 +1,5 @@
 package DataStructures;
 
-//import java.util.ArrayList;
-
 public class BPTrees{
     private int order;
     private bpNode root;
@@ -19,14 +17,12 @@ public class BPTrees{
         int ofOrder;
         int totKeys;
         bpNode parent;
-        //ArrayList<Integer> data;
         private bpNode(int order, boolean isLeaf) {
             ofOrder = order;
             this.isLeaf = isLeaf;
             totKeys = 0;
             pointers = new bpNode[ofOrder];
             keys = new int[ofOrder - 1];
-            //data = new ArrayList<Integer>();
         }
 
         // A function to traverse all nodes in a subtree rooted with this node
@@ -60,10 +56,18 @@ public class BPTrees{
             }
             for (; i+1<totKeys; i++)
                 keys[i] = keys[i+1];
-            totKeys--;
+            --totKeys;
         }
 
         public boolean fullEnough(){
+            int minKeysLeaf = (order-1)/2;
+            int minPointersLeaf = order/2;
+            if (isLeaf && totKeys >= minKeysLeaf) return true;
+            else if (!isLeaf && countPointers() >= minPointersLeaf) return true;
+            else return false;
+        }
+
+        public boolean moreThanHalfFull(){
             int minKeysLeaf = (order-1)/2;
             int minPointersLeaf = order/2;
             if (isLeaf && totKeys > minKeysLeaf) return true;
@@ -114,6 +118,18 @@ public class BPTrees{
                 split(left,right,data);
                 putInParent(left, right);
             }
+        }
+    }
+    private void insert(bpNode node, int data){
+        if (node.totKeys < node.ofOrder-1) {
+            int pos = node.totKeys - 1;
+            for (; pos >= 0; pos--) {
+                if (node.keys[pos] > data)
+                    node.keys[pos + 1] = node.keys[pos];
+                else break;
+            }
+            node.keys[pos + 1] = data;
+            node.totKeys++;
         }
     }
 
@@ -209,10 +225,55 @@ public class BPTrees{
     public void delete(int data) {
         bpNode N = find(data);
         N.Drop(data);
-        bpNode parent = N.parent;
+        bpNode p = N.parent;
         if (N.fullEnough()) return;
-        //else if (canTakeFromSibling) return;
+        else if (couldTakeFromSibling(p, N)) return;
         //else if (hasLeftSibling)      use parent node to do this
+    }
+
+    protected bpNode getRightSibling(bpNode p, bpNode n){
+        int i = 0;
+        for (; i<p.countPointers(); i++){
+            if (p.pointers[i]==n)
+                break;
+        }
+        if (p.pointers[++i] != null)
+            return p.pointers[i];
+        else return null;
+    }
+    protected bpNode getLeftSibling(bpNode p, bpNode n){
+        int i = 0;
+        for (; i<p.countPointers(); i++){
+            if (p.pointers[i]==n)
+                break;
+        }
+        if (i == 0)
+            return null;
+        else return p.pointers[--i];
+    }
+
+    private boolean couldTakeFromSibling(bpNode parent, bpNode node){
+        bpNode left = getLeftSibling(parent, node);
+        bpNode right = getRightSibling(parent, node);
+        int movedKey = 0;
+        if (left != null) {
+            if (left.moreThanHalfFull()) {
+                movedKey = left.keys[left.totKeys - 1];
+                left.Drop(movedKey);
+                insert(node, movedKey);
+                //update n's parent (keys)
+                return true;
+            }
+        }
+        if (right == null) return false;
+        else if (right.moreThanHalfFull()){
+            movedKey = right.keys[0];
+            right.Drop(movedKey);
+            insert(node, movedKey);
+            //update r's parent (keys)
+            return true;
+        }
+        return false;
     }
 
     public void printNodes(){

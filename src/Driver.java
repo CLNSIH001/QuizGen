@@ -1036,10 +1036,10 @@ public class Driver<T extends Comparable<? super T>>{
 
         if(minOrMax == 1){
             heap = new MinHeap<>();
-            filename = "BinaryHeapTree/MinHeap/"+filename;
+            filename = "BinaryHeap/MinHeap/"+filename;
         }else{
             heap = new MaxHeap<>();
-            filename = "BinaryHeapTree/MaxHeap/"+filename;
+            filename = "BinaryHeap/MaxHeap/"+filename;
         }
         if(format == 1)
             tree.treeMCQ(poolSize, heap, filename, type);
