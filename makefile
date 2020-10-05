@@ -1,4 +1,4 @@
-#Group2
+# takaedza Chigwedere
 
 SRCDIR = src
 DOCDIR = doc
@@ -6,13 +6,7 @@ BINDIR = bin
 TEXTDIR = text
 
 JAVAC = javac
-JFLAGS = -d $(BINDIR) -cp $(BINDIR)
-
-need := $(wildcard src/DataStructures/*Node.java)
-need += $(filter-out src/DataStructures/BinarySearchTree.java $(need), $(wildcard src/DataStructures/B*e.java))
-dataStr := $(filter-out $(need), $(wildcard src/DataStructures/*.java))
-classes = $(need:%.java=%.class) $(dataStr:%.java=%.class) src/Driver.class
-classes := $(patsubst src/%, %, $(classes))
+JFLAGS = -g -d $(BINDIR) -cp $(BINDIR)
 
 vpath %.java $(SRCDIR)
 vpath %.class $(BINDIR)
@@ -24,22 +18,31 @@ vpath %.text $(TEXTDIR)
 .java.class:
 	@$(JAVAC) $(JFLAGS) $<
 
+real: echo default
+
+echo:
+	echo loading...   Please wait just a minute
+
 #default rule envoked by make
-QuizGen: load $(classes)
+default:BinaryTreeNode.class BTQueueNode.class  BTQueue.class  BinaryTree.class BinaryHeap.class BinarySearchTree.class AVLTree.class \
+		BPTrees.class Graph.class HashTable.class MaxHeap.class \
+		MinHeap.class RedBlackTree.class Driver.class;
+
+#running all my different applications 
+
+run:
 	@java -cp bin Driver
 
-load:
-	@echo loading...   Please wait just a minute
-
-#running all our different applications 
 
 #rules for generating documetation 
 doc:
 	javadoc -d $(DOCDIR) -link http://docs.oracle.com/javase/8/docs/api/ $(SRCDIR)/*.java $(SRCDIR)
 
 clean:
-	  @rm -r $(BINDIR)/DataStructures bin/Driver.class
+	  @rm -r $(BINDIR)
 	  @rm -Rf doc
 
 cleanPools:
-	rm */*Tree/*.txt */Graph/*.txt */BinaryHeap/*Heap/*.txt
+	rm -r MultipleChoice/*Tree/*.txt MultipleChoice/Graph/*.txt
+	rm -r TrueFalse/*Tree/*.txt
+	rm -r FillIn/*Tree/*.txt
