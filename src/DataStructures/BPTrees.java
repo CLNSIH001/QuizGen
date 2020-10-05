@@ -30,6 +30,8 @@ public class BPTrees{
             int j = 0;
             if (this.isLeaf == true)
                 System.out.print("Leaf");
+            else if (this == root)
+                System.out.print("Root");
             else
                 System.out.print("Non-Leaf");
             System.out.println(" with total Keys:" + totKeys);
@@ -62,8 +64,8 @@ public class BPTrees{
         public boolean fullEnough(){
             int minKeysLeaf = (order-1)/2;
             int minPointersLeaf = order/2;
-            if (isLeaf && totKeys >= minKeysLeaf) return true;
-            else if (!isLeaf && countPointers() >= minPointersLeaf) return true;
+            if (isLeaf && totKeys > minKeysLeaf) return true;
+            else if (!isLeaf && countPointers() > minPointersLeaf) return true;
             else return false;
         }
 
@@ -81,6 +83,14 @@ public class BPTrees{
                 if (pointers[i] == null) break;
             return i;
         }
+        public int findChild(bpNode child){
+            int i = 0;
+            for (; i<countPointers(); i++){
+                if (pointers[i]==child)
+                    break;
+            }
+            return i;
+        }
     }
 ///////////////////////////////////////////////////////////
 
@@ -88,7 +98,7 @@ public class BPTrees{
         bpNode n = root;
         while (!n.isLeaf) {
             int it = 0;
-            while (it < n.totKeys && k > n.keys[it])
+            while (it < n.totKeys && k >= n.keys[it])
                 it++;
             n = n.pointers[it];
         }
@@ -208,12 +218,15 @@ public class BPTrees{
             for (int j=0; j<num; j++){
                 l.keys[j] = tempK[j];
                 l.pointers[j] = tempP[j];
+                tempP[j].parent = l;
                 l.totKeys++;
             }
             l.pointers[num] = tempP[num];
+            tempP[num].parent = l;
             ++num; int i=0;
             for (; num < order; num++) {
                 r.pointers[i] = tempP[num];
+                tempP[num].parent = r;
                 r.keys[0] = tempK[num];
                 ++r.totKeys;
                 ++i;
@@ -232,21 +245,13 @@ public class BPTrees{
     }
 
     protected bpNode getRightSibling(bpNode p, bpNode n){
-        int i = 0;
-        for (; i<p.countPointers(); i++){
-            if (p.pointers[i]==n)
-                break;
-        }
-        if (p.pointers[++i] != null)
+        int i = p.findChild(n);
+        if (++i < order)
             return p.pointers[i];
         else return null;
     }
     protected bpNode getLeftSibling(bpNode p, bpNode n){
-        int i = 0;
-        for (; i<p.countPointers(); i++){
-            if (p.pointers[i]==n)
-                break;
-        }
+        int i = p.findChild(n);
         if (i == 0)
             return null;
         else return p.pointers[--i];
@@ -261,7 +266,8 @@ public class BPTrees{
                 movedKey = left.keys[left.totKeys - 1];
                 left.Drop(movedKey);
                 insert(node, movedKey);
-                //update n's parent (keys)
+                int i = parent.findChild(node)-1;
+                parent.keys[i] = movedKey;
                 return true;
             }
         }
@@ -270,7 +276,8 @@ public class BPTrees{
             movedKey = right.keys[0];
             right.Drop(movedKey);
             insert(node, movedKey);
-            //update r's parent (keys)
+            int i = parent.findChild(right)-1;
+            parent.keys[i] = movedKey;
             return true;
         }
         return false;
@@ -295,6 +302,19 @@ public class BPTrees{
         bpt.insert(10);
         bpt.insert(11);
         bpt.insert(12);
+        bpt.printNodes();
+        System.out.println();
+        System.out.println("======================================");
+        System.out.println();
+        bpt.delete(13);
+        System.out.println();
+        System.out.println("======================================");
+        System.out.println();
+        bpt.delete(15);     //merge
+        System.out.println();
+        System.out.println("======================================");
+        System.out.println();
+        bpt.delete(1);
         bpt.printNodes();
     }
 }
