@@ -11,7 +11,7 @@ public class BPTrees{
 
 ////////////////////////////////////////////////////////////////
     private class bpNode {
-        boolean isLeaf;
+        boolean isLeaf, isRoot;
         int[] keys;
         bpNode[] pointers;
         int ofOrder;
@@ -28,7 +28,7 @@ public class BPTrees{
         // A function to traverse all nodes in a subtree rooted with this node
         public void printNodes(){
             int j = 0;
-            if (this.isLeaf == true)
+            if (this.isLeaf)
                 System.out.print("Leaf");
             else if (this == root)
                 System.out.print("Root");
@@ -41,10 +41,10 @@ public class BPTrees{
             }
             System.out.println();
             for (; j < totKeys; j++){
-                if (this.isLeaf == false)
+                if (!this.isLeaf)
                     pointers[j].printNodes();
             }
-            if (this.isLeaf == false)
+            if (!this.isLeaf)
                 pointers[j].printNodes();
         }
 
@@ -53,27 +53,31 @@ public class BPTrees{
             for (; i<totKeys; i++){
                 if (keys[i] == k){
                     keys[i] = 0;
+                    pointers[i+1] = null;
                     break;
                 }
             }
-            for (; i+1<totKeys; i++)
-                keys[i] = keys[i+1];
+            for (; i+1<totKeys; i++) {
+                keys[i] = keys[i + 1];
+                pointers[i+1] = pointers[i+2];
+                keys[i+1] = 0; pointers[i+2] = null;
+            }
             --totKeys;
         }
 
         public boolean fullEnough(){
-            int minKeysLeaf = (order-1)/2;
-            int minPointersLeaf = order/2;
-            if (isLeaf && totKeys > minKeysLeaf) return true;
-            else if (!isLeaf && countPointers() > minPointersLeaf) return true;
+            float minKeysLeaf = (float) (order-1)/2;
+            float minPointersLeaf = (float) order/2;
+            if (isLeaf && totKeys >= minKeysLeaf) return true;
+            else if (isRoot && countPointers()>=2 && totKeys>=1) return true;
+            else if ((!isLeaf && !isRoot) && countPointers() >= minPointersLeaf) return true;
             else return false;
         }
-
         public boolean moreThanHalfFull(){
-            int minKeysLeaf = (order-1)/2;
-            int minPointersLeaf = order/2;
-            if (isLeaf && totKeys > minKeysLeaf) return true;
-            else if (!isLeaf && countPointers() > minPointersLeaf) return true;
+            float minKeysLeaf = (float) (order-1)/2;
+            float minPointersLeaf = (float) order/2;
+            if (isLeaf && totKeys-1 >= minKeysLeaf) return true;
+            else if (!isLeaf && countPointers()-1 >= minPointersLeaf) return true;
             else return false;
         }
 
@@ -90,6 +94,10 @@ public class BPTrees{
                     break;
             }
             return i;
+        }
+        public void setRoot(){
+            if (parent == null) isRoot = true;
+            else isRoot = false;
         }
     }
 ///////////////////////////////////////////////////////////
@@ -130,16 +138,18 @@ public class BPTrees{
             }
         }
     }
-    private void insert(bpNode node, int data){
-        if (node.totKeys < node.ofOrder-1) {
-            int pos = node.totKeys - 1;
-            for (; pos >= 0; pos--) {
-                if (node.keys[pos] > data)
-                    node.keys[pos + 1] = node.keys[pos];
-                else break;
-            }
-            node.keys[pos + 1] = data;
-            node.totKeys++;
+
+    public void delete(int data) {
+        bpNode n = find(data);
+        n.Drop(data);
+        bpNode p = n.parent;
+        if (n.fullEnough()) return;
+        else if (couldTakeFromSibling(p, n)) return;
+        else{
+            bpNode l = getLeftSibling(p, n);
+            bpNode r = getRightSibling(p, n);
+            if (l != null) merge(l, n);
+            else merge(n, r);
         }
     }
 
@@ -153,27 +163,29 @@ public class BPTrees{
                 r = r.pointers[0];
             root.keys[0] = r.keys[0];
             root.totKeys++;
+            root.setRoot(); l.setRoot(); r.setRoot();
         }
         else{
-            if (l.parent.totKeys < order - 1) {
-                int pos = l.parent.totKeys - 1;
+            bpNode leftP = l.parent;
+            if (leftP.totKeys < order - 1) {
+                int pos = leftP.totKeys - 1;
                 for (; pos >= 0; pos--) {
-                    if (l.parent.keys[pos] > r.keys[0]) {
-                        l.parent.keys[pos + 1] = l.parent.keys[pos];
-                        l.parent.pointers[pos+2] = l.parent.pointers[pos+1];
+                    if (leftP.keys[pos] > r.keys[0]) {
+                        leftP.keys[pos + 1] = leftP.keys[pos];
+                        leftP.pointers[pos+2] = leftP.pointers[pos+1];
                     }
                     else break;
                 }
-                l.parent.keys[pos + 1] = r.keys[0];
-                l.parent.pointers[pos + 2] = r;
-                r.parent = l.parent;
-                l.parent.totKeys++;
+                leftP.keys[pos + 1] = r.keys[0];
+                leftP.pointers[pos + 2] = r;
+                r.parent = leftP;
+                leftP.totKeys++;
             }
             else {
                 bpNode u = new bpNode(order, false);
                 u.pointers[0] = r;  //place holder for the new leaf node from the split in the insertion method
-                split(l.parent, u, r.keys[0]);
-                putInParent(l.parent, u);
+                split(leftP, u, r.keys[0]);
+                putInParent(leftP, u);
             }
         }
     }
@@ -193,7 +205,7 @@ public class BPTrees{
         for (; pos>=0; pos--){
             if (tempK[pos]>d) {
                 tempK[pos+1] = tempK[pos];
-                tempP[pos+2] = tempP[pos+1];
+                if(!l.isLeaf) tempP[pos+2] = tempP[pos+1];
             }
             else break;
         }
@@ -212,6 +224,7 @@ public class BPTrees{
                 ++r.totKeys;
                 ++i;
             }
+            r.pointers[order-1] = tempP[order-1];
             l.pointers[order-1] = r;
         }
         else{
@@ -232,16 +245,8 @@ public class BPTrees{
                 ++i;
             }
             r.pointers[i] = tempP[num];
+            tempP[num].parent = r;
         }
-    }
-
-    public void delete(int data) {
-        bpNode N = find(data);
-        N.Drop(data);
-        bpNode p = N.parent;
-        if (N.fullEnough()) return;
-        else if (couldTakeFromSibling(p, N)) return;
-        //else if (hasLeftSibling)      use parent node to do this
     }
 
     protected bpNode getRightSibling(bpNode p, bpNode n){
@@ -260,27 +265,107 @@ public class BPTrees{
     private boolean couldTakeFromSibling(bpNode parent, bpNode node){
         bpNode left = getLeftSibling(parent, node);
         bpNode right = getRightSibling(parent, node);
-        int movedKey = 0;
+        int movedK = 0; bpNode movedP;
         if (left != null) {
             if (left.moreThanHalfFull()) {
-                movedKey = left.keys[left.totKeys - 1];
-                left.Drop(movedKey);
-                insert(node, movedKey);
+                movedK = left.keys[left.totKeys - 1];
+                movedP = left.pointers[left.totKeys];
+                if (node.isLeaf)
+                    moveKey(node, movedK);
+                else
+                    movePointer(node, movedP, "left");
+                left.Drop(movedK);
                 int i = parent.findChild(node)-1;
-                parent.keys[i] = movedKey;
+                parent.keys[i] = movedK;
                 return true;
             }
         }
         if (right == null) return false;
         else if (right.moreThanHalfFull()){
-            movedKey = right.keys[0];
-            right.Drop(movedKey);
-            insert(node, movedKey);
+            movedK = right.keys[0];
+            movedP = right.pointers[0];
+            if (node.isLeaf)
+                moveKey(node, movedK);
+            else
+                movePointer(node, movedP, "right");
+            popFromRHS(right);
             int i = parent.findChild(right)-1;
-            parent.keys[i] = movedKey;
+            parent.keys[i] = right.keys[0];
             return true;
         }
         return false;
+    }
+
+    /*can take from sibling supporting methods*/
+    private void moveKey(bpNode node, int data){
+        int pos = node.totKeys - 1;
+        for (; pos >= 0; pos--) {
+            if (node.keys[pos] > data)
+                node.keys[pos + 1] = node.keys[pos];
+            else break;
+        }
+        node.keys[pos + 1] = data;
+        node.totKeys++;
+    }
+    private void movePointer(bpNode node, bpNode child, String fromSib){
+        if (fromSib.equals("right")){
+            int index = node.totKeys+1;
+            node.pointers[index] = child;
+        }
+        else if (fromSib.equals("left")){
+            int i=node.countPointers();
+            for (; i-1>=0 ; i--)
+                node.pointers[i] = node.pointers[i-1];
+            node.pointers[0] = child;
+        }
+    }
+    private void popFromRHS(bpNode rNode){
+        int i=1;
+        for (; i < order-1; ++i){
+            rNode.keys[i-1] = rNode.keys[i];
+            rNode.pointers[i-1] = rNode.pointers[i];
+            rNode.keys[i] = 0; rNode.pointers[i]= null;
+        }
+        rNode.totKeys--;
+    }
+
+    private void merge(bpNode left, bpNode right){
+        int j = left.totKeys; int i=0;
+        for (; i<right.totKeys; i++){
+            left.keys[j] = right.keys[i];
+            left.pointers[j] = right.pointers[i];
+            if (!left.isLeaf)
+                right.pointers[i].parent = left;
+            ++j; left.totKeys++;
+        }
+        if (!left.isLeaf){
+            left.pointers[j] = right.pointers[i];
+            right.pointers[i].parent = left;
+        }
+        else left.pointers[order-1] = right.pointers[order-1];
+        left.parent.Drop(right.keys[0]);
+        j = left.parent.findChild(left) - 1;
+        if (j >= 0) left.parent.keys[j] = left.keys[0];
+
+        if (root == left.parent){
+            if (!root.fullEnough()) {
+                left.parent = null; left.setRoot(); root = left; return;
+            }
+        }
+        else{
+            bpNode p = left.parent; j = p.parent.findChild(p);
+            if (p.totKeys == 0 && j > 0) moveKey(p, p.parent.keys[j-1]);
+            else if (p.totKeys == 0 && j >= 0) moveKey(p, p.parent.keys[j]);
+        }
+
+        if (left.parent.fullEnough());
+        else if (couldTakeFromSibling(left.parent.parent, left.parent));
+        else{
+            bpNode l = getLeftSibling(left.parent.parent, left.parent);
+            bpNode r = getRightSibling(left.parent.parent, left.parent);
+            if (l != null) merge(l, left.parent);
+            else merge(left.parent, r);
+        }
     }
 
     public void printNodes(){
@@ -290,8 +375,9 @@ public class BPTrees{
     }
 
     public static void main(String[] args){
-        BPTrees bpt = new BPTrees(4);
-        bpt.insert(20);
+        BPTrees bpt = new BPTrees(4);   //4
+        //2019 b+ tree notes
+        /*bpt.insert(20);
         bpt.insert(1);
         bpt.insert(4);
         bpt.insert(16);
@@ -303,18 +389,30 @@ public class BPTrees{
         bpt.insert(11);
         bpt.insert(12);
         bpt.printNodes();
-        System.out.println();
-        System.out.println("======================================");
-        System.out.println();
+        ///////////////////////////Delete
         bpt.delete(13);
-        System.out.println();
-        System.out.println("======================================");
-        System.out.println();
         bpt.delete(15);     //merge
-        System.out.println();
-        System.out.println("======================================");
-        System.out.println();
+        bpt.printNodes();
         bpt.delete(1);
+        bpt.printNodes();*/
+
+        //2019 test 2 question
+        bpt.insert(23);
+        bpt.insert(31);
+        bpt.insert(43);
+        bpt.insert(13);
+        bpt.insert(47);
+        bpt.insert(17);
+        bpt.insert(29);
+        bpt.insert(37);
+        bpt.insert(41);
+        bpt.insert(19);
+        bpt.printNodes();
+        //Answer to f.1
+        /*bpt.insert(48);
+        bpt.insert(16);*/
+        //Answer to f.2
+        bpt.delete(23);
         bpt.printNodes();
     }
 }
