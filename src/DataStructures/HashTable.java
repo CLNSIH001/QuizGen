@@ -1,15 +1,15 @@
 package DataStructures;
-import java.util.LinkedList;
 
-public class HashTable {
+import java.util.ArrayList;
+
+class HashTable {
 
     private int tableSize;
-    private int resolutionScheme;
     private int numberOfInsertProbes = 0;
-    private int numberOfSearchProbes;
     private int key;
-    private int[] table;
-    private LinkedList<Integer>[] chainingTable;
+    int[] table;
+
+    ArrayList<Integer>[] chainingTable;
 
     /**
      * Constructor
@@ -18,21 +18,6 @@ public class HashTable {
      */
     HashTable(int tableSize, int resolutionScheme) {
         setTableSize(tableSize, resolutionScheme);
-        setResolutionScheme(resolutionScheme);
-    }
-    /**
-     * return number of search probes
-     * @return numberOfSearchProbes
-     */
-    int getNumberOfSearchProbes() {
-        return this.numberOfSearchProbes;
-    }
-    /**
-     * set the number of search probes to input number
-     * @param probes probe count
-     */
-    private void setNumberOfSearchProbes(int probes) {
-        this.numberOfSearchProbes = probes;
     }
     /**
      * get the number of insert probes
@@ -70,25 +55,6 @@ public class HashTable {
     }
 
     /**
-     * Set type of table; linear, chaining or quadratic
-     * @param resolutionScheme
-     */
-    private void setResolutionScheme(int resolutionScheme){this.resolutionScheme = resolutionScheme;}
-
-
-    /**
-     * Calculate the load factor of the current hash table
-     * @param filledSpaces number of data entries
-     * @return the load factor as a double
-     */
-    double getLoadFactor(int filledSpaces) {
-
-        double loadFactor;
-        loadFactor = (double)filledSpaces/this.tableSize;
-        return loadFactor;
-    }
-
-    /**
      * isPrime code by Derek Banas,Java Hash Tables 2, March 22,2013
      * @param number number being tested
      * @return true if number is prime or false if it is not prime
@@ -109,14 +75,12 @@ public class HashTable {
     /**
      * Populate the table with nulls, It cannot be null so instead it is MIN_VALUE.
      * But the MIN_VALUES will be treated as nulls
-     * @param table
-     * @return
+     * @param table hash table to be filled
      */
-    private int[] fillTable(int[] table){
+    private void fillTable(int[] table){
         for(int i = 0; i < table.length; i++){
             table[i] = Integer.MIN_VALUE;
         }
-        return table;
     }
 
     /**
@@ -125,13 +89,14 @@ public class HashTable {
      * @param tableSize size of table to be created
      * @param resolutionScheme chosen resolution scheme
      */
+    @SuppressWarnings("unchecked")
     private void createTable(int tableSize, int resolutionScheme) {
         if (resolutionScheme == 1 || resolutionScheme == 2 ) {
             table = new int[tableSize];
             fillTable(table);
         }
         else {
-            chainingTable = new LinkedList[tableSize];
+            chainingTable = new ArrayList[tableSize];
         }
     }
 
@@ -141,11 +106,7 @@ public class HashTable {
      * @return the key
      */
     private int hashFunction(int item) {
-        int key = 2* + Math.abs(item);
-
-        key = key%(tableSize);
-
-        return key;
+        return (2* + Math.abs(item)) % tableSize;
     }
 
     /**
@@ -162,26 +123,6 @@ public class HashTable {
         }
 
         table[key] = item;
-    }
-
-    /**
-     * search method for table that used linear probing
-     * @param item line of data
-     */
-    void linearFind(int item) {
-
-        key = hashFunction(item);
-
-        setNumberOfSearchProbes(0);
-
-        while(table[key] != Integer.MIN_VALUE) {
-            if(table[key] == item) {
-                return;
-            }
-            key = (key+1)%tableSize;
-            numberOfSearchProbes++;
-
-        }
     }
 
     /**
@@ -205,30 +146,6 @@ public class HashTable {
     }
 
     /**
-     * find method that probes quadratically
-     * @param item line of data
-     */
-    void quadraticFind(int item) {
-
-        int i = 1;
-        key = hashFunction(item);
-
-        setNumberOfSearchProbes(0);
-
-        while(table[key] != Integer.MIN_VALUE) {
-            if(table[key] == item) {
-                return;
-            }
-            key = (key+(i*i))%tableSize;
-            if(key<0) {
-                key = Math.abs(key);
-            }
-            i++;
-            numberOfSearchProbes++;
-        }
-    }
-
-    /**
      * insert method used when resolution scheme is chaining
      * @param item number to inserted
      *
@@ -242,120 +159,12 @@ public class HashTable {
             chainingTable[key].add(item);
         }
         else if(chainingTable[key] == null){
-            chainingTable[key] = new LinkedList<Integer>();
+            chainingTable[key] = new ArrayList<>();
             chainingTable[key].add(item);
 
         }
 
     }
-    
-    /**
-     * find method used when resolution scheme is chaining
-     * @param item date/time being searched
-     */
-    void chainingFind(int item) {
-
-        key = hashFunction(item);
-        setNumberOfSearchProbes(0);
-
-        for(int i = 0; i < chainingTable[key].size(); i++) {
-            if(chainingTable[key].get(i) == item) {
-                setNumberOfSearchProbes(i);
-                return;
-            }
-        }
-
-    }
-
-    /**
-     * used to delete an item from the hash table
-     * @param item date/time being deleted
-     * @param t the table from which it is being deleted
-     */
-    public void delete(int item, HashTable t) {
-
-        key = hashFunction(item);
-
-        if(t.resolutionScheme == 1 || t.resolutionScheme == 2) {
-            while (t.table[key] != Integer.MIN_VALUE) {
-
-                key = (key+1)%tableSize;
-
-            }
-
-            t.table[key] = Integer.MIN_VALUE;
-        }
-        else {
-            while (t.chainingTable[key] != null) {
-
-                key = (key+1)%tableSize;
-
-            }
-            chainingFind(item);
-            t.chainingTable[key].remove(numberOfSearchProbes);
-        }
-
-    }
-
-    /**
-     * method to print a linked list in the hash table that used chaining
-     * @param T linked list to be printed
-     */
-    public void printLinkedList(LinkedList<?> T) {
-        for(int i = 0; i < T.size(); i++) {
-            if(T.get(i)==null) {
-                System.out.println("null");
-            }else {
-                System.out.println(T.get(i));
-            }
-        }
-    }
-    /**
-     * method to print out the hash table to help visualize it
-     * @param t HashTable to be printed
-     */
-    public void printTable(HashTable t) {
-        for(int i = 0; i < t.tableSize; i++) {
-            System.out.printf("%4s | ", i+1);
-            if(t.chainingTable[i] == null) {
-                System.out.println("null");
-            }
-            else {
-                System.out.println(t.chainingTable[i].element());
-            }
-        }
-    }
-
-    public void print(HashTable t){
-        for(int i = 0; i < t.tableSize; i++){
-            System.out.printf("%4s | ", i+1);
-            if(t.table[i]==Integer.MIN_VALUE)
-                System.out.println("Nothing");
-            else
-                System.out.println(t.table[i]);
-        }
-    }
-    /**
-     * checks if the hash table is full when trying to insert an item
-     * @param t HashTable being checked
-     * @return true if it is full and false if it is not full
-     */
-    boolean isFull(HashTable t) {
-        if(t.resolutionScheme == 1 || t.resolutionScheme == 2) {
-            for(int i = 0; i < t.getTableSize(); i++) {
-                if(t.table[i] == Integer.MIN_VALUE) {
-                    return false;
-                }
-            }
-        }
-        else {
-            for(int i = 0; i < t.getTableSize(); i++) {
-                if(t.chainingTable[i] == null) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
 
 }
+
