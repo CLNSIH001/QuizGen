@@ -71,7 +71,7 @@ public class Driver<T extends Comparable<? super T>>{
             /*if (format == 3)
                 fillIn(poolSize, rbt, filename, type);*/
         }
-        else if (filename.substring(0, filename.indexOf("/")).equals("BinaryHeapTree")){
+        else if (filename.substring(0, filename.indexOf("/")).equals("BinaryHeap")){
             switch(heapType){
                 case 0:
                     bheap = new MinHeap<>();
@@ -983,7 +983,7 @@ public class Driver<T extends Comparable<? super T>>{
                                 filename = "RedBlackTree/";
                                 break;
                             case 4:
-                                filename = "BinaryHeapTree/";
+                                filename = "BinaryHeap/";
                                 System.out.println("Enter a number:\n1. Binary Min Heap\n2. Binary Max Heap");
                                 int minOrMax = in.nextInt();
                                 //BinaryHeap(format, type, poolSize, minOrMax, filename);
