@@ -989,10 +989,10 @@ public class Driver<T extends Comparable<? super T>>{
                                 //BinaryHeap(format, type, poolSize, minOrMax, filename);
                                 if(minOrMax == 1){
                                     heapType = 0;
-                                    filename += "MinHeap_";
+                                    filename += "MinHeap/";
                                 }else{
                                     heapType = 1;
-                                    filename += "MaxHeap_";
+                                    filename += "MaxHeap/";
                                 }
                                 break;
                         }
