@@ -28,13 +28,15 @@ public class Driver<T extends Comparable<? super T>>{
     private BinaryHeap<T> bheap;
     private Graph digraph;
     private static int heapType = 0;
+    private static final String[] resolutionSchemes = {"Linear Probing", "Quadratic Probing", "Chaining resolution scheme"};
 
     /**
      * Constructor
      * @param init: type of items to be inserted (i.e. Integers, Characters or String)
      */
-    Driver(T init){
-        allInserts = new ArrayList<T>();
+    @SuppressWarnings("unchecked")
+    private Driver(T init){
+        allInserts = new ArrayList<>();
         type = init;
         travel = new ArrayList<>();
         //Data Structures
@@ -44,7 +46,7 @@ public class Driver<T extends Comparable<? super T>>{
         digraph = new Graph();
     }
 
-    public void poolType(int format, int type, int poolSize, String filename){
+    private void poolType(int format, int type, int poolSize, String filename){
         if (filename.substring(0, filename.indexOf("/")).equals("BinarySearchTree")){
             if (format == 1)
                 treeMCQ(poolSize, bst, filename, type);
@@ -69,7 +71,7 @@ public class Driver<T extends Comparable<? super T>>{
             /*if (format == 3)
                 fillIn(poolSize, rbt, filename, type);*/
         }
-        else if (filename.substring(0, filename.indexOf("/")).equals("BinaryHeap")){
+        else if (filename.substring(0, filename.indexOf("/")).equals("BinaryHeapTree")){
             switch(heapType){
                 case 0:
                     bheap = new MinHeap<>();
@@ -79,13 +81,13 @@ public class Driver<T extends Comparable<? super T>>{
                     break;
                 default:
                     System.out.println("Invalid heap type: " + heapType);
+
             }
-            
             if (format == 1)
                 treeMCQ(poolSize, bheap, filename, type);
             if (format == 2)
                 treeTrueFalse(poolSize, bheap, filename, type);
-            if (format == 3);
+            //if (format == 3);
         }
     }
 
@@ -189,6 +191,7 @@ public class Driver<T extends Comparable<? super T>>{
         }
     }
 
+    @SuppressWarnings("unchecked")
     private int height(Object obj){
         if (obj instanceof BinarySearchTree) {
             bst = (BinarySearchTree<T>) obj;
@@ -212,6 +215,7 @@ public class Driver<T extends Comparable<? super T>>{
         return 0;
     }
 
+    @SuppressWarnings("unchecked")
     private int size(Object obj){
         if (obj instanceof BinarySearchTree) {
             bst = (BinarySearchTree<T>) obj;
@@ -235,6 +239,7 @@ public class Driver<T extends Comparable<? super T>>{
         return 0;
     }
 
+    @SuppressWarnings("unchecked")
     private ArrayList<T> treeLeaves(Object obj){
         if (obj instanceof BinarySearchTree)
             return bst.getLeaves();
@@ -285,7 +290,7 @@ public class Driver<T extends Comparable<? super T>>{
                     ((MinHeap) obj).clear();
                     bheap = (MinHeap) obj;
                 }catch(Exception e){
-                    System.out.println(e);
+                    System.out.println(""+e);
                 }
                 for(T i: list){
                     bheap.insert(i);
@@ -296,7 +301,7 @@ public class Driver<T extends Comparable<? super T>>{
                     ((MaxHeap) obj).clear();
                     bheap = (MaxHeap) obj;
                 }catch(Exception e){
-                    System.out.println(e);
+                    System.out.println(""+e);
                 }
                 for(T i: list){
                     bheap.insert(i);
@@ -544,6 +549,11 @@ public class Driver<T extends Comparable<? super T>>{
         }
     }
 
+    /**
+     *
+     * @param obj Tree
+     */
+    @SuppressWarnings("unchecked")
     private void emptyTree(Object obj){
         if (obj instanceof BinarySearchTree)
             bst.clearTree();
@@ -851,6 +861,66 @@ public class Driver<T extends Comparable<? super T>>{
         }
     }
 
+    private void createHashTable(int format){
+        Scanner scan = new Scanner(System.in);
+        String filename = "HashTable/";
+        int resolutionScheme;
+        int mcqType;
+        if(format == 1){
+            System.out.println("1. Insertion\n2. Collisions");
+            mcqType = scan.nextInt();
+
+            if(mcqType==1)
+                filename += "Insertion";
+            else
+                filename+= "Collisions";
+
+            System.out.println("choose resolution scheme\n1. Linear Probing\n2. Quadratic Probing\n3. Chaining");
+            resolutionScheme = scan.nextInt();
+            filename += "_"+resolutionSchemes[resolutionScheme-1];
+
+            System.out.println("Enter number of questions (pool size).");
+            int poolSize = scan.nextInt();
+
+            filename += "_" + poolSize + "Qs";
+
+            //filename = createNewMCQFile(filename);
+            System.out.println(filename);
+
+            new HashTableDriver(poolSize, format, resolutionScheme, mcqType, filename);
+        }
+        else if(format == 2){
+            System.out.println("Enter number of questions (pool size).");
+            int poolSize = scan.nextInt();
+            resolutionScheme = 2;
+            mcqType = 2;
+
+            filename += "Loadfactor_" + poolSize + "Qs";
+            //filename = createNewToFFile(filename);
+            System.out.println(filename);
+
+            new HashTableDriver(poolSize, format, resolutionScheme, mcqType, filename);
+        }
+        else{
+            System.out.println("choose resolution scheme\n1. Linear Probing\n2. Quadratic Probing\n3. Chaining");
+            resolutionScheme = scan.nextInt();
+            filename += "_"+resolutionSchemes[resolutionScheme-1];
+
+            System.out.println("Enter number of questions (pool size).");
+            int poolSize = scan.nextInt();
+
+            filename += "_" + poolSize + "Qs";
+
+            //filename = createNewMCQFile(filename);
+            System.out.println(filename);
+
+            mcqType = 3;
+
+            new HashTableDriver(poolSize, format, resolutionScheme, mcqType, filename);
+        }
+        //scan.close();
+    }
+
     /**
     Group 2
     Terminal UI
@@ -877,7 +947,8 @@ public class Driver<T extends Comparable<? super T>>{
                             "2. AVL Tree\n" +
                             "3. Red Black Tree\n" +
                             "4. Binary Heap\n"+
-                            "5. Graph");
+                            "5. Graph\n"+
+                            "6. Hash Table");
                     int dataStructure = in.nextInt();
 
                     System.out.println("\nChoose Question format. (Enter a number)\n" +
@@ -886,7 +957,7 @@ public class Driver<T extends Comparable<? super T>>{
                             "3. Fill In Numeric");
                     int format = in.nextInt();
 
-                    if (dataStructure != 5) {
+                    if (dataStructure < 5) {
                         System.out.println("Choose Question. (Enter a number)\n" +
                                 "1. Insertion - Traversal\n" +
                                 "2. Deletion - Traversal\n" +
@@ -912,16 +983,16 @@ public class Driver<T extends Comparable<? super T>>{
                                 filename = "RedBlackTree/";
                                 break;
                             case 4:
-                                filename = "BinaryHeap/";
+                                filename = "BinaryHeapTree/";
                                 System.out.println("Enter a number:\n1. Binary Min Heap\n2. Binary Max Heap");
                                 int minOrMax = in.nextInt();
                                 //BinaryHeap(format, type, poolSize, minOrMax, filename);
                                 if(minOrMax == 1){
                                     heapType = 0;
-                                    filename += "MinHeap/";
+                                    filename += "MinHeap_";
                                 }else{
                                     heapType = 1;
-                                    filename += "MaxHeap/";
+                                    filename += "MaxHeap_";
                                 }
                                 break;
                         }
@@ -944,7 +1015,6 @@ public class Driver<T extends Comparable<? super T>>{
                                 break;
                         }
 
-
                         System.out.println("Select the type of data you wish to store:\n" +
                                 "1. Integer\n" +
                                 "2. String\n" +
@@ -954,7 +1024,6 @@ public class Driver<T extends Comparable<? super T>>{
                         switch (dataStored) {
                             case 1:
                                 filename += "Numbers_" + poolSize + "Qs";
-                                System.out.println("<----------->"+filename);
                                 intTree.poolType(format, type, poolSize, filename);
                                 break;
                             case 2:
@@ -972,7 +1041,7 @@ public class Driver<T extends Comparable<? super T>>{
                                 break;
                         }
                     }
-                    else {
+                    else if (dataStructure == 5){
                         System.out.println("Which directed graph type (which algorithm) would you like?\n" +
                                 "1. Unweighted (Breadth First Search)\n" +
                                 "2. Weighted (Dijkstra)\n" +
@@ -1016,6 +1085,9 @@ public class Driver<T extends Comparable<? super T>>{
                                 graphFillIn(graphType, file);
                         }*/
                     }
+                    else if(dataStructure == 6){
+                        intTree.createHashTable(format);
+                    }
                     break;
                 case 2:
                     /*
@@ -1048,6 +1120,7 @@ public class Driver<T extends Comparable<? super T>>{
         }
         while (choice != 3);
         System.out.println("\n!!!BYE!!!\n");
+        in.close();
     }
 
     /**
