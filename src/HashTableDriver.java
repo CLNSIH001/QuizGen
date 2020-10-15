@@ -1,4 +1,4 @@
-package DataStructures;
+import DataStructures.HashTable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -190,10 +190,10 @@ public class HashTableDriver {
         ArrayList<String> tempArray = new ArrayList<>();
         for(int i = 0; i < t.getTableSize(); i++){
 
-            if(t.table[i]==NIL)
+            if(t.getFromTable(i)==NIL)
                 tempArray.add("___");
             else
-                tempArray.add(Integer.toString(t.table[i]));
+                tempArray.add(Integer.toString(t.getFromTable(i)));
 
         }
         return tempArray;
@@ -203,12 +203,12 @@ public class HashTableDriver {
         ArrayList<String> tempArray = new ArrayList<>();
         StringBuilder innerTempArray;
         for(int i = 0; i < t.getTableSize(); i++){
-            if(t.chainingTable[i] == null) {
+            if(t.getChainArray(i) == null) {
                 tempArray.add("___");
             }
             else {
                 innerTempArray = new StringBuilder();
-                for(int insert: t.chainingTable[i]){
+                for(int insert: t.getChainArray(i)){
                     if(innerTempArray.length()==0){
                         innerTempArray.append(insert);
                     }
