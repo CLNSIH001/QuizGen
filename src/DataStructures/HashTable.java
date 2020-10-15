@@ -2,7 +2,7 @@ package DataStructures;
 
 import java.util.ArrayList;
 
-class HashTable {
+public class HashTable {
 
     private int tableSize;
     private int numberOfInsertProbes = 0;
@@ -16,14 +16,14 @@ class HashTable {
      * @param tableSize size of table
      * @param resolutionScheme to be chosen
      */
-    HashTable(int tableSize, int resolutionScheme) {
+    public HashTable(int tableSize, int resolutionScheme) {
         setTableSize(tableSize, resolutionScheme);
     }
     /**
      * get the number of insert probes
      * @return numberOfInsertProbes
      */
-    int getNumberOfInsertProbes() {
+    public int getNumberOfInsertProbes() {
         return numberOfInsertProbes;
     }
     /**
@@ -38,7 +38,7 @@ class HashTable {
      * get the size of the table
      * @return current table's size
      */
-    int getTableSize() {
+    public int getTableSize() {
         return this.tableSize;
     }
 
@@ -113,7 +113,7 @@ class HashTable {
      * insert method that uses linear probing to insert the data
      * @param item of data
      */
-    void linearInsert(int item) {
+    public void linearInsert(int item) {
 
         key = hashFunction(item);
 
@@ -129,7 +129,7 @@ class HashTable {
      * insert method that probes quadratically
      * @param item of data
      */
-    void quadraticInsert(int item) {
+    public void quadraticInsert(int item) {
 
         int i = 1;
         key = hashFunction(item);
@@ -150,7 +150,7 @@ class HashTable {
      * @param item number to inserted
      *
      */
-    void chainingInsert(int item) {
+    public void chainingInsert(int item) {
 
         key = hashFunction(item);
 
@@ -166,5 +166,13 @@ class HashTable {
 
     }
 
+    public int getFromTable(int index){
+        int i = table[index];
+        return i;
+    }
+    public ArrayList<Integer> getChainArray(int index){
+        ArrayList<Integer> chainT =  chainingTable[index];
+        return chainT;
+    }
 }
 

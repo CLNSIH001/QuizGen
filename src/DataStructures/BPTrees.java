@@ -1,8 +1,11 @@
 package DataStructures;
 
+import java.util.ArrayList;
+
 public class BPTrees{
     private int order;
     private bpNode root;
+    private ArrayList<int[]> nodeKeys = new ArrayList<>();
 
     public BPTrees(int branches){
         order = branches;
@@ -47,6 +50,17 @@ public class BPTrees{
             if (!this.isLeaf)
                 pointers[j].printNodes();
         }
+
+    public void testKeys(){
+        int j = 0;
+        for (; j < totKeys; j++){
+            if (!this.isLeaf)
+                pointers[j].testKeys();
+        }
+        if (!this.isLeaf)
+            pointers[j].testKeys();
+        nodeKeys.add(this.keys);
+    }
 
         public void Drop(int k){
             int i=0;
@@ -373,6 +387,11 @@ public class BPTrees{
             root.printNodes();
         System.out.println();
     }
+    public ArrayList<int[]> testKeys(){
+        if (root != null)
+            root.testKeys();
+        return nodeKeys;
+    }
 
     public static void main(String[] args){
         BPTrees bpt = new BPTrees(4);   //4
@@ -409,10 +428,10 @@ public class BPTrees{
         bpt.insert(19);
         bpt.printNodes();
         //Answer to f.1
-        /*bpt.insert(48);
-        bpt.insert(16);*/
+        bpt.insert(48);
+        bpt.insert(16);
         //Answer to f.2
-        bpt.delete(23);
+        //bpt.delete(23);
         bpt.printNodes();
     }
 }
