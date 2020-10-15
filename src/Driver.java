@@ -71,10 +71,9 @@ public class Driver<T extends Comparable<? super T>>{
         }
         else if (filename.substring(0, filename.indexOf("/")).equals("BinaryHeapTree")){
             if (format == 1)
-                //treeMCQ(poolSize, bheap, filename, type);
-                if (format == 2)
-                    //treeTrueFalse(poolSize, bheap, filename, type);
-                    if (format == 3);
+                treeMCQ(poolSize, bheap, filename, type);
+            if (format == 2)
+                treeTrueFalse(poolSize, bheap, filename, type);
         }
     }
 
