@@ -11,7 +11,7 @@ JFLAGS = -d $(BINDIR) -cp $(BINDIR)
 need := $(wildcard src/DataStructures/*Node.java)
 need += $(filter-out src/DataStructures/BinarySearchTree.java $(need), $(wildcard src/DataStructures/B*e.java))
 dataStr := $(filter-out $(need), $(wildcard src/DataStructures/*.java))
-classes = $(need:%.java=%.class) $(dataStr:%.java=%.class) src/Driver.class
+classes = $(need:%.java=%.class) $(dataStr:%.java=%.class) src/HashTableDriver.class src/Driver.class
 classes := $(patsubst src/%, %, $(classes))
 
 vpath %.java $(SRCDIR)
@@ -30,6 +30,13 @@ QuizGen: load $(classes)
 
 load:
 	@echo loading...   Please wait just a minute
+
+
+tests = $(filter-out UnitTests/DataStructures/DataStructuresTest.java, $(wildcard src/UnitTests/*.java))
+tests := $(tests:%.java=%.class) $(patsubst src/%, %, $(tests)) DataStructuresTest.class
+
+Test: $(tests)
+	@java -cp bin DataStructuresTest
 
 #running all our different applications 
 

@@ -27,6 +27,7 @@ public class Driver<T extends Comparable<? super T>>{
     private AVLTree<T> avl;
     private RedBlackTree<T> rbt;
     private BinaryHeap<T> bheap;
+    private BPTrees bpt;
     private Graph digraph;
 
     /**
