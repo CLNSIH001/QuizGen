@@ -173,7 +173,7 @@ public class HashTableDriver {
                 }
                 System.out.println("#randomize\n");
 
-                System.setOut(originalOut);
+                //System.setOut(originalOut);
 
             }
             else if(mcqType == 3){
