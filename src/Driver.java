@@ -778,7 +778,7 @@ public class Driver<T extends Comparable<? super T>>{
                 textFile = dataStruc + "/" + changeFileName(dir, textFile.substring(textFile.indexOf("/")+1));
                 label = new File("MultipleChoice/", textFile + ".txt");
                 label.createNewFile();
-                System.out.println(textFile.substring(textFile.indexOf("/")+1) + " has been created instead.\n");
+                System.out.println(textFile.substring(textFile.indexOf("/")+1) + " has been created instead.");
             }
             return textFile;
         }
@@ -801,7 +801,7 @@ public class Driver<T extends Comparable<? super T>>{
                 textFile = dataStruc + "/" +changeFileName(dir, textFile);
                 label = new File("TrueFalse/", textFile + ".txt");
                 label.createNewFile();
-                System.out.println(textFile + " has been created instead.\n");
+                System.out.println(textFile + " has been created instead.");
             }
             return textFile;
         }
@@ -824,7 +824,7 @@ public class Driver<T extends Comparable<? super T>>{
                 textFile = dataStruc + "/" +changeFileName(dir, textFile);
                 label = new File("FillIn/", textFile + ".txt");
                 label.createNewFile();
-                System.out.println(textFile + " has been created instead.\n");
+                System.out.println(textFile + " has been created instead.");
             }
             return textFile;
         }
