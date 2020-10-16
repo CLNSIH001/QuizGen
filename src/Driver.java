@@ -812,6 +812,29 @@ public class Driver<T extends Comparable<? super T>>{
         return textFile;
     }
 
+    private String createNewFillInFile(String textFile){
+        try {
+            File label = new File("FillIn/", textFile + ".txt");   //folder must already exits
+            if (label.createNewFile())
+                System.out.println(textFile + " has been created");
+            else{
+                System.out.println(textFile + " already exists.");
+                String dataStruc = textFile.substring(0, textFile.indexOf("/"));
+                String dir = "FillIn/"+dataStruc;
+                textFile = dataStruc + "/" +changeFileName(dir, textFile);
+                label = new File("FillIn/", textFile + ".txt");
+                label.createNewFile();
+                System.out.println(textFile + " has been created instead.");
+            }
+            return textFile;
+        }
+        catch(IOException e){
+            System.out.println("An error occurred. Exiting");
+            System.exit(0);
+        }
+        return textFile;
+    }
+
     private void graphMCQ(int poc, String fname, Graph dg, ArrayList<String> others) {
         fname = createNewMCQFile(fname);
         try {
@@ -886,8 +909,7 @@ public class Driver<T extends Comparable<? super T>>{
 
             filename += "_" + poolSize + "Qs";
 
-            //filename = createNewMCQFile(filename);
-            System.out.println(filename);
+            filename = createNewMCQFile(filename);
 
             new HashTableDriver(poolSize, format, resolutionScheme, mcqType, filename);
         }
@@ -898,8 +920,7 @@ public class Driver<T extends Comparable<? super T>>{
             mcqType = 2;
 
             filename += "Loadfactor_" + poolSize + "Qs";
-            //filename = createNewToFFile(filename);
-            System.out.println(filename);
+            filename = createNewToFFile(filename);
 
             new HashTableDriver(poolSize, format, resolutionScheme, mcqType, filename);
         }
@@ -913,8 +934,7 @@ public class Driver<T extends Comparable<? super T>>{
 
             filename += "_" + poolSize + "Qs";
 
-            //filename = createNewMCQFile(filename);
-            System.out.println(filename);
+            filename = createNewFillInFile(filename);
 
             mcqType = 3;
 
