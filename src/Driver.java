@@ -1050,7 +1050,7 @@ public class Driver<T extends Comparable<? super T>>{
                             else
                                 filename += "Collisions";
                         }
-                        if (format == 2) {
+                        else if (format == 2) {
                             resolution = 2;
                             hashType = 2;
                         } else hashType = 3;
@@ -1058,8 +1058,19 @@ public class Driver<T extends Comparable<? super T>>{
                             filename += "_" + resolutionSchemes[resolution - 1];
                             filename += "_" + poolSize + "Qs";
                         } else filename += "Loadfactor_" + poolSize + "Qs";
-                        System.out.println(filename);
+                        switch (format){
+                            case 1:
+                                filename = intTree.createNewMCQFile(filename);
+                                break;
+                            case 2:
+                                filename = intTree.createNewToFFile(filename);
+                                break;
+                            case 3:
+                                filename = intTree.createNewFillInFile(filename);
+                                break;
+                        }
                         new HashTableDriver(poolSize, format, resolution, hashType, filename);
+                        System.out.println("Done!\n==========================================\n");
                         break;
                 }
 
@@ -1131,9 +1142,8 @@ public class Driver<T extends Comparable<? super T>>{
                 }
             }catch (InputMismatchException e){
                 System.out.println("Enter a valid number from the menu!");
+                main(new String[]{});
                 return;
-            }finally {
-                if (choice != 3) main(new String[]{});
             }
         }
         while (choice != 3);
