@@ -6,7 +6,8 @@ import java.io.FileWriter;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.io.PrintWriter;
-import java.io.FileNotFoundException;  // Import this class to handle errors
+import java.io.FileNotFoundException;
+import java.util.InputMismatchException;
 
 /**
  * Author: All team members
@@ -886,8 +887,8 @@ public class Driver<T extends Comparable<? super T>>{
         }
     }
 
-    
-    public static void main (String [] args){
+
+    public static void main (String [] args) {
         Driver<Integer> intTree = new Driver<Integer>(0);
         Driver<String> strTree = new Driver<String>("");
         Driver<Float> fltTree = new Driver<Float>((float) 0.0);
@@ -896,243 +897,247 @@ public class Driver<T extends Comparable<? super T>>{
         int choice=0,format=0, dataStructure=0;
 
         do{
-            int graphType=0, type=0, poolSize=0, hashType=0;
-            int costOrPath=0, dataStored=0, minOrMax=0, resolution=0;
-            System.out.println("Enter a number to select.\n" +
-                    "1. New Question Pool\n" +
-                    "2. Pool from History\n" +
-                    "3. Exit");
-            choice = in.nextInt();
+            try {
+                int graphType = 0, type = 0, poolSize = 0, hashType = 0;
+                int costOrPath = 0, dataStored = 0, minOrMax = 0, resolution = 0;
+                System.out.println("Enter a number to select.\n" +
+                        "1. New Question Pool\n" +
+                        "2. Pool from History\n" +
+                        "3. Exit");
+                choice = in.nextInt();
 
-            if (choice==1) {
-                System.out.println("\nChoose a Data Structure (Enter a number):\n" +
-                        "1. Binary Search Tree\n" +
-                        "2. AVL Tree\n" +
-                        "3. Red Black Tree\n" +
-                        "4. Binary Heap\n" +
-                        "5. Graph\n" +
-                        "6. Hash Table");
-                dataStructure = in.nextInt();
+                if (choice == 1) {
+                    System.out.println("\nChoose a Data Structure (Enter a number):\n" +
+                            "1. Binary Search Tree\n" +
+                            "2. AVL Tree\n" +
+                            "3. Red Black Tree\n" +
+                            "4. Binary Heap\n" +
+                            "5. Graph\n" +
+                            "6. Hash Table");
+                    dataStructure = in.nextInt();
 
-                System.out.println("\nChoose Question format. (Enter a number)\n" +
-                        "1. MCQ\n" +
-                        "2. True/False\n" +
-                        "3. Fill In Numeric");
-                format = in.nextInt();
+                    System.out.println("\nChoose Question format. (Enter a number)\n" +
+                            "1. MCQ\n" +
+                            "2. True/False\n" +
+                            "3. Fill In Numeric");
+                    format = in.nextInt();
 
-                if (dataStructure == 5) {
-                    System.out.println("Which directed graph type (which algorithm) would you like?\n" +
-                            "1. Unweighted (Breadth First Search)\n" +
-                            "2. Weighted (Dijkstra)\n" +
-                            "3. Negative Weights (Bellman-Ford)\n" +
-                            "4. Acyclic (Topological Sort)\n" +
-                            "5. All of the above\n");
-                    graphType = in.nextInt();
-                    System.out.println("Do you want questions on...\n" +
-                            "1. Path Cost\n" +
-                            "2. Path Sequence\n");
-                    costOrPath = in.nextInt();
-                } 
-                else if (dataStructure == 6) {
-                    if(format == 1){
-                        System.out.println("1. Insertion\n2. Collisions");
-                        hashType = in.nextInt();
-                        System.out.println("choose resolution scheme\n1. Linear Probing\n2. Quadratic Probing\n3. Chaining");
-                        resolution = in.nextInt();
-                        System.out.println("Enter number of questions (pool size).");
-                        poolSize = in.nextInt();
-                    } else if(format == 2){
-                        System.out.println("Enter number of questions (pool size).");
-                        poolSize = in.nextInt();
-                    } else{
-                        System.out.println("choose resolution scheme\n1. Linear Probing\n2. Quadratic Probing\n3. Chaining");
-                        resolution = in.nextInt();
-                        System.out.println("Enter number of questions (pool size).");
-                        poolSize = in.nextInt();
-                    }
-                } 
-                else {
-                    if (dataStructure == 4){
-                        System.out.println("Enter a number:\n1. Binary Min Heap\n2. Binary Max Heap");
-                        minOrMax = in.nextInt();
-                    }
-                    System.out.println("Choose Question. (Enter a number)\n" +
-                            "1. Insertion - Traversal\n" +
-                            "2. Deletion - Traversal\n" +
-                            "3. Question about the root\n" +
-                            "4. Question about the leaf\n" +
-                            "5. Question about the tree height\n" +
-                            "6. Question about the tree size");
-                    type = in.nextInt();
-
-                    System.out.println("Enter number of questions (pool size).");
-                    poolSize = in.nextInt();
-
-                    System.out.println("Select the type of data you wish to store:\n" +
-                            "1. Integer\n" +
-                            "2. String\n" +
-                            "3. Float\n" +
-                            "4. Char\n");
-                    dataStored = in.nextInt();
-                }
-            }
-            else if (choice==2) {
-                System.out.println();
-                System.out.println("Enter filename");
-                in.nextLine();
-                System.out.println(System.getProperty("user.dir")); // to print the default directory so you know where to place the file
-                String file_name = in.nextLine();
-                System.out.println();
-                System.out.println(file_name);
-                try {
-                    Scanner file = new Scanner(new File(file_name));
-                    dataStructure = file.nextInt(); format = file.nextInt();
                     if (dataStructure == 5) {
-                        graphType = file.nextInt();
-                        costOrPath = file.nextInt();
-                    }
-                    else if (dataStructure==6){
-                        if(format == 1){
-                            hashType = file.nextInt();
-                            resolution = file.nextInt();
-                            poolSize = file.nextInt();
-                        } else if(format == 2){
-                            poolSize = file.nextInt();
-                        } else{
-                            resolution = file.nextInt();
-                            poolSize = file.nextInt();
+                        System.out.println("Which directed graph type (which algorithm) would you like?\n" +
+                                "1. Unweighted (Breadth First Search)\n" +
+                                "2. Weighted (Dijkstra)\n" +
+                                "3. Negative Weights (Bellman-Ford)\n" +
+                                "4. Acyclic (Topological Sort)\n" +
+                                "5. All of the above\n");
+                        graphType = in.nextInt();
+                        System.out.println("Do you want questions on...\n" +
+                                "1. Path Cost\n" +
+                                "2. Path Sequence\n");
+                        costOrPath = in.nextInt();
+                    } else if (dataStructure == 6) {
+                        if (format == 1) {
+                            System.out.println("1. Insertion\n2. Collisions");
+                            hashType = in.nextInt();
+                            System.out.println("choose resolution scheme\n1. Linear Probing\n2. Quadratic Probing\n3. Chaining");
+                            resolution = in.nextInt();
+                            System.out.println("Enter number of questions (pool size).");
+                            poolSize = in.nextInt();
+                        } else if (format == 2) {
+                            System.out.println("Enter number of questions (pool size).");
+                            poolSize = in.nextInt();
+                        } else {
+                            System.out.println("choose resolution scheme\n1. Linear Probing\n2. Quadratic Probing\n3. Chaining");
+                            resolution = in.nextInt();
+                            System.out.println("Enter number of questions (pool size).");
+                            poolSize = in.nextInt();
                         }
+                    } else {
+                        if (dataStructure == 4) {
+                            System.out.println("Enter a number:\n1. Binary Min Heap\n2. Binary Max Heap");
+                            minOrMax = in.nextInt();
+                        }
+                        System.out.println("Choose Question. (Enter a number)\n" +
+                                "1. Insertion - Traversal\n" +
+                                "2. Deletion - Traversal\n" +
+                                "3. Question about the root\n" +
+                                "4. Question about the leaf\n" +
+                                "5. Question about the tree height\n" +
+                                "6. Question about the tree size");
+                        type = in.nextInt();
+
+                        System.out.println("Enter number of questions (pool size).");
+                        poolSize = in.nextInt();
+
+                        System.out.println("Select the type of data you wish to store:\n" +
+                                "1. Integer\n" +
+                                "2. String\n" +
+                                "3. Float\n" +
+                                "4. Char\n");
+                        dataStored = in.nextInt();
                     }
-                    else {
-                        if (dataStructure==4) minOrMax = file.nextInt();
-                        type = file.nextInt();
-                        poolSize = file.nextInt();
-                        dataStored = file.nextInt();
+                } else if (choice == 2) {
+                    System.out.println();
+                    System.out.println("Enter filename");
+                    in.nextLine();
+                    System.out.println(System.getProperty("user.dir")); // to print the default directory so you know where to place the file
+                    String file_name = in.nextLine();
+                    System.out.println();
+                    System.out.println(file_name);
+                    try {
+                        Scanner file = new Scanner(new File(file_name));
+                        while (file.hasNextLine()) {
+                            dataStructure = file.nextInt();
+                            format = file.nextInt();
+                            if (dataStructure == 5) {
+                                graphType = file.nextInt();
+                                costOrPath = file.nextInt();
+                            } else if (dataStructure == 6) {
+                                if (format == 1) {
+                                    hashType = file.nextInt();
+                                    resolution = file.nextInt();
+                                    poolSize = file.nextInt();
+                                } else if (format == 2) {
+                                    poolSize = file.nextInt();
+                                } else {
+                                    resolution = file.nextInt();
+                                    poolSize = file.nextInt();
+                                }
+                            } else {
+                                if (dataStructure == 4) minOrMax = file.nextInt();
+                                type = file.nextInt();
+                                poolSize = file.nextInt();
+                                dataStored = file.nextInt();
+                            }
+                            //choice = file.nextInt();
+                            //file.nextLine();
+                        }
+                        file.close();
+                    } catch (FileNotFoundException e) {
+                        System.out.println("An error occurred.");
                     }
-                    file.close();
-                } catch (FileNotFoundException e) {
-                    System.out.println("An error occurred.");
+                } else if (choice == 3) break;
+                else {
+                    System.out.println("Invalid choice, Choose again");
+                    continue;
                 }
-            }
-            else if (choice == 3) break;
-            else {
-                System.out.println("Invalid choice, Choose again");
-                continue;
-            }
 
-            switch (dataStructure) {
-                case 0:
-                    break;
-                case 1:
-                    filename = "BinarySearchTree/";
-                    break;
-                case 2:
-                    filename = "AVLTree/";
-                    break;
-                case 3:
-                    filename = "RedBlackTree/";
-                    break;
-                case 4:
-                    filename = "BinaryHeap/";
-                    if(minOrMax == 1){
-                        heapType = 0;
-                        filename += "MinHeap/";
-                    }else{
-                        heapType = 1;
-                        filename += "MaxHeap/";
-                    }
-                    break;
-                case 5:
-                    filename = "Graph/";
-                    break;
-                case 6:
-                    filename = "HashTable/";
-                    if (format==1){
-                        if(hashType==1)
-                            filename += "Insertion";
-                        else
-                            filename += "Collisions";
-                    }
-                    if (format==2){
-                        resolution = 2;
-                        hashType = 2;
-                    }
-                    else hashType = 3;
-                    if (format != 2) {
-                        filename += "_" + resolutionSchemes[resolution - 1];
-                        filename += "_" + poolSize + "Qs";
-                    }
-                    else filename += "Loadfactor_" + poolSize + "Qs";
-                    System.out.println(filename);
-                    new HashTableDriver(poolSize, format, resolution, hashType, filename);
-                    break;
-            }
+                switch (dataStructure) {
+                    case 0:
+                        break;
+                    case 1:
+                        filename = "BinarySearchTree/";
+                        break;
+                    case 2:
+                        filename = "AVLTree/";
+                        break;
+                    case 3:
+                        filename = "RedBlackTree/";
+                        break;
+                    case 4:
+                        filename = "BinaryHeap/";
+                        if (minOrMax == 1) {
+                            heapType = 0;
+                            filename += "MinHeap/";
+                        } else {
+                            heapType = 1;
+                            filename += "MaxHeap/";
+                        }
+                        break;
+                    case 5:
+                        filename = "Graph/";
+                        break;
+                    case 6:
+                        filename = "HashTable/";
+                        if (format == 1) {
+                            if (hashType == 1)
+                                filename += "Insertion";
+                            else
+                                filename += "Collisions";
+                        }
+                        if (format == 2) {
+                            resolution = 2;
+                            hashType = 2;
+                        } else hashType = 3;
+                        if (format != 2) {
+                            filename += "_" + resolutionSchemes[resolution - 1];
+                            filename += "_" + poolSize + "Qs";
+                        } else filename += "Loadfactor_" + poolSize + "Qs";
+                        System.out.println(filename);
+                        new HashTableDriver(poolSize, format, resolution, hashType, filename);
+                        break;
+                }
 
-            switch (type){
-                case 0:
-                    break;
-                case 1:
-                    filename += "Insertion_";
-                    break;
-                case 2:
-                    filename += "Deletion_";
-                    break;
-                case 3:
-                    filename += "root_";
-                    break;
-                case 4:
-                    filename += "leaf_";
-                    break;
-                case 5:
-                    filename += "height_";
-                    break;
-            }
+                switch (type) {
+                    case 0:
+                        break;
+                    case 1:
+                        filename += "Insertion_";
+                        break;
+                    case 2:
+                        filename += "Deletion_";
+                        break;
+                    case 3:
+                        filename += "root_";
+                        break;
+                    case 4:
+                        filename += "leaf_";
+                        break;
+                    case 5:
+                        filename += "height_";
+                        break;
+                }
 
-            switch (graphType){
-                case 0 :
-                    break;
-                case 1:
-                    filename += "UnweightedDigraph";
-                    intTree.graphPool(format, graphType, filename, costOrPath);
-                    break;
-                case 2:
-                    filename += "WeightedDigraph";
-                    intTree.graphPool(format, graphType, filename, costOrPath);
-                    break;
-                case 3:
-                    filename += "NegativeDigraph";
-                    intTree.graphPool(format, graphType, filename, costOrPath);
-                    break;
-                case 4:
-                    filename += "AcyclicDigraph";
-                    intTree.graphPool(format, graphType, filename, costOrPath);
-                    break;
-                case 5:
-                    filename += "EachDigraph";
-                    intTree.graphPool(format, graphType, filename, costOrPath);
-                    break;
-            }
+                switch (graphType) {
+                    case 0:
+                        break;
+                    case 1:
+                        filename += "UnweightedDigraph";
+                        intTree.graphPool(format, graphType, filename, costOrPath);
+                        break;
+                    case 2:
+                        filename += "WeightedDigraph";
+                        intTree.graphPool(format, graphType, filename, costOrPath);
+                        break;
+                    case 3:
+                        filename += "NegativeDigraph";
+                        intTree.graphPool(format, graphType, filename, costOrPath);
+                        break;
+                    case 4:
+                        filename += "AcyclicDigraph";
+                        intTree.graphPool(format, graphType, filename, costOrPath);
+                        break;
+                    case 5:
+                        filename += "EachDigraph";
+                        intTree.graphPool(format, graphType, filename, costOrPath);
+                        break;
+                }
 
-            switch (dataStored) {
-                case 0:
-                    break;
-                case 1:
-                    filename += "Numbers_" + poolSize + "Qs";
-                    intTree.poolType(format, type, poolSize, filename);
-                    break;
-                case 2:
-                    filename += "Words_" + poolSize + "Qs";
-                    strTree.poolType(format, type, poolSize, filename);
-                    break;
-                case 3:
-                    filename += "Decimals_" + poolSize + "Qs";
+                switch (dataStored) {
+                    case 0:
+                        break;
+                    case 1:
+                        filename += "Numbers_" + poolSize + "Qs";
+                        intTree.poolType(format, type, poolSize, filename);
+                        break;
+                    case 2:
+                        filename += "Words_" + poolSize + "Qs";
+                        strTree.poolType(format, type, poolSize, filename);
+                        break;
+                    case 3:
+                        filename += "Decimals_" + poolSize + "Qs";
 
-                    fltTree.poolType(format, type, poolSize, filename);
-                    break;
-                case 4:
-                    filename += "Letters_" + poolSize + "Qs";
-                    chrTree.poolType(format, type, poolSize, filename);
-                    break;
+                        fltTree.poolType(format, type, poolSize, filename);
+                        break;
+                    case 4:
+                        filename += "Letters_" + poolSize + "Qs";
+                        chrTree.poolType(format, type, poolSize, filename);
+                        break;
+                }
+            }catch (InputMismatchException e){
+                System.out.println("Enter a valid number from the menu!");
+                return;
+            }finally {
+                if (choice != 3) main(new String[]{});
             }
         }
         while (choice != 3);
