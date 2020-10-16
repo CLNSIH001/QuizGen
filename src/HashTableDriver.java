@@ -132,7 +132,7 @@ public class HashTableDriver {
 
             if (mcqType == 1) {
 
-                System.out.println("Question " + (q + 1) + " (2 points)\nGiven the following inputs " + insertedNums + " and a hash function: (2 * item) % " + tableSize + " using " + resolutionSchemes[resolutionScheme] + ". Which of the resulting tables below is correct?");
+                System.out.println("Question " + (q + 1) + " (2 points)\nGiven the following inputs " + insertedNums + " and a hash function: (2 * item) % " + tableSize + " using " + resolutionSchemes[resolutionScheme] + ". Which of the resulting tables below is correct? Assume table size will be checked to be prime, if not adjust to the nearest following prime");
                 for (int i = 0; i < 5; i++) {
                     if (i == randomNum) {
                         System.out.println("*" + option[i] + tableCopy);
@@ -145,7 +145,7 @@ public class HashTableDriver {
 
             } else if(mcqType == 2){
 
-                System.out.println("Question " + (q + 1) + " (2 points)\nGiven the following inputs " + insertedNums + " and a hash function: (2 * item) % " + tableSize + " using " + resolutionSchemes[resolutionScheme] + ". How many collisions would occur?");
+                System.out.println("Question " + (q + 1) + " (2 points)\nGiven the following inputs " + insertedNums + " and a hash function: (2 * item) % " + tableSize + " using " + resolutionSchemes[resolutionScheme] + ". How many collisions would occur? Assume table size will be checked to be prime, if not adjust to the nearest following prime");
                 for (int i = 0; i < 5; i++) {
                     if (i == randomNum) {
                         System.out.println("*" + option[i] + table.getNumberOfInsertProbes());

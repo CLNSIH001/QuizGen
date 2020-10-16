@@ -514,9 +514,9 @@ public class Driver<T extends Comparable<? super T>>{
                         if (j == index)
                             file.print("*"+option[j] + heightsize[2] + "\n");
                         else{
-                            int rand = (int) (Math.random() * allInserts.size());
+                            int rand = (int) (Math.random() * heightsize.length);
                             while (rand == 2)
-                                rand = (int) (Math.random() * allInserts.size());
+                                rand = (int) (Math.random() * heightsize.length);
                             file.print(option[j] + heightsize[rand] + "\n");
                         }
                     }
@@ -530,9 +530,9 @@ public class Driver<T extends Comparable<? super T>>{
                         if (j == index)
                             file.print("*"+option[j] + heightsize[3] + "\n");
                         else{
-                            int rand = (int) (Math.random() * allInserts.size());
-                            while (rand == 2)
-                                rand = (int) (Math.random() * allInserts.size());
+                            int rand = (int) (Math.random() * heightsize.length);
+                            while (rand == 3)
+                                rand = (int) (Math.random() * heightsize.length);
                             file.print(option[j] + heightsize[rand] + "\n");
                         }
                     }
@@ -789,6 +789,28 @@ public class Driver<T extends Comparable<? super T>>{
         }
         return textFile;
     }
+    private String createNewFillInFile(String textFile){
+        try {
+            File label = new File("MultipleChoice/", textFile + ".txt");   //folder must already exits
+            if (label.createNewFile())
+                System.out.println(textFile + " has been created");
+            else{
+                System.out.println(textFile + " already exists.");
+                String dataStruc = textFile.substring(0, textFile.indexOf("/"));
+                String dir = "MultipleChoice/"+ dataStruc;
+                textFile = dataStruc + "/" + changeFileName(dir, textFile.substring(textFile.indexOf("/")+1));
+                label = new File("MultipleChoice/", textFile + ".txt");
+                label.createNewFile();
+                System.out.println(textFile.substring(textFile.indexOf("/")+1) + " has been created instead.");
+            }
+            return textFile;
+        }
+        catch(IOException e){
+            System.out.println("An error occurred. Exiting");
+            System.exit(0);
+        }
+        return textFile;
+    }
 
     private String createNewToFFile(String textFile){
         try {
@@ -801,29 +823,6 @@ public class Driver<T extends Comparable<? super T>>{
                 String dir = "TrueFalse/"+dataStruc;
                 textFile = dataStruc + "/" +changeFileName(dir, textFile);
                 label = new File("TrueFalse/", textFile + ".txt");
-                label.createNewFile();
-                System.out.println(textFile + " has been created instead.");
-            }
-            return textFile;
-        }
-        catch(IOException e){
-            System.out.println("An error occurred. Exiting");
-            System.exit(0);
-        }
-        return textFile;
-    }
-
-    private String createNewFillInFile(String textFile){
-        try {
-            File label = new File("FillIn/", textFile + ".txt");   //folder must already exits
-            if (label.createNewFile())
-                System.out.println(textFile + " has been created");
-            else{
-                System.out.println(textFile + " already exists.");
-                String dataStruc = textFile.substring(0, textFile.indexOf("/"));
-                String dir = "FillIn/"+dataStruc;
-                textFile = dataStruc + "/" +changeFileName(dir, textFile);
-                label = new File("FillIn/", textFile + ".txt");
                 label.createNewFile();
                 System.out.println(textFile + " has been created instead.");
             }
