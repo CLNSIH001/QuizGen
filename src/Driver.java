@@ -936,6 +936,7 @@ public class Driver<T extends Comparable<? super T>>{
             mcqType = 3;
             new HashTableDriver(poolSize, format, resolutionScheme, mcqType, filename);
         }
+        System.out.println("Done!\n-------------------------------------\n");
     }
 
   /*
