@@ -49,4 +49,4 @@ clean:
 	  @rm -Rf doc
 
 cleanPools:
-	rm */*Tree/*.txt */Graph/*.txt */BinaryHeap/*Heap/*.txt
+	rm */*Tree/*.txt */Graph/*.txt */BinaryHeap/*Heap/*.txt */Hash*/*.txt
