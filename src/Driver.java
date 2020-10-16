@@ -985,31 +985,27 @@ public class Driver<T extends Comparable<? super T>>{
                     System.out.println(file_name);
                     try {
                         Scanner file = new Scanner(new File(file_name));
-                        while (file.hasNextLine()) {
-                            dataStructure = file.nextInt();
-                            format = file.nextInt();
-                            if (dataStructure == 5) {
-                                graphType = file.nextInt();
-                                costOrPath = file.nextInt();
-                            } else if (dataStructure == 6) {
-                                if (format == 1) {
-                                    hashType = file.nextInt();
-                                    resolution = file.nextInt();
-                                    poolSize = file.nextInt();
-                                } else if (format == 2) {
-                                    poolSize = file.nextInt();
-                                } else {
-                                    resolution = file.nextInt();
-                                    poolSize = file.nextInt();
-                                }
-                            } else {
-                                if (dataStructure == 4) minOrMax = file.nextInt();
-                                type = file.nextInt();
+                        dataStructure = file.nextInt();
+                        format = file.nextInt();
+                        if (dataStructure == 5) {
+                            graphType = file.nextInt();
+                            costOrPath = file.nextInt();
+                        } else if (dataStructure == 6) {
+                            if (format == 1) {
+                                hashType = file.nextInt();
+                                resolution = file.nextInt();
                                 poolSize = file.nextInt();
-                                dataStored = file.nextInt();
+                            } else if (format == 2) {
+                                poolSize = file.nextInt();
+                            } else {
+                                resolution = file.nextInt();
+                                poolSize = file.nextInt();
                             }
-                            //choice = file.nextInt();
-                            //file.nextLine();
+                        } else {
+                            if (dataStructure == 4) minOrMax = file.nextInt();
+                            type = file.nextInt();
+                            poolSize = file.nextInt();
+                            dataStored = file.nextInt();
                         }
                         file.close();
                     } catch (FileNotFoundException e) {
