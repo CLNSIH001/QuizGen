@@ -18,3 +18,6 @@ source code can be found in src
 classes in bin
 MCQs inside the MCQuestions folder
 t/f questions inside the TrueFalse directory
+
+compile and run. make will take a while to load the first time. It will run automatically after compiling. See User Manual in report.
+>make
