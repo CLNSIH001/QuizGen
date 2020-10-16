@@ -778,7 +778,7 @@ public class Driver<T extends Comparable<? super T>>{
                 textFile = dataStruc + "/" + changeFileName(dir, textFile.substring(textFile.indexOf("/")+1));
                 label = new File("MultipleChoice/", textFile + ".txt");
                 label.createNewFile();
-                System.out.println(textFile.substring(textFile.indexOf("/")+1) + " has been created instead.");
+                System.out.println(textFile.substring(textFile.indexOf("/")+1) + " has been created instead.\n");
             }
             return textFile;
         }
@@ -801,7 +801,7 @@ public class Driver<T extends Comparable<? super T>>{
                 textFile = dataStruc + "/" +changeFileName(dir, textFile);
                 label = new File("TrueFalse/", textFile + ".txt");
                 label.createNewFile();
-                System.out.println(textFile + " has been created instead.");
+                System.out.println(textFile + " has been created instead.\n");
             }
             return textFile;
         }
@@ -824,7 +824,7 @@ public class Driver<T extends Comparable<? super T>>{
                 textFile = dataStruc + "/" +changeFileName(dir, textFile);
                 label = new File("FillIn/", textFile + ".txt");
                 label.createNewFile();
-                System.out.println(textFile + " has been created instead.");
+                System.out.println(textFile + " has been created instead.\n");
             }
             return textFile;
         }
@@ -917,11 +917,10 @@ public class Driver<T extends Comparable<? super T>>{
             System.out.println("Enter number of questions (pool size).");
             int poolSize = scan.nextInt();
             resolutionScheme = 2;
-            mcqType = 2;
 
             filename += "Loadfactor_" + poolSize + "Qs";
             filename = createNewToFFile(filename);
-
+            mcqType = 2;
             new HashTableDriver(poolSize, format, resolutionScheme, mcqType, filename);
         }
         else{
@@ -933,14 +932,10 @@ public class Driver<T extends Comparable<? super T>>{
             int poolSize = scan.nextInt();
 
             filename += "_" + poolSize + "Qs";
-
             filename = createNewFillInFile(filename);
-
             mcqType = 3;
-
             new HashTableDriver(poolSize, format, resolutionScheme, mcqType, filename);
         }
-        //scan.close();
     }
 
   /*
