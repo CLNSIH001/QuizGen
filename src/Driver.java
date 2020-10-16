@@ -513,9 +513,9 @@ public class Driver<T extends Comparable<? super T>>{
                         if (j == index)
                             file.print("*"+option[j] + heightsize[2] + "\n");
                         else{
-                            int rand = (int) (Math.random() * allInserts.size());
+                            int rand = (int) (Math.random() * heightsize.length);
                             while (rand == 2)
-                                rand = (int) (Math.random() * allInserts.size());
+                                rand = (int) (Math.random() * heightsize.length);
                             file.print(option[j] + heightsize[rand] + "\n");
                         }
                     }
@@ -529,9 +529,9 @@ public class Driver<T extends Comparable<? super T>>{
                         if (j == index)
                             file.print("*"+option[j] + heightsize[3] + "\n");
                         else{
-                            int rand = (int) (Math.random() * allInserts.size());
-                            while (rand == 2)
-                                rand = (int) (Math.random() * allInserts.size());
+                            int rand = (int) (Math.random() * heightsize.length);
+                            while (rand == 3)
+                                rand = (int) (Math.random() * heightsize.length);
                             file.print(option[j] + heightsize[rand] + "\n");
                         }
                     }
@@ -788,6 +788,28 @@ public class Driver<T extends Comparable<? super T>>{
         }
         return textFile;
     }
+    private String createNewFillInFile(String textFile){
+        try {
+            File label = new File("MultipleChoice/", textFile + ".txt");   //folder must already exits
+            if (label.createNewFile())
+                System.out.println(textFile + " has been created");
+            else{
+                System.out.println(textFile + " already exists.");
+                String dataStruc = textFile.substring(0, textFile.indexOf("/"));
+                String dir = "MultipleChoice/"+ dataStruc;
+                textFile = dataStruc + "/" + changeFileName(dir, textFile.substring(textFile.indexOf("/")+1));
+                label = new File("MultipleChoice/", textFile + ".txt");
+                label.createNewFile();
+                System.out.println(textFile.substring(textFile.indexOf("/")+1) + " has been created instead.");
+            }
+            return textFile;
+        }
+        catch(IOException e){
+            System.out.println("An error occurred. Exiting");
+            System.exit(0);
+        }
+        return textFile;
+    }
 
     private String createNewToFFile(String textFile){
         try {
@@ -800,29 +822,6 @@ public class Driver<T extends Comparable<? super T>>{
                 String dir = "TrueFalse/"+dataStruc;
                 textFile = dataStruc + "/" +changeFileName(dir, textFile);
                 label = new File("TrueFalse/", textFile + ".txt");
-                label.createNewFile();
-                System.out.println(textFile + " has been created instead.");
-            }
-            return textFile;
-        }
-        catch(IOException e){
-            System.out.println("An error occurred. Exiting");
-            System.exit(0);
-        }
-        return textFile;
-    }
-
-    private String createNewFillInFile(String textFile){
-        try {
-            File label = new File("FillIn/", textFile + ".txt");   //folder must already exits
-            if (label.createNewFile())
-                System.out.println(textFile + " has been created");
-            else{
-                System.out.println(textFile + " already exists.");
-                String dataStruc = textFile.substring(0, textFile.indexOf("/"));
-                String dir = "FillIn/"+dataStruc;
-                textFile = dataStruc + "/" +changeFileName(dir, textFile);
-                label = new File("FillIn/", textFile + ".txt");
                 label.createNewFile();
                 System.out.println(textFile + " has been created instead.");
             }
@@ -909,7 +908,8 @@ public class Driver<T extends Comparable<? super T>>{
 
             filename += "_" + poolSize + "Qs";
 
-            filename = createNewMCQFile(filename);
+            //filename = createNewMCQFile(filename);
+            System.out.println(filename);
 
             new HashTableDriver(poolSize, format, resolutionScheme, mcqType, filename);
         }
@@ -917,10 +917,12 @@ public class Driver<T extends Comparable<? super T>>{
             System.out.println("Enter number of questions (pool size).");
             int poolSize = scan.nextInt();
             resolutionScheme = 2;
+            mcqType = 2;
 
             filename += "Loadfactor_" + poolSize + "Qs";
-            filename = createNewToFFile(filename);
-            mcqType = 2;
+            //filename = createNewToFFile(filename);
+            System.out.println(filename);
+
             new HashTableDriver(poolSize, format, resolutionScheme, mcqType, filename);
         }
         else{
@@ -932,11 +934,15 @@ public class Driver<T extends Comparable<? super T>>{
             int poolSize = scan.nextInt();
 
             filename += "_" + poolSize + "Qs";
-            filename = createNewFillInFile(filename);
+
+            //filename = createNewMCQFile(filename);
+            System.out.println(filename);
+
             mcqType = 3;
+
             new HashTableDriver(poolSize, format, resolutionScheme, mcqType, filename);
         }
-        System.out.println("Done!\n-------------------------------------\n");
+        //scan.close();
     }
 
   /*
@@ -945,9 +951,10 @@ public class Driver<T extends Comparable<? super T>>{
      creating questions.
      */
 
-    public static void printchoice(int dataStructure,int format, int type, int poolSize){
-        int graphType= 0;
-        if (dataStructure != 5) {
+    public static void printchoice(int dataStructure,int format, int type, int poolSize, int a){
+        int graphType= type;
+
+        if (dataStructure < 5) {
             switch (dataStructure) {
                 case 1:
                     System.out.println("1. BinarySearchTree");
@@ -997,29 +1004,72 @@ public class Driver<T extends Comparable<? super T>>{
             System.out.println("4. PoolSize = "+ poolSize );
         }
 
-        else {
-            System.out.println("1. Graphy and type is. ");
+        else if(dataStructure ==5){
+            System.out.println("1. Graph");
             switch (graphType){
                 case 1:
-                    System.out.println("UnweightedDigraph");
+                    System.out.println("2. UnweightedDigraph");
 
                     break;
                 case 2:
-                    System.out.println("WeightedDigraph");
+                    System.out.println("2. WeightedDigraph");
                     break;
                 case 3:
-                    System.out.println("NegativeDigraph");
+                    System.out.println("2. NegativeDigraph");
                     break;
                 case 4:
-                    System.out.println("AcyclicDigraph");
+                    System.out.println("2. AcyclicDigraph");
 
                     break;
                 case 5:
-                    System.out.println("EachDigraph");
+                    System.out.println("2. EachDigraph");
                     break;
             }
 
         }
+        else if(dataStructure==6){
+            System.out.println("1. HashTable");
+
+            switch(poolSize){
+                case 1:
+                    System.out.println("2. MCQ");
+                    break;
+
+                case 2:
+                    System.out.println("2. True/False");
+                    break;
+
+                case 3:
+                    System.out.println("2. Fill In Numeric");
+                    break;
+            }
+
+            switch (format) {
+                case 1:
+                    System.out.println("3. Insertion");
+                    break;
+
+                case 2:
+                    System.out.println("3. Collisions");
+                    break;
+            }
+
+            switch (type) {
+                case 1:
+                    System.out.println("4. Linear Probing");
+
+                    break;
+                case 2:
+                    System.out.println("4. Quadratic Probing");
+                    break;
+                case 3:
+                    System.out.println("4.Chaining ");
+                    break;
+            }
+            System.out.println("5. pool size = "+ a);
+
+        }
+
     }
 
 
@@ -1033,11 +1083,12 @@ public class Driver<T extends Comparable<? super T>>{
 
         int dataStructure = a;
         int format = b;
+        int poolSize;
 
         if (dataStructure < 5) {
             int type = c;
 
-            int poolSize = d;
+            poolSize= d;
 
             String filename = "";
 
@@ -1105,7 +1156,7 @@ public class Driver<T extends Comparable<? super T>>{
                     break;
             }
         }
-        else {
+        else if(dataStructure==5){
             int graphType = c;
             int costOrPath = d;
             String file = "Graph/";
@@ -1131,14 +1182,48 @@ public class Driver<T extends Comparable<? super T>>{
                     intTree.graphPool(format, graphType, file, costOrPath);
                     break;
             }
-                        /*switch (format){
-                            case 1:
-                                graphMCQ(graphType, file);
-                            case 2:
-                                graphTrueFalse(graphType, file);
-                            case 3:
-                                graphFillIn(graphType, file);
-                        }*/
+        }
+        else if(dataStructure==6){
+            //HashTableDriver(,poolSize, format, resolutionScheme, mcqType);
+            poolSize = b;
+            format = c;
+            int resolutionScheme = d;
+            int mcqType = e;
+
+            String filename = "HashTable/";
+            if(format == 1){
+
+                if(mcqType==1)
+                    filename += "Insertion";
+                else
+                    filename+= "Collisions";
+
+                filename += "_"+resolutionSchemes[resolutionScheme-1];
+
+                filename += "_" + poolSize + "Qs";
+
+                filename = intTree.createNewMCQFile(filename);
+
+                new HashTableDriver(poolSize, format, resolutionScheme, mcqType, filename);
+            }
+            else if(format == 2){
+                resolutionScheme = 2;
+
+                filename += "Loadfactor_" + poolSize + "Qs";
+                filename = intTree.createNewToFFile(filename);
+                mcqType = 2;
+                new HashTableDriver(poolSize, format, resolutionScheme, mcqType, filename);
+            }
+            else if (format == 3){
+                filename += "_"+resolutionSchemes[resolutionScheme-1];
+
+                filename += "_" + poolSize + "Qs";
+                filename = intTree.createNewFillInFile(filename);
+                mcqType = 3;
+                new HashTableDriver(poolSize, format, resolutionScheme, mcqType, filename);
+            }
+
+
         }
 
     }
@@ -1256,17 +1341,26 @@ public class Driver<T extends Comparable<? super T>>{
                         int fdataStored = myReader.nextInt();
                         myReader.close(); //used to go to a new line othewise the scanner object will stay on the same line when you try get the next value
 
-                        System.out.println("are thease the choices you have made? ");
-                        printchoice(fdataStructure,fformat,ftype,fpoolSize); // to display the chosen choices from the file that has been selected
+                        System.out.println("are these the choices you have made? ");
+
+                        printchoice(fdataStructure,fformat,ftype,fpoolSize,fformat); // to display the chosen choices from the file that has been selected
 
                         System.out.println("enter yes to continue or no to change the values entered");
-                        String confermation = in.nextLine();
-                        System.out.println(confermation);
+                        String conformation = in.nextLine();
+                        System.out.println(conformation);
 
-                        if (confermation.equals("yes")){
-                            theone(fdataStructure,fformat,ftype,fpoolSize,fdataStored);// sends the file data to a folder to then be created need to make a nother method that just prints out the methodd
+
+                        if (conformation.equals("yes")){
+                            if (fdataStructure==5){// to print the graph
+                                theone(fdataStructure,fformat,ftype,fpoolSize,fformat);
+                            }
+                            else if(fdataStructure==6){ // to print the hash table
+                                theone(fdataStructure,fformat,ftype,fpoolSize,fdataStored);
+                            }
+                            else
+                                theone(fdataStructure,fformat,ftype,fpoolSize,fdataStored);// sends the file data to a folder to then be created need to make a nother method that just prints out the methodd
                         }
-                        else if(confermation.equals("no")){
+                        else if(conformation.equals("no")){
                             break;
                         }
                         else{
@@ -1296,7 +1390,7 @@ public class Driver<T extends Comparable<? super T>>{
                     break;
             }
         }
-        while (choice != 4);
+        while (choice != 3);
         System.out.println("\n!!!BYE!!!\n");
     }
 
