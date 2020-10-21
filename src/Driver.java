@@ -1079,13 +1079,16 @@ public class Driver<T extends Comparable<? super T>>{
                         filename += "Deletion_";
                         break;
                     case 3:
-                        filename += "root_";
+                        filename += "Root_";
                         break;
                     case 4:
-                        filename += "leaf_";
+                        filename += "Leaf_";
                         break;
                     case 5:
-                        filename += "height_";
+                        filename += "Height_";
+                        break;
+                    case 6:
+                        filename += "Size_";
                         break;
                 }
 
