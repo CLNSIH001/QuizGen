@@ -6,7 +6,7 @@ import org.junit.runner.JUnitCore;
 //JUnit Suite Test
 @RunWith(Suite.class)
 
-@Suite.SuiteClasses({BPlusTreeTest.class, HashTableTest.class})
+@Suite.SuiteClasses({BPlusTreeTest.class, HashTableTest.class, GraphTest.class})
 
 public class DataStructuresTest {
 }

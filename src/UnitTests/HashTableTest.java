@@ -121,11 +121,11 @@ public void linearInsert() {
             hash = new HashTable(5, 3);
             hash = populateChainingTable(hash);
 
-            assertEquals(java.util.Optional.of(1), hash.getChainArray(2).get(0));
-            assertEquals(java.util.Optional.of(10), hash.getChainArray(0).get(0));
-            assertEquals(java.util.Optional.of(100), hash.getChainArray(0).get(1));
-            assertEquals(java.util.Optional.of(1000), hash.getChainArray(0).get(2));
-            assertEquals(java.util.Optional.of(10000), hash.getChainArray(0).get(3));
+            assertEquals((Integer) 1, hash.getChainArray(2).get(0));
+            assertEquals((Integer) 10, hash.getChainArray(0).get(0));
+            assertEquals((Integer) 100 , hash.getChainArray(0).get(1));
+            assertEquals((Integer) 1000, hash.getChainArray(0).get(2));
+            assertEquals((Integer) 10000, hash.getChainArray(0).get(3));
 
             assertNull(hash.getChainArray(1));
             assertNull(hash.getChainArray(3));
