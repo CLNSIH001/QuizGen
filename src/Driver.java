@@ -515,8 +515,6 @@ public class Driver<T extends Comparable<? super T>>{
                             file.print("*"+option[j] + heightsize.remove(2) + "\n");
                         else{
                             int rand = (int) (Math.random() * heightsize.size());
-                            while (rand == 2)
-                                rand = (int) (Math.random() * heightsize.size());
                             file.print(option[j] + heightsize.remove(rand) + "\n");
                         }
                     }
@@ -531,8 +529,6 @@ public class Driver<T extends Comparable<? super T>>{
                             file.print("*"+option[j] + heightsize.remove(3) + "\n");
                         else{
                             int rand = (int) (Math.random() * heightsize.size());
-                            while (rand == 3)
-                                rand = (int) (Math.random() * heightsize.size());
                             file.print(option[j] + heightsize.remove(rand) + "\n");
                         }
                     }
