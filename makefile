@@ -32,11 +32,13 @@ load:
 	@echo loading...   Please wait just a minute
 
 
-tests = $(filter-out UnitTests/DataStructures/DataStructuresTest.java, $(wildcard src/UnitTests/*.java))
-tests := $(tests:%.java=%.class) $(patsubst src/%, %, $(tests)) DataStructuresTest.class
+tests = $(wildcard src/UnitTests/*.java) src/DataStructuresTest.java
 
-Test: $(tests)
-	@java -cp bin DataStructuresTest
+Test: compileTests
+	@java -cp bin:lib/junit-4.13.1.jar:lib/hamcrest-core-1.3.jar org.junit.runner.JUnitCore DataStructuresTest
+
+compileTests: $(classes)
+	@javac -d $(BINDIR) -cp bin:lib/junit-4.13.1.jar $(tests)
 
 #running all our different applications 
 

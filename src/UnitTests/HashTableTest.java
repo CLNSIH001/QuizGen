@@ -88,6 +88,7 @@ public void linearInsert() {
             System.out.println("Passed Linear Probing insertion");
         }catch(AssertionError e){
             System.out.println("Failed Linear Probing insertion");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -130,9 +131,9 @@ public void linearInsert() {
             assertNull(hash.getChainArray(1));
             assertNull(hash.getChainArray(3));
             assertNull(hash.getChainArray(4));
-            System.out.println("Passed Quadratic Probing insertion");
+            System.out.println("Passed Chaining Probing insertion");
         }catch(AssertionError e){
-            System.out.println("Failed Quadratic Probing insertion");
+            System.out.println("Failed Chaining Probing insertion");
         }
     }
 }
