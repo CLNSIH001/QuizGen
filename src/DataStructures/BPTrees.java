@@ -394,9 +394,9 @@ public class BPTrees{
     }
 
     public static void main(String[] args){
-        BPTrees bpt = new BPTrees(4);   //4
+        BPTrees bpt = new BPTrees(4);
         //2019 b+ tree notes
-        /*bpt.insert(20);
+        bpt.insert(20);
         bpt.insert(1);
         bpt.insert(4);
         bpt.insert(16);
@@ -407,31 +407,17 @@ public class BPTrees{
         bpt.insert(10);
         bpt.insert(11);
         bpt.insert(12);
+        System.out.println("INSERTED: 20,1,4,16,25,9,13,15,10,11,12");
         bpt.printNodes();
-        ///////////////////////////Delete
+
+        System.out.println();
+        System.out.println("===========================================");
+        System.out.println();
+
         bpt.delete(13);
         bpt.delete(15);     //merge
-        bpt.printNodes();
         bpt.delete(1);
-        bpt.printNodes();*/
-
-        //2019 test 2 question
-        bpt.insert(23);
-        bpt.insert(31);
-        bpt.insert(43);
-        bpt.insert(13);
-        bpt.insert(47);
-        bpt.insert(17);
-        bpt.insert(29);
-        bpt.insert(37);
-        bpt.insert(41);
-        bpt.insert(19);
-        bpt.printNodes();
-        //Answer to f.1
-        bpt.insert(48);
-        bpt.insert(16);
-        //Answer to f.2
-        //bpt.delete(23);
+        System.out.println("DELETED: 13,15,1");
         bpt.printNodes();
     }
 }

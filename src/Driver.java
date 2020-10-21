@@ -419,7 +419,7 @@ public class Driver<T extends Comparable<? super T>>{
             emptyTree(obj);
             insert((int)(Math.random()*3+6), obj);
             for (int i = 0; i < total; i++) {
-                int[] heightsize = {height(obj)-1, size(obj)-1, height(obj), size(obj), size(obj)+1, height(obj)+1};
+                ArrayList<Integer> heightsize = new ArrayList<>(Arrays.asList(height(obj)-1, size(obj)-1, height(obj), size(obj), size(obj)+1, height(obj)+1));
                 file.println("Question " + (i+1) + " (2 points)");
                 int index = (int) (Math.random() * 4);
 
@@ -512,12 +512,12 @@ public class Driver<T extends Comparable<? super T>>{
                             " then the height of the tree is:\n");
                     for (int j = 0; j < option.length; ++j) {
                         if (j == index)
-                            file.print("*"+option[j] + heightsize[2] + "\n");
+                            file.print("*"+option[j] + heightsize.remove(2) + "\n");
                         else{
-                            int rand = (int) (Math.random() * heightsize.length);
+                            int rand = (int) (Math.random() * heightsize.size());
                             while (rand == 2)
-                                rand = (int) (Math.random() * heightsize.length);
-                            file.print(option[j] + heightsize[rand] + "\n");
+                                rand = (int) (Math.random() * heightsize.size());
+                            file.print(option[j] + heightsize.remove(rand) + "\n");
                         }
                     }
                 }
@@ -528,12 +528,12 @@ public class Driver<T extends Comparable<? super T>>{
                             " then the size of the tree is:\n");
                     for (int j = 0; j < option.length; ++j) {
                         if (j == index)
-                            file.print("*"+option[j] + heightsize[3] + "\n");
+                            file.print("*"+option[j] + heightsize.remove(3) + "\n");
                         else{
-                            int rand = (int) (Math.random() * heightsize.length);
+                            int rand = (int) (Math.random() * heightsize.size());
                             while (rand == 3)
-                                rand = (int) (Math.random() * heightsize.length);
-                            file.print(option[j] + heightsize[rand] + "\n");
+                                rand = (int) (Math.random() * heightsize.size());
+                            file.print(option[j] + heightsize.remove(rand) + "\n");
                         }
                     }
                 }
