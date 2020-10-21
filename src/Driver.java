@@ -901,7 +901,7 @@ public class Driver<T extends Comparable<? super T>>{
                 int costOrPath = 0, dataStored = 0, minOrMax = 0, resolution = 0;
                 System.out.println("Enter a number to select.\n" +
                         "1. New Question Pool\n" +
-                        "2. Pool from History\n" +
+                        "2. Choose from textFile\n" +
                         "3. Exit");
                 choice = in.nextInt();
 
