@@ -1250,7 +1250,6 @@ public class Driver<T extends Comparable<? super T>>{
                     System.out.println(System.getProperty("user.dir")); // to print the default directory so you know where to place the file
                     String file_name = in.nextLine();
                     System.out.println();
-                    System.out.println(file_name);
 
                     try {
                         Scanner file = new Scanner(new File(file_name));
@@ -1282,7 +1281,6 @@ public class Driver<T extends Comparable<? super T>>{
 
                         System.out.println("enter yes to continue or no to change the values entered");
                         String confirmation = in.nextLine();
-                        System.out.println(confirmation);
                         if (confirmation.equals("yes")||confirmation.equals("Yes")||confirmation.equals("YES")||confirmation.equals("y")||confirmation.equals("Y")){
                             if (dataStructure==5)// to print the graph
                                 theone(dataStructure,format,graphType,costOrPath,0,0);
@@ -1292,7 +1290,8 @@ public class Driver<T extends Comparable<? super T>>{
                                 theone(dataStructure,format,type,poolSize,dataStored,minOrMax);// sends the file data to a folder to then be created need to make a nother method that just prints out the methodd
                         }
                         else if(confirmation.equals("no")||confirmation.equals("No")||confirmation.equals("NO")||confirmation.equals("n")||confirmation.equals("N")){
-                            break;
+                            System.out.println();
+                            continue;
                         }
                         else{
                             System.out.println("you have entered an invalid argument try yes or no only");
@@ -1308,7 +1307,6 @@ public class Driver<T extends Comparable<? super T>>{
                     System.out.println("Invalid choice, Choose again");
                     continue;
                 }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             }catch (InputMismatchException e){
                 System.out.println("Enter a valid number from the menu!");
                 main(new String[]{});
