@@ -967,7 +967,7 @@ public class Driver<T extends Comparable<? super T>>{
 
                     break;
                 case 4:
-                    System.out.println("Letters");
+                    System.out.println("5. Letters");
                     break;
             }
         }
