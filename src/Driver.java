@@ -538,7 +538,7 @@ public class Driver<T extends Comparable<? super T>>{
                 file.println("E.  None of the answers are correct.\n#randomize\n");
                 file.flush();
             }
-            System.out.println("Done!\n-------------------------------------\n");
+            System.out.println("Done!\n==========================================\n");
             file.close();
         }
         catch (IOException E){
@@ -671,7 +671,7 @@ public class Driver<T extends Comparable<? super T>>{
                 insert((int)(Math.random()*3+6), obj);
                 file.flush();
             }
-            System.out.println("Done!\n-------------------------------------\n");
+            System.out.println("Done!\n=======================================\n");
             file.close();
         }
         catch (IOException E){
@@ -755,8 +755,10 @@ public class Driver<T extends Comparable<? super T>>{
             //else if (format == 3)
         }
         else if(type == 5){
-            //run the first four types using a temp file name.
-            //copy them into the file for this type question.
+            graphPool(format, 1, name, path_or_cost);
+            graphPool(format, 2, name, path_or_cost);
+            graphPool(format, 3, name, path_or_cost);
+            graphPool(format, 4, name, path_or_cost);
         }
         else{
             System.out.println("Enter a valid Question Format from the Menu.");
@@ -882,13 +884,281 @@ public class Driver<T extends Comparable<? super T>>{
         }
     }
 
+    private static void printchoice(int a,int b , int c, int d, int e, int f){
+        int dataStructure = a, format = b;
+        switch (dataStructure) {
+            case 0:
+                break;
+            case 1:
+                System.out.println("1. BinarySearchTree");
+                break;
+            case 2:
+                System.out.println("1. AVLTree");
+                break;
+            case 3:
+                System.out.println("1. RedBlackTree");
+                break;
+            case 4:
+                System.out.print("1. Binary ");
+                int minOrMax = f;
+                if (minOrMax == 1) {
+                    System.out.println("MinHeap");
+                } else {
+                    System.out.println("MaxHeap");
+                }
+                break;
+            case 5:
+                System.out.println("1. Graph");
+                break;
+            case 6:
+                System.out.println("2. HashTable");
+                break;
+        }
+        switch(format){
+            case 1:
+                System.out.println("2. MCQ");
+                break;
 
-    public static void main (String [] args) {
+            case 2:
+                System.out.println("2. True/False");
+                break;
+
+            case 3:
+                System.out.println("2. Fill In Numeric");
+                break;
+        }
+
+        if (dataStructure < 5) {
+            int type = c, poolSize = d, dataStored = e;
+            switch (type) {
+                case 0:
+                    break;
+                case 1:
+                    System.out.println("3. Insertion");
+                    break;
+                case 2:
+                    System.out.println("3. Deletion");
+                    break;
+                case 3:
+                    System.out.println("3. Root");
+                    break;
+                case 4:
+                    System.out.println("3. Leaf");
+                    break;
+                case 5:
+                    System.out.println("3. Height");
+                    break;
+                case 6:
+                    System.out.println("3. Size");
+                    break;
+            }
+            System.out.println("4. PoolSize: " + poolSize);
+            switch (dataStored) {
+                case 0:
+                    break;
+                case 1:
+                    System.out.println("5. Numbers");
+                    break;
+                case 2:
+                    System.out.println("5. Words");
+                    break;
+                case 3:
+                    System.out.println("5. Decimals");
+
+                    break;
+                case 4:
+                    System.out.println("Letters");
+                    break;
+            }
+        }
+        else if (dataStructure == 5){
+            int graphType = c, costOrPath = d;
+            switch (graphType) {
+                case 0:
+                    break;
+                case 1:
+                    System.out.println("3. UnweightedDigraph");
+                    break;
+                case 2:
+                    System.out.println("3. WeightedDigraph");
+                    break;
+                case 3:
+                    System.out.println("3. NegativeDigraph");
+                    break;
+                case 4:
+                    System.out.println("3. AcyclicDigraph");
+                    break;
+                case 5:
+                    System.out.println("3. EachDigraph");
+                    break;
+            }
+            if (costOrPath == 1)
+                System.out.println("4. Path Cost");
+            else System.out.println("4. Path Followed");
+        }
+        else if (dataStructure == 6){
+            int hashType = c, poolSize = d, resolution = e;
+            if (format == 1) {
+                if (hashType == 1)
+                    System.out.println("3. Insertion");
+                else
+                    System.out.println("3. Collisions");
+                if (resolution==1) System.out.println("4. Linear Probing");
+                else if (resolution==2) System.out.println("4. Quadratic Probing");
+                else System.out.println("4. Chaining");
+                System.out.println("5. PoolSize: " + poolSize);
+            }
+            else if (format == 3) {
+                if (resolution==1) System.out.println("3. Linear Probing");
+                else if (resolution==2) System.out.println("3. Quadratic Probing");
+                else System.out.println("3. Chaining");
+                System.out.println("4. PoolSize: " + poolSize);
+            }
+            else System.out.println("3. PoolSize: " + poolSize);
+        }
+    }
+
+    private static void theone(int a,int b , int c, int d, int e, int f) {
         Driver<Integer> intTree = new Driver<Integer>(0);
         Driver<String> strTree = new Driver<String>("");
         Driver<Float> fltTree = new Driver<Float>((float) 0.0);
         Driver<Character> chrTree = new Driver<Character>(' ');
-        Scanner in = new Scanner(System.in); String filename = "";
+        String filename = "";
+        int dataStructure = a, format = b;
+        if (dataStructure < 5) {
+            int type = c, poolSize = d, dataStored = e;
+            switch (dataStructure) {
+                case 0:
+                    break;
+                case 1:
+                    filename = "BinarySearchTree/";
+                    break;
+                case 2:
+                    filename = "AVLTree/";
+                    break;
+                case 3:
+                    filename = "RedBlackTree/";
+                    break;
+                case 4:
+                    filename = "BinaryHeap/";
+                    int minOrMax = f;
+                    if (minOrMax == 1) {
+                        heapType = 0;
+                        filename += "MinHeap/";
+                    } else {
+                        heapType = 1;
+                        filename += "MaxHeap/";
+                    }
+                    break;
+            }
+            switch (type) {
+                case 0:
+                    break;
+                case 1:
+                    filename += "Insertion_";
+                    break;
+                case 2:
+                    filename += "Deletion_";
+                    break;
+                case 3:
+                    filename += "Root_";
+                    break;
+                case 4:
+                    filename += "Leaf_";
+                    break;
+                case 5:
+                    filename += "Height_";
+                    break;
+                case 6:
+                    filename += "Size_";
+                    break;
+            }
+            switch (dataStored) {
+                case 0:
+                    break;
+                case 1:
+                    filename += "Numbers_" + poolSize + "Qs";
+                    intTree.poolType(format, type, poolSize, filename);
+                    break;
+                case 2:
+                    filename += "Words_" + poolSize + "Qs";
+                    strTree.poolType(format, type, poolSize, filename);
+                    break;
+                case 3:
+                    filename += "Decimals_" + poolSize + "Qs";
+
+                    fltTree.poolType(format, type, poolSize, filename);
+                    break;
+                case 4:
+                    filename += "Letters_" + poolSize + "Qs";
+                    chrTree.poolType(format, type, poolSize, filename);
+                    break;
+            }
+        }
+        else if (dataStructure == 5){
+            filename = "Graph/";
+            int graphType = c, costOrPath = d;
+            switch (graphType) {
+                case 0:
+                    break;
+                case 1:
+                    filename += "UnweightedDigraph";
+                    intTree.graphPool(format, graphType, filename, costOrPath);
+                    break;
+                case 2:
+                    filename += "WeightedDigraph";
+                    intTree.graphPool(format, graphType, filename, costOrPath);
+                    break;
+                case 3:
+                    filename += "NegativeDigraph";
+                    intTree.graphPool(format, graphType, filename, costOrPath);
+                    break;
+                case 4:
+                    filename += "AcyclicDigraph";
+                    intTree.graphPool(format, graphType, filename, costOrPath);
+                    break;
+                case 5:
+                    filename += "EachDigraph";
+                    intTree.graphPool(format, graphType, filename, costOrPath);
+                    break;
+            }
+            System.out.println("Done!\n======================================\n");
+        }
+        else if (dataStructure == 6){
+            filename = "HashTable/";
+            int hashType = c, poolSize = d, resolution = e;
+            if (format == 1) {
+                if (hashType == 1)
+                    filename += "Insertion";
+                else
+                    filename += "Collisions";
+            }
+            else if (format == 2) {
+                resolution = 2;
+                hashType = 2;
+            } else hashType = 3;
+            if (format != 2) {
+                filename += "_" + resolutionSchemes[resolution - 1];
+                filename += "_" + poolSize + "Qs";
+            } else filename += "Loadfactor_" + poolSize + "Qs";
+            switch (format){
+                case 1:
+                    filename = intTree.createNewMCQFile(filename);
+                    break;
+                case 2:
+                    filename = intTree.createNewToFFile(filename);
+                    break;
+                case 3:
+                    filename = intTree.createNewFillInFile(filename);
+                    break;
+            }
+            new HashTableDriver(poolSize, format, resolution, hashType, filename);
+            System.out.println("Done!\n==========================================\n");
+        }
+    }
+
+    public static void main (String [] args) {
+        Scanner in = new Scanner(System.in);
         int choice=0,format=0, dataStructure=0;
 
         do{
@@ -929,9 +1199,10 @@ public class Driver<T extends Comparable<? super T>>{
                                 "1. Path Cost\n" +
                                 "2. Path Sequence\n");
                         costOrPath = in.nextInt();
+                        theone(dataStructure,format,graphType,costOrPath,0,0);
                     } else if (dataStructure == 6) {
                         if (format == 1) {
-                            System.out.println("1. Insertion\n2. Collisions");
+                            System.out.println("Select one:\n1. Insertion\n2. Collisions");
                             hashType = in.nextInt();
                             System.out.println("choose resolution scheme\n1. Linear Probing\n2. Quadratic Probing\n3. Chaining");
                             resolution = in.nextInt();
@@ -946,6 +1217,7 @@ public class Driver<T extends Comparable<? super T>>{
                             System.out.println("Enter number of questions (pool size).");
                             poolSize = in.nextInt();
                         }
+                        theone(dataStructure,format,hashType, poolSize, resolution,0);
                     } else {
                         if (dataStructure == 4) {
                             System.out.println("Enter a number:\n1. Binary Min Heap\n2. Binary Max Heap");
@@ -969,6 +1241,7 @@ public class Driver<T extends Comparable<? super T>>{
                                 "3. Float\n" +
                                 "4. Char\n");
                         dataStored = in.nextInt();
+                        theone(dataStructure,format,type,poolSize,dataStored,minOrMax);
                     }
                 } else if (choice == 2) {
                     System.out.println();
@@ -978,6 +1251,7 @@ public class Driver<T extends Comparable<? super T>>{
                     String file_name = in.nextLine();
                     System.out.println();
                     System.out.println(file_name);
+
                     try {
                         Scanner file = new Scanner(new File(file_name));
                         dataStructure = file.nextInt();
@@ -985,6 +1259,7 @@ public class Driver<T extends Comparable<? super T>>{
                         if (dataStructure == 5) {
                             graphType = file.nextInt();
                             costOrPath = file.nextInt();
+                            printchoice(dataStructure,format,graphType,costOrPath,0,0);
                         } else if (dataStructure == 6) {
                             if (format == 1) {
                                 hashType = file.nextInt();
@@ -996,14 +1271,36 @@ public class Driver<T extends Comparable<? super T>>{
                                 resolution = file.nextInt();
                                 poolSize = file.nextInt();
                             }
+                            printchoice(dataStructure,format,hashType, poolSize, resolution,0);
                         } else {
                             if (dataStructure == 4) minOrMax = file.nextInt();
                             type = file.nextInt();
                             poolSize = file.nextInt();
                             dataStored = file.nextInt();
+                            printchoice(dataStructure,format,type,poolSize,dataStored,minOrMax);
+                        }
+
+                        System.out.println("enter yes to continue or no to change the values entered");
+                        String confirmation = in.nextLine();
+                        System.out.println(confirmation);
+                        if (confirmation.equals("yes")||confirmation.equals("Yes")||confirmation.equals("YES")||confirmation.equals("y")||confirmation.equals("Y")){
+                            if (dataStructure==5)// to print the graph
+                                theone(dataStructure,format,graphType,costOrPath,0,0);
+                            else if(dataStructure==6) // to print the hash table
+                                theone(dataStructure,format,hashType, poolSize, resolution,0);
+                            else
+                                theone(dataStructure,format,type,poolSize,dataStored,minOrMax);// sends the file data to a folder to then be created need to make a nother method that just prints out the methodd
+                        }
+                        else if(confirmation.equals("no")||confirmation.equals("No")||confirmation.equals("NO")||confirmation.equals("n")||confirmation.equals("N")){
+                            break;
+                        }
+                        else{
+                            System.out.println("you have entered an invalid argument try yes or no only");
                         }
                         file.close();
-                    } catch (FileNotFoundException e) {
+                    }
+
+                    catch (FileNotFoundException e) {
                         System.out.println("An error occurred.");
                     }
                 } else if (choice == 3) break;
@@ -1011,133 +1308,7 @@ public class Driver<T extends Comparable<? super T>>{
                     System.out.println("Invalid choice, Choose again");
                     continue;
                 }
-
-                switch (dataStructure) {
-                    case 0:
-                        break;
-                    case 1:
-                        filename = "BinarySearchTree/";
-                        break;
-                    case 2:
-                        filename = "AVLTree/";
-                        break;
-                    case 3:
-                        filename = "RedBlackTree/";
-                        break;
-                    case 4:
-                        filename = "BinaryHeap/";
-                        if (minOrMax == 1) {
-                            heapType = 0;
-                            filename += "MinHeap/";
-                        } else {
-                            heapType = 1;
-                            filename += "MaxHeap/";
-                        }
-                        break;
-                    case 5:
-                        filename = "Graph/";
-                        break;
-                    case 6:
-                        filename = "HashTable/";
-                        if (format == 1) {
-                            if (hashType == 1)
-                                filename += "Insertion";
-                            else
-                                filename += "Collisions";
-                        }
-                        else if (format == 2) {
-                            resolution = 2;
-                            hashType = 2;
-                        } else hashType = 3;
-                        if (format != 2) {
-                            filename += "_" + resolutionSchemes[resolution - 1];
-                            filename += "_" + poolSize + "Qs";
-                        } else filename += "Loadfactor_" + poolSize + "Qs";
-                        switch (format){
-                            case 1:
-                                filename = intTree.createNewMCQFile(filename);
-                                break;
-                            case 2:
-                                filename = intTree.createNewToFFile(filename);
-                                break;
-                            case 3:
-                                filename = intTree.createNewFillInFile(filename);
-                                break;
-                        }
-                        new HashTableDriver(poolSize, format, resolution, hashType, filename);
-                        System.out.println("Done!\n==========================================\n");
-                        break;
-                }
-
-                switch (type) {
-                    case 0:
-                        break;
-                    case 1:
-                        filename += "Insertion_";
-                        break;
-                    case 2:
-                        filename += "Deletion_";
-                        break;
-                    case 3:
-                        filename += "Root_";
-                        break;
-                    case 4:
-                        filename += "Leaf_";
-                        break;
-                    case 5:
-                        filename += "Height_";
-                        break;
-                    case 6:
-                        filename += "Size_";
-                        break;
-                }
-
-                switch (graphType) {
-                    case 0:
-                        break;
-                    case 1:
-                        filename += "UnweightedDigraph";
-                        intTree.graphPool(format, graphType, filename, costOrPath);
-                        break;
-                    case 2:
-                        filename += "WeightedDigraph";
-                        intTree.graphPool(format, graphType, filename, costOrPath);
-                        break;
-                    case 3:
-                        filename += "NegativeDigraph";
-                        intTree.graphPool(format, graphType, filename, costOrPath);
-                        break;
-                    case 4:
-                        filename += "AcyclicDigraph";
-                        intTree.graphPool(format, graphType, filename, costOrPath);
-                        break;
-                    case 5:
-                        filename += "EachDigraph";
-                        intTree.graphPool(format, graphType, filename, costOrPath);
-                        break;
-                }
-
-                switch (dataStored) {
-                    case 0:
-                        break;
-                    case 1:
-                        filename += "Numbers_" + poolSize + "Qs";
-                        intTree.poolType(format, type, poolSize, filename);
-                        break;
-                    case 2:
-                        filename += "Words_" + poolSize + "Qs";
-                        strTree.poolType(format, type, poolSize, filename);
-                        break;
-                    case 3:
-                        filename += "Decimals_" + poolSize + "Qs";
-
-                        fltTree.poolType(format, type, poolSize, filename);
-                        break;
-                    case 4:
-                        filename += "Letters_" + poolSize + "Qs";
-                        chrTree.poolType(format, type, poolSize, filename);
-                        break;
-                }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             }catch (InputMismatchException e){
                 System.out.println("Enter a valid number from the menu!");
                 main(new String[]{});
