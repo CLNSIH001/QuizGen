@@ -47,7 +47,7 @@ doc:
 	javadoc -d $(DOCDIR) -link http://docs.oracle.com/javase/8/docs/api/ $(SRCDIR)/*.java $(SRCDIR)
 
 clean:
-	  @rm -r $(BINDIR)/DataStructures bin/*.class
+	  @rm -r $(BINDIR)/*
 	  @rm -Rf doc
 
 cleanPools:
