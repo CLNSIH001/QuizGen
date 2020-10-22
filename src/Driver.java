@@ -510,9 +510,10 @@ public class Driver<T extends Comparable<? super T>>{
                 else if (type == 5){
                     file.write("If the following " + allInserts + " is inserted into a "+obj.toString()+
                             " then the height of the tree is:\n");
+                    heightsize.remove(2);
                     for (int j = 0; j < option.length; ++j) {
                         if (j == index)
-                            file.print("*"+option[j] + heightsize.remove(2) + "\n");
+                            file.print("*"+option[j] + height(obj) + "\n");
                         else{
                             int rand = (int) (Math.random() * heightsize.size());
                             file.print(option[j] + heightsize.remove(rand) + "\n");
@@ -524,9 +525,10 @@ public class Driver<T extends Comparable<? super T>>{
                 else if (type == 6){
                     file.write("If the following " + allInserts + " is inserted into a "+obj.toString()+
                             " then the size of the tree is:\n");
+                    heightsize.remove(3);
                     for (int j = 0; j < option.length; ++j) {
                         if (j == index)
-                            file.print("*"+option[j] + heightsize.remove(3) + "\n");
+                            file.print("*"+option[j] + size(obj) + "\n");
                         else{
                             int rand = (int) (Math.random() * heightsize.size());
                             file.print(option[j] + heightsize.remove(rand) + "\n");
